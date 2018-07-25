@@ -1,2 +1,2 @@
 # jmemadmin
-A GUI Administration for memcached.
+A RESTful administration service for memcached.
