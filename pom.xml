@@ -5,4 +5,26 @@
   <version>1.0.0</version>
   <name>jmemadmin</name>
   <description>A RESTful administration service for memcached.</description>
+  
+  <properties>
+  	<default.encoding>UTF-8</default.encoding>
+  	<java.version>1.8</java.version>
+  </properties>
+  
+  <build>
+  	<pluginManagement>
+  		<plugins>
+  			<plugin>
+  				<groupId>org.apache.maven.plugins</groupId>
+  				<artifactId>maven-compiler-plugin</artifactId>
+  				<version>3.7.0</version>
+  				<configuration>
+  					<source>${java.version}</source>
+  					<target>${java.version}</target>
+  					<encoding>${default.encoding}</encoding>
+  				</configuration>
+  			</plugin>
+  		</plugins>
+  	</pluginManagement>
+  </build>
 </project>
