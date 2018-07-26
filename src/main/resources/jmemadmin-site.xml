@@ -1,0 +1,6 @@
+<configuration>
+	<property>
+		<name>jmemadmin.rest.server.port</name>
+		<value>8725</value>
+	</property>
+</configuration>
