@@ -1,5 +1,6 @@
 package com.ctg.jmemadmin.common;
 
-public class Context {
 
+public class Context {
+	
 }
