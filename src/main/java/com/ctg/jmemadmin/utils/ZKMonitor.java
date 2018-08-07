@@ -5,9 +5,10 @@ import org.slf4j.LoggerFactory;
 
 
 public class ZKMonitor {
-	private static final Logger LOG = LoggerFactory.getLogger(ZKMonitor.class);
+	//private static final Logger LOG = LoggerFactory.getLogger(ZKMonitor.class);
 	
 	//private ZooKeeper zk;
+	
 	
 	
 	
