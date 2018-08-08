@@ -1,11 +1,13 @@
 package com.ctg.jmemadmin.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.apache.zookeeper.KeeperException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +15,14 @@ import com.ctg.jmemadmin.common.Constants;
 import com.ctg.jmemadmin.utils.FileMonitor;
 import com.ctg.jmemadmin.utils.MemCachedAdmin;
 import com.ctg.jmemadmin.utils.RemoteExecuteCmd;
+import com.ctg.jmemadmin.zookeeper.NodeMonitor;
+import com.ctg.jmemadmin.zookeeper.NodeRegister;
 
 public class Test {
 	private static final Logger LOG = LoggerFactory.getLogger(Test.class);
 	//MemCachedAdmin memCachedAdmin = MemCachedAdmin.getInstance();
 	
-	public static void main(String[] args) throws NumberFormatException, UnsupportedEncodingException {
+	public static void main(String[] args) throws NumberFormatException, IOException, KeeperException, InterruptedException {
 //		boolean flag = false;
 //		flag = MemCachedAdmin.add("name2", new String("zhangqingliang"), new Date(1800));
 //		LOG.info("添加数据成功！！！");
@@ -42,9 +46,19 @@ public class Test {
 //			e.printStackTrace();
 //		}
 		
-//		MemCachedAdmin.executeLinuxCmd(Constants.CREATE_MASTER_MC_INSTANCE_CMD);
+		NodeRegister nodeRegister = new NodeRegister("memcached", 5000);
+		nodeRegister.start();
 		
-		RemoteExecuteCmd remoteExecuteCmd = new RemoteExecuteCmd(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
-		remoteExecuteCmd.executeCmd(Constants.CREATE_SLAVE_MC_INSTANCE_CMD);
+		
+		MemCachedAdmin.executeLinuxCmd(Constants.CREATE_SINGLE_MC_INSTANCE_CMD);
+		new NodeRegister("memcached", 5000).start();
+		
+//		RemoteExecuteCmd remoteExecuteCmd = new RemoteExecuteCmd(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
+//		remoteExecuteCmd.executeCmd(Constants.CREATE_SLAVE_MC_INSTANCE_CMD);
+//		new NodeRegister("memcached2", 5000).start();
+		
+		NodeMonitor nodeMonitor = new NodeMonitor();
+		nodeMonitor.connectZookeeper();
+		Thread.sleep(Long.MAX_VALUE);
 	}
 }

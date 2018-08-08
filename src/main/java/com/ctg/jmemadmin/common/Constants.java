@@ -16,5 +16,11 @@ public class Constants {
 	public static final String SLAVE_USERNAME = "dfs";
 	public static final String SLAVE_PASSWORD = "dfs123";
 	
+	//public static final String ZOOKEEPER_LIST = "dfs1a1.ecld.com:2181,dfs1m1.ecld.com:2181,dfs1m2.ecld.com:2181";
+	public static final String ZOOKEEPER_LIST = "10.142.90.152:2181";
+	public static final int SLEEP_TIME = 5000;
+	
+	public static final String ZK_NODE_PATH = "/memcached";
+	
 	
 }

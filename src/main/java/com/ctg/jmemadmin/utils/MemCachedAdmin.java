@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ctg.jmemadmin.common.Constants;
 import com.ctg.jmemadmin.model.KeysBean;
+import com.ctg.jmemadmin.zookeeper.NodeRegister;
 import com.whalin.MemCached.MemCachedClient;
 import com.whalin.MemCached.SockIOPool;
 
