@@ -20,45 +20,35 @@ import com.ctg.jmemadmin.zookeeper.NodeRegister;
 
 public class Test {
 	private static final Logger LOG = LoggerFactory.getLogger(Test.class);
-	//MemCachedAdmin memCachedAdmin = MemCachedAdmin.getInstance();
 	
 	public static void main(String[] args) throws NumberFormatException, IOException, KeeperException, InterruptedException {
-//		boolean flag = false;
-//		flag = MemCachedAdmin.add("name2", new String("zhangqingliang"), new Date(1800));
-//		LOG.info("添加数据成功！！！");
-//		String result = (String)MemCachedAdmin.get("name");
-//		LOG.info("运行结果为：name = " + result);
-//		MemCachedAdmin.getKeysForMap();
-//		MemCachedAdmin.stats(Constants.SERVERS);
+		MemCachedAdmin memCachedAdmin = new MemCachedAdmin();
+
+		Object value =  "dfafafafaf";
+		memCachedAdmin.add("name13", value);
+		memCachedAdmin.set("name3", value);
+		boolean existence = memCachedAdmin.keyExists("name3");
+		LOG.info("existence= " + existence);
+		String result = (String)memCachedAdmin.get("name1");
+		LOG.info("get运行结果为：name3 = " + result);
+		memCachedAdmin.flushAll();
+		
+//		memCachedAdmin.delete("mcp:00000062");
+//		memCachedAdmin.listKeys();
+//		memCachedAdmin.stats(Constants.SERVERS);
 //		
-//		try {
-//			// 构造观察类主要提供要观察的文件或目录，当然还有详细信息的filter
-//			FileAlterationObserver observer = new FileAlterationObserver(new File("D:\\"));
-//			// 构造收听类
-//			FileMonitor listener = new FileMonitor();
-//			// 为观察对象添加收听对象
-//			observer.addListener(listener);
-//			// 配置Monitor，第一个参数单位是毫秒，是监听的间隔；第二个参数就是绑定我们之前的观察对象
-//			FileAlterationMonitor fileAlterationMonitor = new FileAlterationMonitor(10000, new FileAlterationObserver[] {observer});
-//			//启动开始监听
-//			fileAlterationMonitor.start();
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//		}
+//		memCachedAdmin.startMemcached(256, Constants.SINGLE_IP, Constants.PORT[1]);
+
+
 		
-		NodeRegister nodeRegister = new NodeRegister("memcached", 5000);
-		nodeRegister.start();
-		
-		
-		MemCachedAdmin.executeLinuxCmd(Constants.CREATE_SINGLE_MC_INSTANCE_CMD);
-		new NodeRegister("memcached", 5000).start();
-		
+
+
 //		RemoteExecuteCmd remoteExecuteCmd = new RemoteExecuteCmd(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
 //		remoteExecuteCmd.executeCmd(Constants.CREATE_SLAVE_MC_INSTANCE_CMD);
 //		new NodeRegister("memcached2", 5000).start();
 		
-		NodeMonitor nodeMonitor = new NodeMonitor();
-		nodeMonitor.connectZookeeper();
-		Thread.sleep(Long.MAX_VALUE);
+//		NodeMonitor nodeMonitor = new NodeMonitor();
+//		nodeMonitor.connectZookeeper();
+//		Thread.sleep(Long.MAX_VALUE);
 	}
 }

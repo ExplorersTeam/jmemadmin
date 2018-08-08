@@ -1,9 +1,9 @@
 package com.ctg.jmemadmin.model;
 
 public class KeysBean {
-	private String name;
-	private long bytes;
-	private long exptime;
+	private String name;	//名称
+	private long bytes;		//大小
+	private long exptime;	//有效期
 	
 	public KeysBean(String name, long bytes, long exptime) {
 		this.name = name;
@@ -28,6 +28,11 @@ public class KeysBean {
 	}
 	public void setExptime(long exptime) {
 		this.exptime = exptime;
+	}
+
+	@Override
+	public String toString() {
+		return "KeysBean [name=" + name + ", bytes=" + bytes + ", exptime=" + exptime + "]";
 	}
 	
 }
