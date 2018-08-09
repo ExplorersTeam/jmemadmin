@@ -30,7 +30,8 @@ public class MemCachedAdmin {
 		//Do nothing
 	}
 
-	public void startMemcached(int memorySize, String ip, int port) {
+	public void startMemcached(int memorySize, String ip, int port){
+		HostCmdAdmin hostCmdAdmin = new HostCmdAdmin(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
 		/*************启动master memcached*************/
 		StringBuffer cmdMaster = new StringBuffer();
 		cmdMaster.append(Constants.CREATE_SINGLE_MC_INSTANCE)//TODO:根据实际情况去修改命令前缀
@@ -38,23 +39,7 @@ public class MemCachedAdmin {
 		.append(" -l ").append(ip)
 		.append(" -p ").append(port);
 		LOG.info("got cmdMaster job: " + cmdMaster.toString());
-		Runtime runtime = Runtime.getRuntime();
-		try {
-			Process process = runtime.exec(cmdMaster.toString());
-			InputStream inputStream = process.getInputStream();
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-			StringBuffer result = new StringBuffer();
-			String tmp = null;
-			while((tmp = bufferedReader.readLine()) != null) {
-				result.append(tmp);
-			}
-			LOG.info("job result [" + result.toString() + "]");
-			inputStream.close();
-			//process.waitFor();
-			process.destroy();
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
+		hostCmdAdmin.executeLocalCmd(cmdMaster.toString());
 		
 		/*************启动slave memcached*************/
 		StringBuffer cmdSlave = new StringBuffer();
@@ -63,8 +48,7 @@ public class MemCachedAdmin {
 		.append(" -l ").append(Constants.SLAVE_IP)
 		.append(" -p ").append(port);
 		LOG.info("got cmdSlave job: " + cmdSlave.toString());
-		RemoteExecuteCmd remoteExecuteCmd = new RemoteExecuteCmd(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
-		remoteExecuteCmd.executeCmd(cmdSlave.toString());
+		hostCmdAdmin.executeRemoteCmd(cmdSlave.toString());
 	}
 
 	public boolean add(String key, Object value) {

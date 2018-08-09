@@ -19,6 +19,11 @@ public class Constants {
 	public static final String SINGLE_IP = "10.142.90.152";
 	public static final String MASTER_IP = "10.142.90.153";
 	public static final String SLAVE_IP = "10.142.90.154";
+	
+	public static final String SINGLE_DOMAIN_NAME = "dfs1a1.ecld.com";
+	public static final String MASTER_DOMAIN_NAME = "dfs1m1.ecld.com";
+	public static final String SLAVE_DOMAIN_NAME = "dfs1m2.ecld.com";
+	
 	public static final int[] PORT = {12301, 12302, 12303};
 	public static final String SLAVE_USERNAME = "dfs";
 	public static final String SLAVE_PASSWORD = "dfs123";
@@ -28,6 +33,6 @@ public class Constants {
 	public static final int SLEEP_TIME = 5000;
 	
 	public static final String ZK_NODE_PATH = "/memcached";
-	
+	public static String DEFAULT_CHART = "UTF-8";
 	
 }
