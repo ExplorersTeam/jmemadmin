@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.utils;
+package org.exp.jmemadmin.utils;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -8,10 +8,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
+import org.exp.jmemadmin.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ctg.jmemadmin.common.Constants;
 
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;

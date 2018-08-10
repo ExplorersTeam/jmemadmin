@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.utils;
+package org.exp.jmemadmin.utils;
 
 import java.util.List;
 
@@ -12,10 +12,9 @@ import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
+import org.exp.jmemadmin.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ctg.jmemadmin.common.Constants;
 
 public class ZookeeperAdmin {
 	private static final Logger LOG = LoggerFactory.getLogger(ZookeeperAdmin.class);

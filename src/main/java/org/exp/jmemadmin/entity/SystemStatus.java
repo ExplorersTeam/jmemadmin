@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.model;
+package org.exp.jmemadmin.entity;
 
 public class SystemStatus {
 

@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.test;
+package org.exp.jmemadmin.test;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,18 +11,17 @@ import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.data.Stat;
+import org.exp.jmemadmin.common.Constants;
+import org.exp.jmemadmin.utils.FileMonitor;
+import org.exp.jmemadmin.utils.HostCmdAdmin;
+import org.exp.jmemadmin.utils.MemCachedAdmin;
+import org.exp.jmemadmin.utils.ObjectAndByte;
+import org.exp.jmemadmin.utils.PortsCheck;
+import org.exp.jmemadmin.utils.ZookeeperAdmin;
+import org.exp.jmemadmin.zookeeper.NodeMonitor;
+import org.exp.jmemadmin.zookeeper.NodeRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ctg.jmemadmin.common.Constants;
-import com.ctg.jmemadmin.utils.FileMonitor;
-import com.ctg.jmemadmin.utils.MemCachedAdmin;
-import com.ctg.jmemadmin.utils.ObjectAndByte;
-import com.ctg.jmemadmin.utils.PortsCheck;
-import com.ctg.jmemadmin.utils.ZookeeperAdmin;
-import com.ctg.jmemadmin.utils.HostCmdAdmin;
-import com.ctg.jmemadmin.zookeeper.NodeMonitor;
-import com.ctg.jmemadmin.zookeeper.NodeRegister;
 
 public class Test {
 	private static final Logger LOG = LoggerFactory.getLogger(Test.class);

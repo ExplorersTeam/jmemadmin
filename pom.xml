@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.ctg</groupId>
+  <groupId>org.exp</groupId>
   <artifactId>jmemadmin</artifactId>
   <version>1.0.0</version>
   <name>jmemadmin</name>
@@ -9,25 +9,29 @@
   <properties>
   	<default.encoding>UTF-8</default.encoding>
   	<java.version>1.8</java.version>
+  	<curator.version>2.12.0</curator.version>
+  	<jersey.version>2.17</jersey.version>
   </properties>
   
   <dependencies>
-  <!-- MemCached Java Client Dependency -->
-  <!-- https://mvnrepository.com/artifact/com.whalin/Memcached-Java-Client -->
+  	<!-- MemCached Java Client Dependency -->
+  	<!-- https://mvnrepository.com/artifact/com.whalin/Memcached-Java-Client -->
   	<dependency>
   		<groupId>com.whalin</groupId>
   		<artifactId>Memcached-Java-Client</artifactId>
   		<version>3.0.2</version>
   	</dependency>
+  	
+  	<!-- Jersey Dependencies -->
   	<dependency>
 		<groupId>org.glassfish.jersey.containers</groupId>
 		<artifactId>jersey-container-servlet</artifactId>
-		<version>2.17</version>
+		<version>${jersey.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>org.glassfish.jersey.core</groupId>
 		<artifactId>jersey-client</artifactId>
-		<version>2.17</version>
+		<version>${jersey.version}</version>
 	</dependency>
 	
 	<dependency>  
@@ -63,6 +67,8 @@
 		<artifactId>commons-lang3</artifactId>
 		<version>3.7</version>
 	</dependency>
+	
+	<!-- ZooKeeper Dependencies -->
 	<!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
 	<dependency>
 	    <groupId>org.apache.zookeeper</groupId>
@@ -72,17 +78,17 @@
 	<dependency>
 	    <groupId>org.apache.curator</groupId>
 	    <artifactId>curator-framework</artifactId>
-	    <version>2.12.0</version>
+	    <version>${curator.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.apache.curator</groupId>
 	    <artifactId>curator-recipes</artifactId>
-	    <version>2.12.0</version>
+	    <version>${curator.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.apache.curator</groupId>
 	    <artifactId>curator-client</artifactId>
-	    <version>2.12.0</version>
+	    <version>${curator.version}</version>
 	</dependency>
 
   </dependencies>

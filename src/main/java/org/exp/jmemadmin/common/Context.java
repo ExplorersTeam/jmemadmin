@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.common;
+package org.exp.jmemadmin.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

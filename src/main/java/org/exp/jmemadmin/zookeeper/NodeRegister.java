@@ -1,9 +1,7 @@
-package com.ctg.jmemadmin.zookeeper;
+package org.exp.jmemadmin.zookeeper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ctg.jmemadmin.common.Constants;
 
 import java.io.IOException;
 
@@ -12,6 +10,7 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs.Ids;
+import org.exp.jmemadmin.common.Constants;
 import org.apache.zookeeper.ZooKeeper;
 
 /**

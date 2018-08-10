@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.common;
+package org.exp.jmemadmin.common;
 
 public class Constants {
 	private Constants() {

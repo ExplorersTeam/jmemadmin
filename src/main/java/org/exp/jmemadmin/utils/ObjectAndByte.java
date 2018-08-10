@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.utils;
+package org.exp.jmemadmin.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

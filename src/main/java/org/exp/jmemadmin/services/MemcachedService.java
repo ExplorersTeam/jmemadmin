@@ -1,4 +1,4 @@
-package com.ctg.jmemadmin.resources;
+package org.exp.jmemadmin.services;
 
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
