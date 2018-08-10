@@ -75,8 +75,7 @@ public class Test {
 //		NodeMonitor nodeMonitor = new NodeMonitor();
 //		nodeMonitor.connectZookeeper();
 //		Thread.sleep(Long.MAX_VALUE);
-		//ZookeeperAdmin.init();
-		ZookeeperAdmin.close();
+		ZookeeperAdmin.init();
 		List<String> nodes = ZookeeperAdmin.getAllZkNodes();
 		LOG.info("all nodes are :" + nodes.toString());
 		ZookeeperAdmin.checkExists("instance0000000013");
@@ -89,6 +88,6 @@ public class Test {
 		ZookeeperAdmin.updateZkNodeInfos("10.142.90.152:12301", "nodeId = 12302");
 		object = ZookeeperAdmin.getZkNodeInfos("10.142.90.152:12301");
 		LOG.info("changed node info is " + ObjectAndByte.toByteArray(object).toString());
-		
+		ZookeeperAdmin.close();
 	}
 }
