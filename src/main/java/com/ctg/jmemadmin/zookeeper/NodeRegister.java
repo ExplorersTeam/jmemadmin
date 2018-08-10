@@ -54,7 +54,7 @@ public class NodeRegister extends Thread{
 		//关键方法，创建包含自增长id名称的目录，这个方法支持了分布式锁的实现
 		//四个参数：1、目录名称 2、目录文本信息 3、文件夹权限，Ids.OPEN_ACL_UNSAFE表示所有权限 
 		//4、目录类型，CreateMode.EPHEMERAL_SEQUENTIAL表示创建临时目录，session断开连接则目录自动删除
-		String createPath = zk.create(Constants.ZK_NODE_PATH + "/instance", address.getBytes("utf-8"), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+		String createPath = zk.create(Constants.ZK_NODE_ROOT + "/instance", address.getBytes("utf-8"), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
 		LOG.info("*********create: " + createPath);
 		Thread.sleep(sleepTime);
 	}

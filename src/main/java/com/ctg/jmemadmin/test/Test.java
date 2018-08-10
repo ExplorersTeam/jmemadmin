@@ -10,13 +10,16 @@ import java.util.Set;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ctg.jmemadmin.common.Constants;
 import com.ctg.jmemadmin.utils.FileMonitor;
 import com.ctg.jmemadmin.utils.MemCachedAdmin;
+import com.ctg.jmemadmin.utils.ObjectAndByte;
 import com.ctg.jmemadmin.utils.PortsCheck;
+import com.ctg.jmemadmin.utils.ZookeeperAdmin;
 import com.ctg.jmemadmin.utils.HostCmdAdmin;
 import com.ctg.jmemadmin.zookeeper.NodeMonitor;
 import com.ctg.jmemadmin.zookeeper.NodeRegister;
@@ -56,9 +59,9 @@ public class Test {
 //		LOG.info("10.142.90.1555 ipFlag ==== " + ipFlag);
 //		ipFlag = PortsCheck.ipCheck("10.142.90.152");
 //		LOG.info("10.142.90.152 ipFlag ==== " + ipFlag);
-		PortsCheck portsCheck = new PortsCheck();
-		List<String> pidInfos = portsCheck.getPidInfos("12302");
-		Set<Integer> pids = portsCheck.getPids(pidInfos);
+//		PortsCheck portsCheck = new PortsCheck();
+//		List<String> pidInfos = portsCheck.getPidInfos("12302");
+//		Set<Integer> pids = portsCheck.getPids(pidInfos);
 
 
 //		HostCmdAdmin hostCmdAdmin = new HostCmdAdmin(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
@@ -72,5 +75,20 @@ public class Test {
 //		NodeMonitor nodeMonitor = new NodeMonitor();
 //		nodeMonitor.connectZookeeper();
 //		Thread.sleep(Long.MAX_VALUE);
+		//ZookeeperAdmin.init();
+		ZookeeperAdmin.close();
+		List<String> nodes = ZookeeperAdmin.getAllZkNodes();
+		LOG.info("all nodes are :" + nodes.toString());
+		ZookeeperAdmin.checkExists("instance0000000013");
+		ZookeeperAdmin.deleteZkNode("instance0000000013");
+		ZookeeperAdmin.checkExists("instance0000000013");
+		Object value = "nodeId = 12301";
+		ZookeeperAdmin.createZkNode("10.142.90.152:12301", value);
+		Object object = ZookeeperAdmin.getZkNodeInfos("10.142.90.152:12301");
+		LOG.info("node info is " + ObjectAndByte.toByteArray(object).toString());
+		ZookeeperAdmin.updateZkNodeInfos("10.142.90.152:12301", "nodeId = 12302");
+		object = ZookeeperAdmin.getZkNodeInfos("10.142.90.152:12301");
+		LOG.info("changed node info is " + ObjectAndByte.toByteArray(object).toString());
+		
 	}
 }

@@ -38,7 +38,7 @@ public class NodeMonitor {
 			@Override
 			public void process(WatchedEvent event) {
 				LOG.info("**********event.getPath() is : " + event.getPath());
-				if((event.getType() == EventType.NodeChildrenChanged) && (Constants.ZK_NODE_PATH.equals(event.getPath()))) {
+				if((event.getType() == EventType.NodeChildrenChanged) && (Constants.ZK_NODE_ROOT.equals(event.getPath()))) {
 					LOG.info("Constants.ZK_NODE_PATH.equals(event.getPath()) 为真。。。。");
 					try {
 						updateServerList();
@@ -58,9 +58,9 @@ public class NodeMonitor {
 	
 	private void updateServerList() throws KeeperException, InterruptedException, UnsupportedEncodingException {
 		List<String> newServerList = new ArrayList<String>();
-		List<String> subList = zk.getChildren(Constants.ZK_NODE_PATH, true);//watcher注册后，只能监听事件一次，参数true表示继续使用默认watcher监听事件
+		List<String> subList = zk.getChildren(Constants.ZK_NODE_ROOT, true);//watcher注册后，只能监听事件一次，参数true表示继续使用默认watcher监听事件
 		for(String subNode : subList) {
-			byte[] nodeData = zk.getData(Constants.ZK_NODE_PATH, false, null);//获取节点数据
+			byte[] nodeData = zk.getData(Constants.ZK_NODE_ROOT, false, null);//获取节点数据
 			newServerList.add(new String(nodeData,"utf-8"));
 		}
 		serverList = newServerList;
