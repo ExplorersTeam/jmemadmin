@@ -2,15 +2,47 @@ package org.exp.jmemadmin.common;
 
 import org.apache.hadoop.conf.Configuration;
 
+/**
+ * 
+ * Class for configurations management.
+ * 
+ * @author ChenJintong
+ *
+ */
 public class Configs {
+    // Configuration file name.
     private static final String CONF_FILENAME = "jmemadmin-site.xml";
 
+    /*
+     * ZooKeeper configurations.
+     */
     private static final String ZK_QUORUM_KEY = "jmemadmin.zookeeper.quorum";
     private static final String DEFAULT_INET_ADDR_VALUE = "127.0.0.1";
 
+    private static final String ZK_CONN_TIMEOUT_MS_KEY = "jmemadmin.zookeeper.connection.timeout.ms";
+    private static final int DEFAULT_ZK_CONN_TIMEOUT_MS_VALUE = 30000;
+
+    private static final String ZK_SESSION_TIMEOUT_MS_KEY = "jmemadmin.zookeeper.session.timeout.ms";
+    private static final int DEFAULT_ZK_SESSION_TIMEOUT_MS_VALUE = 60000;
+
+    private static final String ZK_RETRIES_MAX_KEY = "jmemadmin.zookeeper.retries.max";
+    private static final int DEFAULT_ZK_RETRIES_MAX_VALUE = 3;
+
+    private static final String ZK_RETRY_EBOP_BASE_SLEEP_TIME_MS_KEY = "jmemadmin.zookeeper.retry.exponential-back-off.sleep-time.base.ms";
+    private static final int DEFAULT_ZK_RETRY_EBOP_BASE_SLEEP_TIME_MS_VALUE = 1000;
+
+    private static final String ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_KEY = "jmemadmin.zookeeper.retry.exponential-back-off.sleep-time.max.ms";
+    private static final int DEFAULT_ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_VALUE = 1000;
+
+    /*
+     * RESTful service configurations.
+     */
     private static final String REST_SERVER_PORT_KEY = "jmemadmin.rest.server.port";
     private static final int DEFAULT_REST_SERVER_PORT_VALUE = 8725;
 
+    /*
+     * Monitor service configurations.
+     */
     private static final String MC_HISTORY_LIFETIME_KEY = "jmemadmin.mc.history.lifetime";
     private static final int DEFAULT_MC_HISTORY_LIFETIME_VALUE = 5;
 
@@ -33,6 +65,26 @@ public class Configs {
 
     public static String getZKQuorum() {
         return getConf().getTrimmed(ZK_QUORUM_KEY, DEFAULT_INET_ADDR_VALUE);
+    }
+
+    public static int getZKConnectionTimeoutMS() {
+        return getConf().getInt(ZK_CONN_TIMEOUT_MS_KEY, DEFAULT_ZK_CONN_TIMEOUT_MS_VALUE);
+    }
+
+    public static int getZKSessionTimeoutMS() {
+        return getConf().getInt(ZK_SESSION_TIMEOUT_MS_KEY, DEFAULT_ZK_SESSION_TIMEOUT_MS_VALUE);
+    }
+
+    public static int getZKMaxRetries() {
+        return getConf().getInt(ZK_RETRIES_MAX_KEY, DEFAULT_ZK_RETRIES_MAX_VALUE);
+    }
+
+    public static int getZKExponentialBackoffRetryBaseSleepTimeMS() {
+        return getConf().getInt(ZK_RETRY_EBOP_BASE_SLEEP_TIME_MS_KEY, DEFAULT_ZK_RETRY_EBOP_BASE_SLEEP_TIME_MS_VALUE);
+    }
+
+    public static int getZKExponentialBackoffRetryMaxSleepTimeMS() {
+        return getConf().getInt(ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_KEY, DEFAULT_ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_VALUE);
     }
 
     public static int getRESTfulServerPort() {
