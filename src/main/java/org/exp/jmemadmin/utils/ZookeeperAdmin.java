@@ -44,6 +44,15 @@ public class ZookeeperAdmin {
 		}
 	}
 	
+	public static void createZkNode(String nodeName, byte[] infos) throws Exception {
+		boolean existence = checkExists(nodeName);
+		if(existence) {
+			LOG.info("********The node of [" + nodeName + "] has already existed********");
+		}else {
+			curator.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(Constants.ZK_NODE_ROOT + Constants.PATH_DELIMITER + nodeName, infos);
+		}
+	}
+	
 	public static Object getZkNodeInfos(String nodeName) throws Exception {
 		return curator.getData().forPath(Constants.ZK_NODE_ROOT  + Constants.PATH_DELIMITER + nodeName);//获取节点数据信息
 	}
