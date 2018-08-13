@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.utils;
+package org.exp.jmemadmin.memcached;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.util.Map;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.Context;
 import org.exp.jmemadmin.entity.KeysBean;
+import org.exp.jmemadmin.utils.HostCmdAdmin;
 import org.exp.jmemadmin.zookeeper.NodeRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
