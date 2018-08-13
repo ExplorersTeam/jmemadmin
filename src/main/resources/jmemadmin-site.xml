@@ -9,10 +9,6 @@
 		<value>/memcached</value>
 	</property>
 	<property>
-		<name>jmemadmin.zookeeper.znode.instance.prefix</name>
-		<value>mc</value>
-	</property>
-	<property>
 		<name>jmemadmin.zookeeper.connection.timeout.ms</name>
 		<value>30000</value>
 	</property>
@@ -41,6 +37,14 @@
 	<property>
 		<name>jmemadmin.monitor.mc.status.interval.ms</name>
 		<value>10000</value>
+	</property>
+	<property>
+		<name>jmemadmin.mc.instance.prefix</name>
+		<value>mc</value>
+	</property>
+	<property>
+		<name>jmemadmin.mc.instance.pid.dir</name>
+		<value>/tmp/</value>
 	</property>
 
 	<!-- RESTful Service Configuration Items -->

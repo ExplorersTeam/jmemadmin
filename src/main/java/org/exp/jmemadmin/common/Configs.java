@@ -22,9 +22,6 @@ public class Configs {
     private static final String ZNODE_ROOT_KEY = "jmemadmin.zookeeper.znode.root";
     private static final String DEFAULT_ZNODE_ROOT_VALUE = "/memcached";
 
-    private static final String ZNODE_INS_PREFIX_KEY = "jmemadmin.zookeeper.znode.instance.prefix";
-    private static final String DEFAULT_ZNODE_INS_PREFIX_VALUE = "mc";
-
     private static final String ZK_CONN_TIMEOUT_MS_KEY = "jmemadmin.zookeeper.connection.timeout.ms";
     private static final int DEFAULT_ZK_CONN_TIMEOUT_MS_VALUE = 30000;
 
@@ -49,6 +46,12 @@ public class Configs {
     /*
      * Monitor service configurations.
      */
+    private static final String MC_INS_PREFIX_KEY = "jmemadmin.mc.instance.prefix";
+    private static final String DEFAULT_MC_INS_PREFIX_VALUE = "mc";
+
+    private static final String MC_INS_PID_DIR_KEY = "jmemadmin.mc.instance.pid.dir";
+    private static final String DEFAULT_MC_INS_PID_DIR_VALUE = "/tmp/";
+
     private static final String MC_HISTORY_LIFETIME_KEY = "jmemadmin.mc.history.lifetime";
     private static final int DEFAULT_MC_HISTORY_LIFETIME_VALUE = 5;
 
@@ -77,8 +80,12 @@ public class Configs {
         return getConf().getTrimmed(ZNODE_ROOT_KEY, DEFAULT_ZNODE_ROOT_VALUE);
     }
 
-    public static String getZNodeInsPrefix() {
-        return getConf().getTrimmed(ZNODE_INS_PREFIX_KEY, DEFAULT_ZNODE_INS_PREFIX_VALUE);
+    public static String getInsPrefix() {
+        return getConf().getTrimmed(MC_INS_PREFIX_KEY, DEFAULT_MC_INS_PREFIX_VALUE);
+    }
+
+    public static String getInsPIDDir() {
+        return getConf().getTrimmed(MC_INS_PID_DIR_KEY, DEFAULT_MC_INS_PID_DIR_VALUE);
     }
 
     public static int getZKConnectionTimeoutMS() {
