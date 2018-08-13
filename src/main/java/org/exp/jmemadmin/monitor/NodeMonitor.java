@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.zookeeper;
+package org.exp.jmemadmin.monitor;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

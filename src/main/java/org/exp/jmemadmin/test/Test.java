@@ -12,14 +12,14 @@ import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.data.Stat;
 import org.exp.jmemadmin.common.Constants;
-import org.exp.jmemadmin.memcached.MemCachedAdmin;
+import org.exp.jmemadmin.instance.MemCachedAdmin;
+import org.exp.jmemadmin.monitor.NodeMonitor;
+import org.exp.jmemadmin.monitor.NodeRegister;
 import org.exp.jmemadmin.utils.FileMonitor;
 import org.exp.jmemadmin.utils.HostCmdAdmin;
 import org.exp.jmemadmin.utils.ObjectAndByte;
 import org.exp.jmemadmin.utils.PortsCheck;
 import org.exp.jmemadmin.utils.ZookeeperAdmin;
-import org.exp.jmemadmin.zookeeper.NodeMonitor;
-import org.exp.jmemadmin.zookeeper.NodeRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

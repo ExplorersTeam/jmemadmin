@@ -19,6 +19,12 @@ public class Configs {
     private static final String ZK_QUORUM_KEY = "jmemadmin.zookeeper.quorum";
     private static final String DEFAULT_INET_ADDR_VALUE = "127.0.0.1";
 
+    private static final String ZNODE_ROOT_KEY = "jmemadmin.zookeeper.znode.root";
+    private static final String DEFAULT_ZNODE_ROOT_VALUE = "/memcached";
+
+    private static final String ZNODE_INS_PREFIX_KEY = "jmemadmin.zookeeper.znode.instance.prefix";
+    private static final String DEFAULT_ZNODE_INS_PREFIX_VALUE = "mc";
+
     private static final String ZK_CONN_TIMEOUT_MS_KEY = "jmemadmin.zookeeper.connection.timeout.ms";
     private static final int DEFAULT_ZK_CONN_TIMEOUT_MS_VALUE = 30000;
 
@@ -65,6 +71,14 @@ public class Configs {
 
     public static String getZKQuorum() {
         return getConf().getTrimmed(ZK_QUORUM_KEY, DEFAULT_INET_ADDR_VALUE);
+    }
+
+    public static String getZNodeRoot() {
+        return getConf().getTrimmed(ZNODE_ROOT_KEY, DEFAULT_ZNODE_ROOT_VALUE);
+    }
+
+    public static String getZNodeInsPrefix() {
+        return getConf().getTrimmed(ZNODE_INS_PREFIX_KEY, DEFAULT_ZNODE_INS_PREFIX_VALUE);
     }
 
     public static int getZKConnectionTimeoutMS() {

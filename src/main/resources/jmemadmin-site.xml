@@ -5,6 +5,14 @@
 		<value>dfs1a1.ecld.com:2181,dfs1m1.ecld.com:2181,dfs1m2.ecld.com:2181</value>
 	</property>
 	<property>
+		<name>jmemadmin.zookeeper.znode.root</name>
+		<value>/memcached</value>
+	</property>
+	<property>
+		<name>jmemadmin.zookeeper.znode.instance.prefix</name>
+		<value>mc</value>
+	</property>
+	<property>
 		<name>jmemadmin.zookeeper.connection.timeout.ms</name>
 		<value>30000</value>
 	</property>

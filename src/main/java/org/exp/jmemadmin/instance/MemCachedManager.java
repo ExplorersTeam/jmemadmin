@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.memcached;
+package org.exp.jmemadmin.instance;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

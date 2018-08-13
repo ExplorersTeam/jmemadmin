@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.zookeeper;
+package org.exp.jmemadmin.monitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
