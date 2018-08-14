@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
@@ -32,7 +34,8 @@ public class MemCachedManager {
     private static final AtomicInteger ID = new AtomicInteger(-1);
     private static MemCachedClient activeClient = null;
     private static Map<String, MemCachedClient> historyClients = new ConcurrentHashMap<>();
-
+    private static SockIOPool activePool = null;
+    private static Map<String, SockIOPool> historyPools = new ConcurrentHashMap<>();
     private static List<String> serversList = new ArrayList<>();
     
     
@@ -93,11 +96,22 @@ public class MemCachedManager {
 				HostCmdAdmin.executeLocalCmd(removePidCmd, null);
 				
 				// start.sh
-		        if (null == activeClient) {
+		        if (null == activePool) {
 		        	initActiveMemcached((String[])serversList.toArray());
 		        	
 		        } else {
-		            historyClients.put(Configs.getPoolMemnamePrefix() + ID.get(), activeClient);
+		        	String key = Configs.getPoolMemnamePrefix() + ID.get();
+		            historyPools.put(key, activePool);
+		            Timer timer = new Timer();
+		            TimerTask task = new TimerTask() {//创建一个新的计时器任务
+						@Override
+						public void run() {
+							historyPools.remove(key);
+							System.out.println(historyPools);
+						}
+					};
+					timer.schedule(task, 100000);//在指定延迟后执行指定的任务。task : 所要安排的任务。10000 : 执行任务前的延迟时间，单位是毫秒。
+					
 		            initActiveMemcached((String[])serversList.toArray());
 		        }
 		        
@@ -115,10 +129,11 @@ public class MemCachedManager {
     
     private static void initActiveMemcached(String[] servers) {
         String activeMemName = Configs.getPoolMemnamePrefix() + ID.incrementAndGet();
-        SockIOPool activePool = SockIOPool.getInstance(activeMemName);
+        activePool = SockIOPool.getInstance(activeMemName);
         activeClient = initSocketIOPool(activePool, activeMemName, servers);
     }
 
+    
     public static Object get(String key) {
         return activeClient.get(key);
     }

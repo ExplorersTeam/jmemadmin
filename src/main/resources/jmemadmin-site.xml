@@ -123,4 +123,8 @@
 		<name>jmemadmin.sockiopool.memname.prefix</name>
 		<value>mem</value>
 	</property>
+	<property>
+		<name>jmemadmin.sockiopool.garbage.collection.interval.ms</name>
+		<value>1000000</value>
+	</property>
 </configuration>

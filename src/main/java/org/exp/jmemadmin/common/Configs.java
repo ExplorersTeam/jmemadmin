@@ -115,6 +115,9 @@ public class Configs {
     private static final String SOCKIOPOOL_MEMNAME_PREFIX_KEY = "jmemadmin.sockiopool.memname.prefix";
     private static final String DEFAULT_SOCKIOPOOL_MEMNAME_PREFIX_VALUE = "mem";
     
+    private static final String SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_KEY = "jmemadmin.sockiopool.garbage.collection.interval.ms";
+    private static final int DEFAULT_SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_VALUE = 1000000;
+    
     
     private static final Configuration CONF = new Configuration();
 
@@ -240,5 +243,9 @@ public class Configs {
     
     public static String getPoolMemnamePrefix() {
         return getConf().getTrimmed(SOCKIOPOOL_MEMNAME_PREFIX_KEY, DEFAULT_SOCKIOPOOL_MEMNAME_PREFIX_VALUE);
+    }
+    
+    public static int getPoolGCIntervalMs() {
+        return getConf().getInt(SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_KEY, DEFAULT_SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_VALUE);
     }
 }

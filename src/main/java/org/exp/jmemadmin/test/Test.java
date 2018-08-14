@@ -4,13 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.data.Stat;
+import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.instance.MemCachedAdmin;
 import org.exp.jmemadmin.instance.MemCachedManager;
@@ -76,6 +81,23 @@ public class Test {
 		String server = "10.142.90.152:8718";
 		String host = server.substring(0, server.indexOf(":"));
 		String port = server.substring(server.indexOf(":")+1);
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("key1", "value1");
+		map.put("key2", "value2");
+		map.put("key3", "value3");
+		map.put("key4", "value4");
+		System.out.println(map);
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {//创建一个新的计时器任务
+			
+			@Override
+			public void run() {
+				map.remove("key1");
+				System.out.println(map);
+			}
+		};
+		timer.schedule(task, 10000);//ms
 
 	}
 }
