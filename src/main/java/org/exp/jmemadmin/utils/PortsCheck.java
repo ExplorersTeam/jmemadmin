@@ -49,7 +49,7 @@ public class PortsCheck {
         return false;
     }
     /**
-	 * 
+	 * check port's using state.
 	 * @param host. it can be IP or domainName
 	 * @param port
 	 * @return
@@ -67,34 +67,7 @@ public class PortsCheck {
         return flag;  
     }  
 
-	/**
-	 * @param ip 
-	 * @param port
-	 * @return
-	 * @throws InterruptedException
-	 */
-	//TODO:此函数备用，待回收删除
-	@SuppressWarnings("static-access")
-	public static boolean checkPortByNc(String ip, int port) throws InterruptedException{
-		HostCmdAdmin hostCmdAdmin = new HostCmdAdmin();
-		Process process;
-		try {
-			process = Runtime.getRuntime().exec("nc " + ip + " " + port);
-			hostCmdAdmin.processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_CHART);
-		}catch (IOException e) {
-			e.printStackTrace();
-			return true;
-		}
-		Thread.sleep(1000);//默认延时1s
-		try {
-			process.exitValue();
-			return false;
-		}catch (Exception e) {
-			e.printStackTrace();
-			return true;
-		}
-	}
-
+	
 	/**
 	 * 验证此行是否为指定的端口，因为 findstr或grep等命令会是把包含的找出来，例如查找80端口，但是会把8099查找出来
 	 * @param str
@@ -181,6 +154,12 @@ public class PortsCheck {
         return data;
     }
 	
+	/**
+	 * get Pid information by memcached port.
+	 * @param port
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public List<String> getPidInfos(String port) throws InterruptedException {
 		List<String> pidInfos = new ArrayList<String>();
 		String[] command = {"/bin/sh","-c", "ps -ax|grep memcached|grep -v grep | grep " + port};
@@ -211,7 +190,11 @@ public class PortsCheck {
 		return pidInfos;
 	}   
 	
-	
+	/**
+	 * get PID by analysis Pid information.
+	 * @param pidInfos
+	 * @return
+	 */
 	//TODO:根据进程ID查询命令返回的内容格式具体调节解析方法。
 	public Set<Integer> getPids(List<String> pidInfos){
 		Set<Integer> pids = new HashSet<Integer>();

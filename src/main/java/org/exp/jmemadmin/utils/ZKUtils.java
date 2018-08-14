@@ -11,6 +11,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.Constants;
 
 /**
  * 
@@ -26,10 +27,10 @@ public class ZKUtils {
         Builder builder = CuratorFrameworkFactory.builder();
         builder.connectString(Configs.getZKQuorum());
         builder.connectionTimeoutMs(Configs.getZKConnectionTimeoutMS());
-        builder.sessionTimeoutMs(Configs.getZKSessionTimeoutMS());
+        builder.sessionTimeoutMs(Configs.getZKSessionTimeoutMS());//session超时时间 ms
         builder.retryPolicy(new ExponentialBackoffRetry(Configs.getZKExponentialBackoffRetryBaseSleepTimeMS(), Configs.getZKMaxRetries(),
-                Configs.getZKExponentialBackoffRetryMaxSleepTimeMS()));
-        curator = builder.build();
+                Configs.getZKExponentialBackoffRetryMaxSleepTimeMS()));//重试策略
+        curator = builder.build();//通过工厂创建连接
         curator.start();
         LOG.info("Curator initialized, state is [" + curator.getState().name() + "].");
     }
@@ -38,6 +39,19 @@ public class ZKUtils {
         // Do nothing.
     }
 
+    
+	public static boolean checkExists(String path) throws Exception {
+		Stat stat = curator.checkExists().forPath(path);//判断指定路径是否存在
+		boolean existence = false;
+		if(null == stat) {
+			LOG.info("********The path of [" + path + "] isn't existed********");
+		}else {
+			existence = true;
+			LOG.info("********The path of [" + path + "] is existed********");
+		}
+		return existence;
+	}
+	
     /**
      * Create ZNode with path.
      * 
@@ -52,9 +66,10 @@ public class ZKUtils {
 
     /**
      * Create ZNode with path and data.
-     * 
+     * 创建节点，creatingParentsIfNeeded()方法的意思是如果父节点不存在，则在创建节点的同时创建父节点；
+     * withMode()方法指定创建的节点类型，跟原生的Zookeeper API一样，不设置默认为PERSISTENT类型。
      * @param path
-     * @param data
+     * @param data  内容信息
      * @return
      * @throws Exception
      */
@@ -120,7 +135,7 @@ public class ZKUtils {
      */
     public static void delete(String path) throws Exception {
         LOG.info("Delete ZNode, path is [" + path + "].");
-        curator.delete().deletingChildrenIfNeeded().forPath(path);
+        curator.delete().guaranteed().deletingChildrenIfNeeded().forPath(path);
     }
 
 }

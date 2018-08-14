@@ -1,5 +1,9 @@
 package org.exp.jmemadmin.entity;
-
+/**
+ * stats统计系统信息
+ * @author 
+ *
+ */
 public class SystemStatus {
 
 	private String server;

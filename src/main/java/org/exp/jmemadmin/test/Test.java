@@ -19,7 +19,6 @@ import org.exp.jmemadmin.utils.FileMonitor;
 import org.exp.jmemadmin.utils.HostCmdAdmin;
 import org.exp.jmemadmin.utils.ObjectAndByte;
 import org.exp.jmemadmin.utils.PortsCheck;
-import org.exp.jmemadmin.utils.ZookeeperAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,19 +73,7 @@ public class Test {
 //		NodeMonitor nodeMonitor = new NodeMonitor();
 //		nodeMonitor.connectZookeeper();
 //		Thread.sleep(Long.MAX_VALUE);
-		ZookeeperAdmin.init();
-		List<String> nodes = ZookeeperAdmin.getAllZkNodes();
-		LOG.info("all nodes are :" + nodes.toString());
-		ZookeeperAdmin.checkExists("instance0000000013");
-		ZookeeperAdmin.deleteZkNode("instance0000000013");
-		ZookeeperAdmin.checkExists("instance0000000013");
-		Object value = "nodeId = 12301";
-		ZookeeperAdmin.createZkNode("10.142.90.152:12301", value);
-		Object object = ZookeeperAdmin.getZkNodeInfos("10.142.90.152:12301");
-		LOG.info("node info is " + ObjectAndByte.toByteArray(object).toString());
-		ZookeeperAdmin.updateZkNodeInfos("10.142.90.152:12301", "nodeId = 12302");
-		object = ZookeeperAdmin.getZkNodeInfos("10.142.90.152:12301");
-		LOG.info("changed node info is " + ObjectAndByte.toByteArray(object).toString());
-		ZookeeperAdmin.close();
+		
+		
 	}
 }

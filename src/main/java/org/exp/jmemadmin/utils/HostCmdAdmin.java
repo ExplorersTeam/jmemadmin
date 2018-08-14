@@ -1,7 +1,6 @@
 package org.exp.jmemadmin.utils;
 
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
-import ch.ethz.ssh2.StreamGobbler;
 
 public class HostCmdAdmin {
 	private static final Logger LOG = LoggerFactory.getLogger(HostCmdAdmin.class);
@@ -62,81 +60,47 @@ public class HostCmdAdmin {
 	public String executeLocalCmd(String cmd){
 		String[] command = {"/bin/sh","-c", cmd};
 		String result = "";
+		Process process = null;
 		try {
 			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(command);
+			process = runtime.exec(command);
 			//process.waitFor(); // 方法阻塞, 等待命令执行完成（成功会返回0）
 			result = processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_CHART);
 		}catch (IOException e) {
 			e.printStackTrace();
+		}finally{
+			// 销毁子进程
+			if (process != null) {
+	            process.destroy();
+	        }
 		}
+        
 		return result;
 	}
 	
-	//	public String executeLocalCmd(String cmd) {
-	//		String[] command = {"/bin/sh","-c", cmd};
-	//		Runtime runtime = Runtime.getRuntime();
-	//		StringBuffer result = new StringBuffer();
-	//		try {
-	//			Process process = runtime.exec(command);
-	//			InputStream inputStream = process.getInputStream();
-	//			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));			
-	//			String tmp = null;
-	//			while((tmp = bufferedReader.readLine()) != null) {
-	//				result.append(tmp);
-	//			}
-	//			LOG.info("job result [" + result.toString() + "]");
-	//			inputStream.close();
-	//			//process.waitFor();
-	//			process.destroy();
-	//		}catch (IOException e) {
-	//			e.printStackTrace();
-	//		}
-	//		return result.toString();
-	//	}
-		
-		/**
-	     * 执行系统命令, 返回执行结果
-	     *
-	     * @param cmd 需要执行的命令
-	     * @param dir 执行命令的子进程的工作目录, null 表示和当前主进程工作目录相同
-	     */
-	    public String executeLocalCmd(String cmd, File dir) throws Exception {
-	    	String[] command = {"/bin/sh","-c", cmd};
-	        StringBuilder result = new StringBuilder();
-	        Process process = null;
-	        BufferedReader bufrIn = null;
-	        BufferedReader bufrError = null;
-	
-	        try {
-	            process = Runtime.getRuntime().exec(command, null, dir);// 执行命令, 返回一个子进程对象（命令在子进程中执行）
-	            //process.waitFor();// 方法阻塞, 等待命令执行完成（成功会返回0）
-	
-	            // 获取命令执行结果, 有两个结果: 正常的输出 和 错误的输出（PS: 子进程的输出就是主进程的输入）
-	            bufrIn = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-	            bufrError = new BufferedReader(new InputStreamReader(process.getErrorStream(), "UTF-8"));
-	            // 读取输出
-	            String line = null;
-	            while ((line = bufrIn.readLine()) != null) {
-	                result.append(line).append('\n');
-	            }
-	            while ((line = bufrError.readLine()) != null) {
-	                result.append(line).append('\n');
-	            }
-//	            LOG.info("********** result **********");
-//	            LOG.info(result.toString());
-	            System.out.println("********** result **********");
-	            System.out.println(result.toString());
-	        } finally {
-	        	bufrIn.close();
-	        	bufrError.close();
-	            // 销毁子进程
-	            if (process != null) {
-	                process.destroy();
-	            }
-	        }
-	        return result.toString();
-	    }
+	/**
+     * 执行系统命令, 返回执行结果
+     *
+     * @param cmd 需要执行的命令
+     * @param dir 执行命令的子进程的工作目录, null 表示和当前主进程工作目录相同
+     */
+    public String executeLocalCmd(String cmd, File dir) throws Exception {
+    	String[] command = {"/bin/sh","-c", cmd};
+    	String result = "";
+        Process process = null;
+        try {
+            process = Runtime.getRuntime().exec(command, null, dir);// 执行命令, 返回一个子进程对象（命令在子进程中执行）
+            //process.waitFor();// 方法阻塞, 等待命令执行完成（成功会返回0）
+            result = processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_CHART);
+            
+        } finally {
+            // 销毁子进程
+            if (process != null) {
+                process.destroy();
+            }
+        }
+        return result.toString();
+    }
 	    
 
 	public String executeRemoteCmd(String cmd) {
@@ -173,6 +137,7 @@ public class HostCmdAdmin {
         BufferedReader bufrIn = null;
         BufferedReader bufrError = null;
         try {
+        	// 获取命令执行结果, 有两个结果: 正常的输出 和 错误的输出（PS: 子进程的输出就是主进程的输入）
         	bufrIn = new BufferedReader(new InputStreamReader(in, charset));
             bufrError = new BufferedReader(new InputStreamReader(error, charset));
             // 读取输出
