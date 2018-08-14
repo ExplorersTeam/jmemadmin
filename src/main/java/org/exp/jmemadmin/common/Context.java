@@ -19,14 +19,13 @@ public class Context {
 		pool.setInitConn(10);		// 初始化时对每个服务器建立的连接数目 
 		pool.setMinConn(5);			// 每个服务器建立最小的连接数  
 		pool.setMaxConn(250);		// 每个服务器建立最大的连接数  
-		pool.setMaintSleep(30);		// 自查线程周期进行工作，其每次休眠时间  
+		pool.setMaintSleep(30);		// 自查线程周期进行工作，其每次休眠时间   设置主线程睡眠时间，每30秒苏醒一次，维持连接池大小  
 		pool.setNagle(false);		// Socket的参数，如果是true，在写数据时不缓冲，立即发送出去。Tcp的规则是在发送一个包之前，包的发送方会等待远程接收方确认已收到上一次发送过来的包；这个方法就可以关闭套接字的缓存——包准备立即发出。  
 		pool.setSocketTO(3000);		// Socket阻塞读取数据的超时时间  
 		pool.setAliveCheck(true);	// 设置是否检查memcached服务器是否失效 
 		
 		pool.setMaxIdle(1000*30*30);// 设置最大处理时间  
 		pool.setSocketConnectTO(0);	// 连接建立时对超时的控制  
-		pool.setMaintSleep(30);		// 设置主线程睡眠时间，每30秒苏醒一次，维持连接池大小  
 	        
 		pool.initialize();			//初始化连接池
 		LOG.info("****************初始化连接池成功*******************");
@@ -34,6 +33,8 @@ public class Context {
 			memCachedClient = new MemCachedClient();
 		}
 	}
+	
+	
 	
 	private Context() {
         // Do nothing.

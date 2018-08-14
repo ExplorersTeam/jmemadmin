@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.Context;
 import org.exp.jmemadmin.entity.KeysBean;
@@ -26,35 +27,16 @@ import com.whalin.MemCached.SockIOPool;
 public class MemCachedAdmin {
 	private static final Logger LOG = LoggerFactory.getLogger(MemCachedAdmin.class);
 
-	public MemCachedClient memCachedClient = Context.getMemcachedClient();
-	public  MemCachedAdmin() {
-		//Do nothing
+	//TODO:测试直接用获取静态实例后的一个静态变量，当pool启停时会不会还是用的原来pool中的实例。
+	//private static MemCachedClient memCachedClient = MemCachedManager.getActiveClient();
+	
+	private MemCachedAdmin() {
+		//DO nothing
 	}
-
-	public void startMemcached(int memorySize, String ip, int port){
-		HostCmdAdmin hostCmdAdmin = new HostCmdAdmin(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
-		/*************启动master memcached*************/
-		StringBuffer cmdMaster = new StringBuffer();
-		cmdMaster.append(Constants.CREATE_SINGLE_MC_INSTANCE)//TODO:根据实际情况去修改命令前缀
-		.append(" -m ").append(memorySize)
-		.append(" -l ").append(ip)
-		.append(" -p ").append(port);
-		LOG.info("got cmdMaster job: " + cmdMaster.toString());
-		hostCmdAdmin.executeLocalCmd(cmdMaster.toString());
-		
-		/*************启动slave memcached*************/
-		StringBuffer cmdSlave = new StringBuffer();
-		cmdSlave.append(Constants.CREATE_SLAVE_MC_INSTANCE)//TODO:根据实际情况去修改命令前缀
-		.append(" -m ").append(memorySize)
-		.append(" -l ").append(Constants.SLAVE_IP)
-		.append(" -p ").append(port);
-		LOG.info("got cmdSlave job: " + cmdSlave.toString());
-		hostCmdAdmin.executeRemoteCmd(cmdSlave.toString());
-	}
-
-	public boolean add(String key, Object value) {
+	
+	public static boolean add(String key, Object value) {
 		boolean flag = false;
-		flag = memCachedClient.add(key, value);
+		flag = MemCachedManager.getActiveClient().add(key, value);
 		if(flag == false) {
 			LOG.info(key + "is already existed!");
 		}else {
@@ -63,18 +45,13 @@ public class MemCachedAdmin {
 		return flag;
 	}
 
-	//TODO:方法待测试
-	public boolean add(String key, Object value, Date exptime) {
-		return memCachedClient.add(key, value, exptime);
-	}
-
-	public boolean keyExists(String key) {
-		return memCachedClient.keyExists(key);
+	public static boolean keyExists(String key) {
+		return MemCachedManager.getActiveClient().keyExists(key);
 	}
 	
-	public boolean set(String key, Object value) {
+	public static boolean set(String key, Object value) {
 		boolean flag = false;
-		flag = memCachedClient.set(key, value);
+		flag = MemCachedManager.getActiveClient().set(key, value);
 		if(flag == false) {
 			LOG.info("*******set [" + key + "] fail!*******");
 		}else {
@@ -82,43 +59,49 @@ public class MemCachedAdmin {
 		}
 		return flag;
 	}
-	//TODO:方法待测试
-	public boolean set(String key, Object value, Date expiry) {
-		boolean flag = false;
-		flag = memCachedClient.set(key, value, expiry);
-		if(flag == false) {
-			LOG.info("*******set [" + key + "] fail!*******");
-		}else {
-			LOG.info("*******set [" + key + "] success!*******");
-		}
-		return flag;
+	
+//	//TODO:方法待测试
+//	public static boolean add(String key, Object value, Date exptime) {
+//		return MemCachedManager.getActiveClient().add(key, value, exptime);
+//	}
+//		
+//	//TODO:方法待测试
+//	public static boolean set(String key, Object value, Date expiry) {
+//		boolean flag = false;
+//		flag = MemCachedManager.getActiveClient().set(key, value, expiry);
+//		if(flag == false) {
+//			LOG.info("*******set [" + key + "] fail!*******");
+//		}else {
+//			LOG.info("*******set [" + key + "] success!*******");
+//		}
+//		return flag;
+//	}
+
+	public static Object get(String key) {
+		return MemCachedManager.getActiveClient().get(key);
 	}
 
-	public Object get(String key) {
-		return memCachedClient.get(key);
-	}
-
-	public boolean delete(String key) {
-		return memCachedClient.delete(key);
+	public static boolean delete(String key) {
+		return MemCachedManager.getActiveClient().delete(key);
 	}
 	
-	public boolean flushAll() {
-		return memCachedClient.flushAll();
+	public static boolean flushAll() {
+		return MemCachedManager.getActiveClient().flushAll();
 	}
 	
-	public boolean flushAll(String[] servers) {
-		return memCachedClient.flushAll(servers);
+	public static boolean flushAll(String[] servers) {
+		return MemCachedManager.getActiveClient().flushAll(servers);
 	}
 	
-	public Map<String, Map<String, String>> stats() {
-		Map<String, Map<String, String>> serversStatus = memCachedClient.stats();
+	public static Map<String, Map<String, String>> stats() {
+		Map<String, Map<String, String>> serversStatus = MemCachedManager.getActiveClient().stats();
 		LOG.info("***********************ServersStatus************************");
 		LOG.info(serversStatus.values().toString());
 		return serversStatus;
 	}
 	
-	public Map<String, Map<String, String>> stats(String[] servers){
-		Map<String, Map<String, String>> serversStatus = memCachedClient.stats(servers);
+	public static Map<String, Map<String, String>> stats(String[] servers){
+		Map<String, Map<String, String>> serversStatus = MemCachedManager.getActiveClient().stats(servers);
 		LOG.info("***********************ServersStatus************************");
 		LOG.info(serversStatus.values().toString());
 		return serversStatus;
@@ -133,10 +116,10 @@ public class MemCachedAdmin {
 	 * @throws UnsupportedEncodingException 
 	 * @throws NumberFormatException 
 	 */
-	public Map<String, KeysBean> listKeys() throws NumberFormatException, UnsupportedEncodingException{
+	public static Map<String, KeysBean> listKeys() throws NumberFormatException, UnsupportedEncodingException{
 		Map<String, KeysBean> keylist = new HashMap<String, KeysBean>();
 		//遍历statsItems  STAT items:32:number 2446 
-		Map<String, Map<String, String>> statsItems = memCachedClient.statsItems();
+		Map<String, Map<String, String>> statsItems = MemCachedManager.getActiveClient().statsItems();
 		Map<String, String> statsItems_sub = null;
 		
 		String statsItems_sub_key=null;  
@@ -157,7 +140,7 @@ public class MemCachedAdmin {
         		if(statsItems_sub_key.toUpperCase().startsWith("items:".toUpperCase()) && statsItems_sub_key.toUpperCase().endsWith(":number".toUpperCase())){
 					items_number=Integer.parseInt(statsItems_sub.get(statsItems_sub_key).trim());
 					//LOG.info(statsItems_sub_key+":=:"+items_number);
-					statsCacheDump=memCachedClient.statsCacheDump(new String[]{keyName},Integer.parseInt(statsItems_sub_key.split(":")[1].trim()), items_number);				
+					statsCacheDump=MemCachedManager.getActiveClient().statsCacheDump(new String[]{keyName},Integer.parseInt(statsItems_sub_key.split(":")[1].trim()), items_number);				
 					for(Iterator<String> statsCacheDump_iterator=statsCacheDump.keySet().iterator(); statsCacheDump_iterator.hasNext(); ) {
 						statsCacheDump_sub=statsCacheDump.get(statsCacheDump_iterator.next());
 						LOG.info(statsCacheDump_sub.toString());
@@ -182,15 +165,47 @@ public class MemCachedAdmin {
         return keylist;
 	}
 	
+	public static String composeNodePath(String host, int port) {
+    	StringBuffer nodePath = new StringBuffer();
+        nodePath.append(Configs.getZNodeRoot()).append(Constants.PATH_DELIMITER)
+        .append(host).append(Constants.PATH_DELIMITER)
+        .append(port);
+    	return nodePath.toString();
+    }
+	
+	public static String composeStartupCmd(String host, int port, int memorySize) {
+    	// xx/memcached -d -u root -l 10.142.90.152 -p 12301 -m 200 -c 1000 -P /tmp/memcached12301.pid
+    	StringBuffer cmd = new StringBuffer();
+    	cmd.append(Configs.getMCStartupShellPath()).append(" -l ").append(host)
+    	.append(" -p ").append(port).append(" -m ").append(memorySize).append(Constants.COMMAND_DELIMITER)
+    	.append(" -P ").append(Configs.getInsPIDDir()).append(Constants.PATH_DELIMITER).append(Configs.getInsPrefix()).append(port).append(Configs.getInsSuffix())
+    	.append(Configs.getMCStartupConfigurableParams());
+    	return cmd.toString();
+    }
+	
+	public static String composeReadPidFileCmd(int port) {
+		StringBuffer cmd = new StringBuffer();
+		cmd.append("cat ").append(Configs.getInsPIDDir()).append(Configs.getInsPrefix())
+		.append(port).append(Configs.getInsSuffix());
+		return cmd.toString();
+	}
+	
+	public static String composeRemovePidFileCmd(int port) {
+		StringBuffer cmd = new StringBuffer();
+		cmd.append("rm ").append(Configs.getInsPIDDir()).append(Configs.getInsPrefix())
+		.append(port).append(Configs.getInsSuffix());
+		return cmd.toString();
+	}
+	
 	public static void main() {
-		MemCachedAdmin memCachedAdmin = new MemCachedAdmin();
-		memCachedAdmin.flushAll();
+		//TODO:若要在此运行，要先初始化SocketIOPool哦
+		MemCachedAdmin.flushAll();
 		Object value =  "dfafafafaf";
-		memCachedAdmin.add("name13", value);
-		memCachedAdmin.set("name3", value);
-		boolean existence = memCachedAdmin.keyExists("name3");
+		MemCachedAdmin.add("name13", value);
+		MemCachedAdmin.set("name3", value);
+		boolean existence = MemCachedAdmin.keyExists("name3");
 		LOG.info("existence= " + existence);
-		String result = (String)memCachedAdmin.get("name1");
+		String result = (String)MemCachedAdmin.get("name1");
 		LOG.info("get运行结果为：name3 = " + result);
 	}
 }

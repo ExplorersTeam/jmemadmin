@@ -43,13 +43,84 @@
 		<value>mc</value>
 	</property>
 	<property>
+		<name>jmemadmin.mc.instance.suffix</name>
+		<value>.pid</value>
+	</property>
+	<property>
 		<name>jmemadmin.mc.instance.pid.dir</name>
 		<value>/tmp/</value>
 	</property>
+
+
+	<!-- Memcached startup command configurations -->
+	<property>
+		<name>jmemadmin.mc.startup.shell.path</name>
+		<value>/opt/memcached/1.5.9/memcached-1.5.9/memcached</value>
+	</property>
+	<property>
+		<name>jmemadmin.mc.startup.user</name>
+		<value>root</value>
+	</property>
+	<property>
+		<name>jmemadmin.mc.startup.max.simultaneous.connections</name>
+		<value>1024</value>
+	</property>
+	<property>
+		<name>jmemadmin.mc.startup.configurable.parameters</name>
+		<value> -d -u root -c 1000 </value>
+	</property>
+
 
 	<!-- RESTful Service Configuration Items -->
 	<property>
 		<name>jmemadmin.rest.server.port</name>
 		<value>8725</value>
+	</property>
+	
+	<!-- SockIOPool Configuration Items -->
+	<property>
+		<name>jmemadmin.sockiopool.failover</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.init.connections</name>
+		<value>10</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.min.connections</name>
+		<value>5</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.max.connections</name>
+		<value>250</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.maint.sleep</name>
+		<value>30</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.nagle</name>
+		<value>false</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.socket.timeout</name>
+		<value>3000</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.alive.check</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.max.idle</name>
+		<value>1000*30*30</value>
+	</property>
+	<property>
+		<name>jmemadmin.sockiopool.connect.timeout</name>
+		<value>0</value>
+	</property>
+	
+	<property>
+		<name>jmemadmin.sockiopool.memname.prefix</name>
+		<value>mem</value>
 	</property>
 </configuration>

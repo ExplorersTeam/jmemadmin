@@ -52,6 +52,8 @@ public class Constants {
 
     public static final String ZK_NODE_ROOT = "/memcached";
     public static final String PATH_DELIMITER = "/";
+    public static final String HOST_PORT_DELIMITER = ":";
+	public static final String COMMAND_DELIMITER = " ";
     public static String DEFAULT_CHART = "UTF-8";
 
 }

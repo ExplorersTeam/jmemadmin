@@ -11,7 +11,6 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 import org.exp.jmemadmin.common.Configs;
-import org.exp.jmemadmin.common.Constants;
 
 /**
  * 
@@ -33,6 +32,15 @@ public class ZKUtils {
         curator = builder.build();//通过工厂创建连接
         curator.start();
         LOG.info("Curator initialized, state is [" + curator.getState().name() + "].");
+        
+        try {
+			boolean flag = checkExists(Configs.getZNodeRoot());
+			if(!flag) {
+				create(Configs.getZNodeRoot());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     private ZKUtils() {

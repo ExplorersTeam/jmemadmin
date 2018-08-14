@@ -16,28 +16,27 @@ import ch.ethz.ssh2.Session;
 
 public class HostCmdAdmin {
 	private static final Logger LOG = LoggerFactory.getLogger(HostCmdAdmin.class);
-	
 	private static Connection conn;
-	private String ip;
-	private String userName;
-	private String password;
+	private static String ip;
+	private static String userName;
+	private static String password;
+	static {
+		ip = Constants.MASTER_IP;
+		userName = Constants.SLAVE_USERNAME;
+		password = Constants.SLAVE_PASSWORD;
+	}
 	
-	public HostCmdAdmin() {
+	
+	private HostCmdAdmin() {
 		//Do Nothing
 	}
-	
-	public HostCmdAdmin(String ip, String userName, String password) {
-		this.ip = ip;
-		this.userName = userName;
-		this.password = password;
-	}
-	
+
 	/**
 	 * 远程登陆Linux主机
 	 * @return
 	 * 登陆成功返回true，否则返回false
 	 */
-	private boolean login() {
+	private static boolean login() {
 		boolean flag = false;
 		try {
 			conn = new Connection(ip);
@@ -57,7 +56,7 @@ public class HostCmdAdmin {
 	 * @param cmd
 	 * @return
 	 */
-	public String executeLocalCmd(String cmd){
+	public static String executeLocalCmd(String cmd){
 		String[] command = {"/bin/sh","-c", cmd};
 		String result = "";
 		Process process = null;
@@ -84,7 +83,7 @@ public class HostCmdAdmin {
      * @param cmd 需要执行的命令
      * @param dir 执行命令的子进程的工作目录, null 表示和当前主进程工作目录相同
      */
-    public String executeLocalCmd(String cmd, File dir) throws Exception {
+    public static String executeLocalCmd(String cmd, File dir) throws Exception {
     	String[] command = {"/bin/sh","-c", cmd};
     	String result = "";
         Process process = null;
@@ -103,7 +102,7 @@ public class HostCmdAdmin {
     }
 	    
 
-	public String executeRemoteCmd(String cmd) {
+	public static String executeRemoteCmd(String cmd) {
 		String result = "";
 		try {
 			if(login()) {
@@ -169,37 +168,13 @@ public class HostCmdAdmin {
 		HostCmdAdmin.conn = conn;
 	}
 
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+	
 	public static void main(String[] args) throws Exception {
-		HostCmdAdmin hostCmdAdmin = new HostCmdAdmin(Constants.SLAVE_IP, Constants.SLAVE_USERNAME, Constants.SLAVE_PASSWORD);
-		hostCmdAdmin.executeRemoteCmd(Constants.CREATE_SLAVE_MC_INSTANCE_CMD);
-		hostCmdAdmin.executeLocalCmd("ls", null);
-		hostCmdAdmin.executeLocalCmd("java -version");
-		hostCmdAdmin.executeLocalCmd("ps -ax|grep memcached|grep 12301", null);
-		hostCmdAdmin.executeLocalCmd("ps -ax|grep memcached|grep 12301");
-		hostCmdAdmin.executeRemoteCmd("ps -ef|grep memcached|grep 12301|grep -v grep");
+		HostCmdAdmin.executeRemoteCmd(Constants.CREATE_SLAVE_MC_INSTANCE_CMD);
+		HostCmdAdmin.executeLocalCmd("ls", null);
+		HostCmdAdmin.executeLocalCmd("java -version");
+		HostCmdAdmin.executeLocalCmd("ps -ax|grep memcached|grep 12301", null);
+		HostCmdAdmin.executeLocalCmd("ps -ax|grep memcached|grep 12301");
+		HostCmdAdmin.executeRemoteCmd("ps -ef|grep memcached|grep 12301|grep -v grep");
 	}
 }

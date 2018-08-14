@@ -13,6 +13,7 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.data.Stat;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.instance.MemCachedAdmin;
+import org.exp.jmemadmin.instance.MemCachedManager;
 import org.exp.jmemadmin.monitor.NodeMonitor;
 import org.exp.jmemadmin.monitor.NodeRegister;
 import org.exp.jmemadmin.utils.FileMonitor;
@@ -26,7 +27,6 @@ public class Test {
 	private static final Logger LOG = LoggerFactory.getLogger(Test.class);
 	
 	public static void main(String[] args) throws Exception {
-		MemCachedAdmin memCachedAdmin = new MemCachedAdmin();
 
 //		Object value =  "dfafafafaf";
 //		memCachedAdmin.add("name13", value);
@@ -73,7 +73,9 @@ public class Test {
 //		NodeMonitor nodeMonitor = new NodeMonitor();
 //		nodeMonitor.connectZookeeper();
 //		Thread.sleep(Long.MAX_VALUE);
-		
-		
+		String server = "10.142.90.152:8718";
+		String host = server.substring(0, server.indexOf(":"));
+		String port = server.substring(server.indexOf(":")+1);
+
 	}
 }

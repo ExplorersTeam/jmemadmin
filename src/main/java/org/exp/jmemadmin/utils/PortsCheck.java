@@ -52,7 +52,7 @@ public class PortsCheck {
 	 * check port's using state.
 	 * @param host. it can be IP or domainName
 	 * @param port
-	 * @return
+	 * @return using:false   not using:true
 	 * @throws UnknownHostException
 	 */
 	public static boolean checkPortBySocket(String host, int port) throws UnknownHostException {
