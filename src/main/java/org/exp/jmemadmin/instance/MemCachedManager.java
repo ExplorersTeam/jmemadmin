@@ -147,8 +147,6 @@ public class MemCachedManager {
         activeClient = initSocketIOPool(activePool, activeMemName, servers);
     }
 
-    
-    
 
     //XXX:
     static void historyMonitor() {

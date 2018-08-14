@@ -13,7 +13,6 @@ import java.util.Map;
 
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
-import org.exp.jmemadmin.common.Context;
 import org.exp.jmemadmin.entity.KeysBean;
 import org.exp.jmemadmin.monitor.NodeRegister;
 import org.exp.jmemadmin.utils.HostCmdAdmin;
