@@ -21,7 +21,7 @@ public class HostCmdAdmin {
 	private static String userName;
 	private static String password;
 	static {
-		ip = Constants.MASTER_IP;
+		ip = Constants.IP;
 		userName = Constants.SLAVE_USERNAME;
 		password = Constants.SLAVE_PASSWORD;
 	}
@@ -168,9 +168,8 @@ public class HostCmdAdmin {
 		HostCmdAdmin.conn = conn;
 	}
 
-	
+	//TODO:Delete codes below. Just for test.
 	public static void main(String[] args) throws Exception {
-		HostCmdAdmin.executeRemoteCmd(Constants.CREATE_SLAVE_MC_INSTANCE_CMD);
 		HostCmdAdmin.executeLocalCmd("ls", null);
 		HostCmdAdmin.executeLocalCmd("java -version");
 		HostCmdAdmin.executeLocalCmd("ps -ax|grep memcached|grep 12301", null);

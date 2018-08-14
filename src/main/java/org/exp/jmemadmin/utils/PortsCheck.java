@@ -213,14 +213,12 @@ public class PortsCheck {
 		}
 		return pids;
 	}
+	
+	//TODO:Delete codes below. Just for test.
 	public static void main(String[] args) throws UnknownHostException {
 		boolean flag = false;
-		flag = checkPortBySocket(Constants.SINGLE_IP, 12301);
+		flag = checkPortBySocket(Constants.IP, 12301);
 		System.out.println("10.142.90.152的12301端口占用情况：" + flag);
-		flag = false;
-		flag = checkPortBySocket(Constants.SLAVE_DOMAIN_NAME, 12302);
-		System.out.println("10.142.90.154的12302端口占用情况：" + flag);
-		
 	}
 	
 }

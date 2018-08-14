@@ -64,23 +64,6 @@ public class MemCachedManager {
 	}
     
     
-    /*
-     * public static boolean start(String[] servers) throws Exception {
-    	String host = null;
-    	String portStr = null;
-    	int port;
-    	boolean flag = false;
-    	for(String server : servers) {
-    		host = server.substring(0, server.indexOf(Constants.HOST_PORT_DELIMITER));
-    		portStr = server.substring(server.indexOf(Constants.HOST_PORT_DELIMITER) + 1);
-    		port = Integer.valueOf(portStr);
-    		flag = PortsCheck.checkPortBySocket(host, port);
-    		if(flag) {//端口未被占
-    			String cmd = MemCachedAdmin.composeStartupCmd(host, port, memorySize)
-    			HostCmdAdmin.executeLocalCmd("", null);
-    		}
-     */
-    
     public static void start(String host, int port, int memorySize, boolean isMaster) throws Exception {   	   	
     	boolean flag = false;
 		try {
