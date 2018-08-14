@@ -125,7 +125,21 @@ public class MemCachedManager {
 		}
     }
 
-    
+    public static void stop(String host, int port) throws Exception {
+    	serversList.remove(host + ":" + String.valueOf(port));
+    	StringBuffer memNodePath = new StringBuffer();
+    	memNodePath.append(Configs.getZNodeRoot()).append(Constants.PATH_DELIMITER).append(host)
+    	.append(Constants.PATH_DELIMITER).append(port);
+    	byte[] data = ZKUtils.get(memNodePath.toString());
+    	ZKNodeInfo zkNodeInfo = JSONObject.parseObject(data, ZKNodeInfo.class, null);
+    	int pid = zkNodeInfo.getInstancePid();
+    	ZKUtils.delete(memNodePath.toString());//删除节点
+    	String killPidCmd = "kill " + pid;
+    	String grepPidCmd = "ps -ef|grep -v grep|grep " + pid;
+    	do {
+    		HostCmdAdmin.executeLocalCmd(killPidCmd);
+    	}while(!(HostCmdAdmin.executeLocalCmd(grepPidCmd).isEmpty()));
+    }
     
     private static void initActiveMemcached(String[] servers) {
         String activeMemName = Configs.getPoolMemnamePrefix() + ID.incrementAndGet();
@@ -134,10 +148,9 @@ public class MemCachedManager {
     }
 
     
-    public static Object get(String key) {
-        return activeClient.get(key);
-    }
+    
 
+    //XXX:
     static void historyMonitor() {
         historyClients.forEach(new BiConsumer<String, MemCachedClient>() {
             @Override

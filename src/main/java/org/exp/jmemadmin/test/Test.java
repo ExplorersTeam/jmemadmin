@@ -82,22 +82,6 @@ public class Test {
 		String host = server.substring(0, server.indexOf(":"));
 		String port = server.substring(server.indexOf(":")+1);
 		
-		Map<String, String> map = new HashMap<>();
-		map.put("key1", "value1");
-		map.put("key2", "value2");
-		map.put("key3", "value3");
-		map.put("key4", "value4");
-		System.out.println(map);
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {//创建一个新的计时器任务
-			
-			@Override
-			public void run() {
-				map.remove("key1");
-				System.out.println(map);
-			}
-		};
-		timer.schedule(task, 10000);//ms
-
+		
 	}
 }
