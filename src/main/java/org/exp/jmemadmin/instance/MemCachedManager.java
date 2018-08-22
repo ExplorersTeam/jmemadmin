@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.entity.ZKNodeInfo;
-import org.exp.jmemadmin.utils.HostCmdAdmin;
+import org.exp.jmemadmin.utils.HostCmdUtils;
 import org.exp.jmemadmin.utils.ZKUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,15 +59,15 @@ public class MemCachedManager {
     public static void start(String host, int port, int memorySize, boolean isMaster) throws Exception {
         boolean flag = false;
         try {
-            flag = HostCmdAdmin.checkPortBySocket(host, port);
+            flag = HostCmdUtils.checkPortBySocket(host, port);
             if (flag) {// 端口未被占
                 serversList.add(host + ":" + String.valueOf(port));
                 String startupCmd = MemCachedAdmin.composeStartupCmd(host, port, memorySize);
-                HostCmdAdmin.executeLocalCmd(startupCmd, null);
+                HostCmdUtils.executeLocalCmd(startupCmd, null);
                 String readPidCmd = MemCachedAdmin.composeReadPidFileCmd(port);
-                String pid = HostCmdAdmin.executeLocalCmd(readPidCmd, null);
+                String pid = HostCmdUtils.executeLocalCmd(readPidCmd, null);
                 String removePidCmd = MemCachedAdmin.composeRemovePidFileCmd(port);
-                HostCmdAdmin.executeLocalCmd(removePidCmd, null);
+                HostCmdUtils.executeLocalCmd(removePidCmd, null);
                 if (null == activePool) {
                     initActiveMemcached((String[]) serversList.toArray());
                 } else {
@@ -107,8 +107,8 @@ public class MemCachedManager {
         String killPidCmd = "kill " + pid;
         String grepPidCmd = "ps -ef|grep -v grep|grep " + pid;
         do {
-            HostCmdAdmin.executeLocalCmd(killPidCmd);
-        } while (!(HostCmdAdmin.executeLocalCmd(grepPidCmd).isEmpty()));
+            HostCmdUtils.executeLocalCmd(killPidCmd);
+        } while (!(HostCmdUtils.executeLocalCmd(grepPidCmd).isEmpty()));
     }
 
     private static void initActiveMemcached(String[] servers) {

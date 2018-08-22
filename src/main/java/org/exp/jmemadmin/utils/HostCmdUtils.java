@@ -22,8 +22,8 @@ import ch.ethz.ssh2.Session;
  * @author ZhangQingliang
  *
  */
-public class HostCmdAdmin {
-    private static final Logger LOG = LoggerFactory.getLogger(HostCmdAdmin.class);
+public class HostCmdUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(HostCmdUtils.class);
     private static Connection conn;
     private static String ip;
     private static String userName;
@@ -34,7 +34,7 @@ public class HostCmdAdmin {
         password = Constants.SLAVE_PASSWORD;
     }
 
-    private HostCmdAdmin() {
+    private HostCmdUtils() {
         // Do Nothing
     }
 
@@ -214,15 +214,15 @@ public class HostCmdAdmin {
     }
 
     public static void setConn(Connection conn) {
-        HostCmdAdmin.conn = conn;
+        HostCmdUtils.conn = conn;
     }
 
     // TODO:Delete codes below. Just for test.
     public static void main(String[] args) throws Exception {
-        HostCmdAdmin.executeLocalCmd("ls", null);
-        HostCmdAdmin.executeLocalCmd("java -version");
-        HostCmdAdmin.executeLocalCmd("ps -ax|grep memcached|grep 12301", null);
-        HostCmdAdmin.executeLocalCmd("ps -ax|grep memcached|grep 12301");
-        HostCmdAdmin.executeRemoteCmd("ps -ef|grep memcached|grep 12301|grep -v grep");
+        HostCmdUtils.executeLocalCmd("ls", null);
+        HostCmdUtils.executeLocalCmd("java -version");
+        HostCmdUtils.executeLocalCmd("ps -ax|grep memcached|grep 12301", null);
+        HostCmdUtils.executeLocalCmd("ps -ax|grep memcached|grep 12301");
+        HostCmdUtils.executeRemoteCmd("ps -ef|grep memcached|grep 12301|grep -v grep");
     }
 }

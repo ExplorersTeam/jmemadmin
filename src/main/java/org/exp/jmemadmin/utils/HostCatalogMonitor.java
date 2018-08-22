@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
  * @author ZhangQingliang
  *
  */
-public class FileMonitor extends FileAlterationListenerAdaptor {
-    private static final Logger LOG = LoggerFactory.getLogger(FileMonitor.class);
+public class HostCatalogMonitor extends FileAlterationListenerAdaptor {
+    private static final Logger LOG = LoggerFactory.getLogger(HostCatalogMonitor.class);
 
     @Override
     public void onStart(FileAlterationObserver observer) {
@@ -78,7 +78,7 @@ public class FileMonitor extends FileAlterationListenerAdaptor {
     public static void monitor(File filePath, int timeSpanMs) {
         try {
             FileAlterationObserver observer = new FileAlterationObserver(filePath);// 构造观察类主要提供要观察的文件或目录，当然还有详细信息的filter
-            FileMonitor listener = new FileMonitor();// 构造收听类
+            HostCatalogMonitor listener = new HostCatalogMonitor();// 构造收听类
             observer.addListener(listener);// 为观察对象添加收听对象
             // 配置Monitor，第一个参数单位是毫秒，是监听的间隔；第二个参数就是绑定我们之前的观察对象
             FileAlterationMonitor fileAlterationMonitor = new FileAlterationMonitor(timeSpanMs, new FileAlterationObserver[] { observer });
