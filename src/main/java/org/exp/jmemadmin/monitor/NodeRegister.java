@@ -17,7 +17,7 @@ import org.apache.zookeeper.ZooKeeper;
 /**
  * 服务器启动后在zookeeper创建临时目录
  * 服务节点启动后注册到zookeeper
- * @author zhangqingliang
+ * @author ZhangQingliang
  *
  */
 public class NodeRegister extends Thread{

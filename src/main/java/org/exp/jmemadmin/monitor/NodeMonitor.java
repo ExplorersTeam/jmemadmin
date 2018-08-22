@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 节点管理服务监听zookeeper临时目录节点创建/删除事件
  * 客户端监听server节点变化
- * @author 111
+ * @author ZhangQingliang
  *
  */
 public class NodeMonitor {
