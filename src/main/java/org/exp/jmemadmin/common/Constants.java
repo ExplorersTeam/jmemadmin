@@ -28,6 +28,14 @@ public class Constants {
     public static final String COMMAND_DELIMITER = " ";
     public static String DEFAULT_CHART = "UTF-8";
 
+    /**
+     * Rest
+     */
+    public static final String REST_AGENT_PATH = "/memcached/agent";
+    public static final String REST_SERVER_PATH = "/memcached";
+    public static final String PORT = "port";
+    public static final String MEMORY_SIZE = "memorySize";
+    public static final String IS_MASTER = "isMaster";
     /*
      * TODO Delete codes below.
      */

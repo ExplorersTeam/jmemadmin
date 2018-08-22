@@ -55,7 +55,7 @@ public class MemCachedManager {
         return activeName;
     }
 
-    public static void start(String host, int port, int memorySize, boolean isMaster) throws Exception {
+    public static boolean start(String host, int port, int memorySize, boolean isMaster) throws Exception {
         boolean flag = false;
         try {
             flag = HostCmdUtils.checkPortBySocket(host, port);
@@ -91,9 +91,11 @@ public class MemCachedManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return HostCmdUtils.checkPortBySocket(host, port);// 再次通过检测端口来判断是否启动成功
     }
 
-    public static void stop(String host, int port) throws Exception {
+    public static boolean stop(String host, int port) throws Exception {
+        boolean flag = false;
         serversList.remove(host + ":" + String.valueOf(port));
         StringBuffer memNodePath = new StringBuffer();
         memNodePath.append(Configs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
@@ -105,7 +107,8 @@ public class MemCachedManager {
         String grepPidCmd = "ps -ef|grep -v grep|grep " + pid;
         do {
             HostCmdUtils.executeLocalCmd(killPidCmd);
-        } while (!(HostCmdUtils.executeLocalCmd(grepPidCmd).isEmpty()));
+        } while (!(flag = HostCmdUtils.executeLocalCmd(grepPidCmd).isEmpty()));
+        return flag;
     }
 
     private static void initActiveMemcached(String[] servers) {

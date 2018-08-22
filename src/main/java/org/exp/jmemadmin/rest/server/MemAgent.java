@@ -36,7 +36,7 @@ public class MemAgent {
         try {
             this.hostAddress = InetAddress.getLocalHost().getHostAddress();
             ResourceConfig config = new ResourceConfig();
-            config.packages(false, "org.exp.jmemadmin.rest.services");
+            config.packages(false, "org.exp.jmemadmin.rest.services");//false stand for no recursion.
             config.register(MoxyJsonFeature.class);
             config.register(LoggingFeature.class).property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
             this.server = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
