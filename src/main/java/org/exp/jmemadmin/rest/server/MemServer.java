@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MemServer {
-    private static final Logger LOG = LoggerFactory.getLogger(Agent.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MemServer.class);
 
     private String hostAddress = null;
     private int port = Configs.getRESTfulServerPort();
@@ -70,9 +70,9 @@ public class MemServer {
     }
 
     public static void main(String[] args) {
-        MemServer agent = 0 == args.length ? new MemServer() : new MemServer(Integer.parseInt(args[0]));
+        MemServer memServer = 0 == args.length ? new MemServer() : new MemServer(Integer.parseInt(args[0]));
         try {
-            agent.start();
+            memServer.start();
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }

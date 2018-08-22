@@ -16,18 +16,18 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Agent {
-    private static final Logger LOG = LoggerFactory.getLogger(Agent.class);
+public class MemAgent {
+    private static final Logger LOG = LoggerFactory.getLogger(MemAgent.class);
 
     private String hostAddress = null;
     private int port = Configs.getRESTfulAGENTPort();
     private HttpServer server = null;
 
-    public Agent() {
+    public MemAgent() {
         init();
     }
 
-    public Agent(int port) {
+    public MemAgent(int port) {
         this.port = port;
         init();
     }
@@ -70,9 +70,9 @@ public class Agent {
     }
 
     public static void main(String[] args) {
-        Agent agent = 0 == args.length ? new Agent() : new Agent(Integer.parseInt(args[0]));
+        MemAgent memAgent = 0 == args.length ? new MemAgent() : new MemAgent(Integer.parseInt(args[0]));
         try {
-            agent.start();
+            memAgent.start();
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
