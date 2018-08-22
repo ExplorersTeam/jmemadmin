@@ -7,7 +7,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
 
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
@@ -60,13 +59,13 @@ public class MemCachedManager {
         boolean flag = false;
         try {
             flag = HostCmdUtils.checkPortBySocket(host, port);
-            if (flag) {// 端口未被占
+            if (flag) {// 端口未被占时
                 serversList.add(host + ":" + String.valueOf(port));
-                String startupCmd = MemCachedAdmin.composeStartupCmd(host, port, memorySize);
+                String startupCmd = MemCachedUtils.composeStartupCmd(host, port, memorySize);
                 HostCmdUtils.executeLocalCmd(startupCmd, null);
-                String readPidCmd = MemCachedAdmin.composeReadPidFileCmd(port);
+                String readPidCmd = MemCachedUtils.composeReadPidFileCmd(port);
                 String pid = HostCmdUtils.executeLocalCmd(readPidCmd, null);
-                String removePidCmd = MemCachedAdmin.composeRemovePidFileCmd(port);
+                String removePidCmd = MemCachedUtils.composeRemovePidFileCmd(port);
                 HostCmdUtils.executeLocalCmd(removePidCmd, null);
                 if (null == activePool) {
                     initActiveMemcached((String[]) serversList.toArray());
@@ -81,12 +80,10 @@ public class MemCachedManager {
                             System.out.println(historyPools);
                         }
                     };
-                    timer.schedule(task, 100000);// 在指定延迟后执行指定的任务。task :
-                                                 // 所要安排的任务。10000 :
-                                                 // 执行任务前的延迟时间，单位是毫秒。
+                    timer.schedule(task, 100000);// 在指定延迟后执行指定的任务。task是所要安排的任务。10000是执行任务前的延迟时间，单位是毫秒。
                     initActiveMemcached((String[]) serversList.toArray());
                 }
-                String nodePath = MemCachedAdmin.composeNodePath(host, port);
+                String nodePath = MemCachedUtils.composeNodePath(host, port);
                 ZKNodeInfo zkNodeInfo = new ZKNodeInfo(startupCmd, Integer.valueOf(pid), isMaster);
                 byte[] data = JSON.toJSONString(zkNodeInfo).getBytes();
                 ZKUtils.create(nodePath, data);
@@ -99,7 +96,7 @@ public class MemCachedManager {
     public static void stop(String host, int port) throws Exception {
         serversList.remove(host + ":" + String.valueOf(port));
         StringBuffer memNodePath = new StringBuffer();
-        memNodePath.append(Configs.getZNodeRoot()).append(Constants.PATH_DELIMITER).append(host).append(Constants.PATH_DELIMITER).append(port);
+        memNodePath.append(Configs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
         byte[] data = ZKUtils.get(memNodePath.toString());
         ZKNodeInfo zkNodeInfo = JSONObject.parseObject(data, ZKNodeInfo.class, null);
         int pid = zkNodeInfo.getInstancePid();
@@ -116,16 +113,4 @@ public class MemCachedManager {
         activePool = SockIOPool.getInstance(activeMemName);
         activeClient = initSocketIOPool(activePool, activeMemName, servers);
     }
-
-    // XXX:
-    static void historyMonitor() {
-        historyClients.forEach(new BiConsumer<String, MemCachedClient>() {
-            @Override
-            public void accept(String t, MemCachedClient u) {
-                // check
-                // SockIOPool.getInstance().shutDown();
-            }
-        });
-    }
-
 }

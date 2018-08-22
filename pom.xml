@@ -10,7 +10,7 @@
   	<default.encoding>UTF-8</default.encoding>
   	<java.version>1.8</java.version>
   	<curator.version>2.12.0</curator.version>
-  	<jersey.version>2.17</jersey.version>
+  	<jersey.version>2.27</jersey.version>
   </properties>
   
   <dependencies>
@@ -24,14 +24,46 @@
   	
   	<!-- Jersey Dependencies -->
   	<dependency>
-		<groupId>org.glassfish.jersey.containers</groupId>
-		<artifactId>jersey-container-servlet</artifactId>
-		<version>${jersey.version}</version>
+    	<groupId>com.sun.jersey</groupId>
+    	<artifactId>jersey-core</artifactId>
+    	<version>1.19.4</version>
 	</dependency>
 	<dependency>
-		<groupId>org.glassfish.jersey.core</groupId>
-		<artifactId>jersey-client</artifactId>
-		<version>${jersey.version}</version>
+    	<groupId>org.glassfish.jersey.core</groupId>
+    	<artifactId>jersey-common</artifactId>
+    	<version>${jersey.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-server -->
+	<dependency>
+    	<groupId>org.glassfish.jersey.core</groupId>
+    	<artifactId>jersey-server</artifactId>
+    	<version>${jersey.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-moxy -->
+	<dependency>
+    	<groupId>org.glassfish.jersey.media</groupId>
+    	<artifactId>jersey-media-moxy</artifactId>
+    	<version>${jersey.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-grizzly2-http -->
+	<dependency>
+    	<groupId>org.glassfish.jersey.containers</groupId>
+    	<artifactId>jersey-container-grizzly2-http</artifactId>
+    	<version>${jersey.version}</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.glassfish.grizzly/grizzly-http-server -->
+	<dependency>
+    	<groupId>org.glassfish.grizzly</groupId>
+    	<artifactId>grizzly-http-server</artifactId>
+    	<version>2.4.3</version>
+	</dependency>
+	
+	<!-- HTTP Dependencies -->
+  	<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+	<dependency>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpclient</artifactId>
+    	<version>4.5.6</version>
 	</dependency>
 	
 	<!-- Hadoop Dependencies -->
@@ -43,13 +75,6 @@
 	</dependency>
 	
 	<!-- Log Dependencies -->
-	<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
-	<dependency>
-    	<groupId>commons-logging</groupId>
-    	<artifactId>commons-logging</artifactId>
-    	<version>1.2</version>
-	</dependency>
-	
 	<dependency>  
         <groupId>org.slf4j</groupId>  
         <artifactId>slf4j-simple</artifactId>  
@@ -61,22 +86,31 @@
         <version>1.7.25</version>  
     </dependency>
     
+    <!-- Apache Dependencies -->
 	<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 	<dependency>
 	    <groupId>commons-io</groupId>
 	    <artifactId>commons-io</artifactId>
 	    <version>2.6</version>
 	</dependency>
-    <!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->
+	<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
 	<dependency>
-	    <groupId>ch.ethz.ganymed</groupId>
-	    <artifactId>ganymed-ssh2</artifactId>
-	    <version>build210</version>
+    	<groupId>commons-logging</groupId>
+    	<artifactId>commons-logging</artifactId>
+    	<version>1.2</version>
 	</dependency>
     <dependency>
 		<groupId>org.apache.commons</groupId>
 		<artifactId>commons-lang3</artifactId>
 		<version>3.7</version>
+	</dependency>
+	
+	<!-- SSH Dependencies -->
+	<!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->
+	<dependency>
+	    <groupId>ch.ethz.ganymed</groupId>
+	    <artifactId>ganymed-ssh2</artifactId>
+	    <version>build210</version>
 	</dependency>
 	
 	<!-- ZooKeeper Dependencies -->
@@ -102,6 +136,7 @@
 	    <version>${curator.version}</version>
 	</dependency>
 	
+	<!-- JSON Dependencies -->
 	<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 	<dependency>
 	    <groupId>com.alibaba</groupId>

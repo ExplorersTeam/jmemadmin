@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Monitor change of file/catalog in linux host.
  *
  * @author ZhangQingliang
  *

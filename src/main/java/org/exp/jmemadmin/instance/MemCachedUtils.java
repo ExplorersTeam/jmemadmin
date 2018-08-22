@@ -2,6 +2,7 @@ package org.exp.jmemadmin.instance;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,14 +19,14 @@ import org.slf4j.LoggerFactory;
  * @author ZhangQingliang
  *
  */
-public class MemCachedAdmin {
-    private static final Logger LOG = LoggerFactory.getLogger(MemCachedAdmin.class);
+public class MemCachedUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(MemCachedUtils.class);
 
     // TODO:测试直接用获取静态实例后的一个静态变量，当pool启停时会不会还是用的原来pool中的实例。
     // private static MemCachedClient memCachedClient =
     // MemCachedManager.getActiveClient();
 
-    private MemCachedAdmin() {
+    private MemCachedUtils() {
         // DO nothing
     }
 
@@ -55,22 +56,22 @@ public class MemCachedAdmin {
         return flag;
     }
 
-    // //TODO:方法待测试
-    // public static boolean add(String key, Object value, Date exptime) {
-    // return MemCachedManager.getActiveClient().add(key, value, exptime);
-    // }
-    //
-    // //TODO:方法待测试
-    // public static boolean set(String key, Object value, Date expiry) {
-    // boolean flag = false;
-    // flag = MemCachedManager.getActiveClient().set(key, value, expiry);
-    // if(flag == false) {
-    // LOG.info("*******set [" + key + "] fail!*******");
-    // }else {
-    // LOG.info("*******set [" + key + "] success!*******");
-    // }
-    // return flag;
-    // }
+    // TODO:方法待测试
+    public static boolean add(String key, Object value, Date exptime) {
+        return MemCachedManager.getActiveClient().add(key, value, exptime);
+    }
+
+    // TODO:方法待测试
+    public static boolean set(String key, Object value, Date expiry) {
+        boolean flag = false;
+        flag = MemCachedManager.getActiveClient().set(key, value, expiry);
+        if (flag == false) {
+            LOG.info("*******set [" + key + "] fail!*******");
+        } else {
+            LOG.info("*******set [" + key + "] success!*******");
+        }
+        return flag;
+    }
 
     public static Object get(String key) {
         return MemCachedManager.getActiveClient().get(key);
@@ -167,7 +168,7 @@ public class MemCachedAdmin {
 
     public static String composeNodePath(String host, int port) {
         StringBuffer nodePath = new StringBuffer();
-        nodePath.append(Configs.getZNodeRoot()).append(Constants.PATH_DELIMITER).append(host).append(Constants.PATH_DELIMITER).append(port);
+        nodePath.append(Configs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
         return nodePath.toString();
     }
 
@@ -176,7 +177,7 @@ public class MemCachedAdmin {
         // /tmp/memcached12301.pid
         StringBuffer cmd = new StringBuffer();
         cmd.append(Configs.getMCStartupShellPath()).append(" -l ").append(host).append(" -p ").append(port).append(" -m ").append(memorySize)
-                .append(Constants.COMMAND_DELIMITER).append(" -P ").append(Configs.getInsPIDDir()).append(Constants.PATH_DELIMITER)
+                .append(Constants.COMMAND_DELIMITER).append(" -P ").append(Configs.getInsPIDDir()).append(Constants.SLASH_DELIMITER)
                 .append(Configs.getInsPrefix()).append(port).append(Configs.getInsSuffix()).append(Configs.getMCStartupConfigurableParams());
         return cmd.toString();
     }
@@ -195,13 +196,13 @@ public class MemCachedAdmin {
 
     public static void main() {
         // TODO:若要在此运行，要先初始化SocketIOPool哦
-        MemCachedAdmin.flushAll();
+        MemCachedUtils.flushAll();
         Object value = "dfafafafaf";
-        MemCachedAdmin.add("name13", value);
-        MemCachedAdmin.set("name3", value);
-        boolean existence = MemCachedAdmin.keyExists("name3");
+        MemCachedUtils.add("name13", value);
+        MemCachedUtils.set("name3", value);
+        boolean existence = MemCachedUtils.keyExists("name3");
         LOG.info("existence= " + existence);
-        String result = (String) MemCachedAdmin.get("name1");
+        String result = (String) MemCachedUtils.get("name1");
         LOG.info("get运行结果为：name3 = " + result);
     }
 }
