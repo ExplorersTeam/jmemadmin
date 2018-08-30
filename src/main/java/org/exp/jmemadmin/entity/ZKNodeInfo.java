@@ -1,7 +1,7 @@
 package org.exp.jmemadmin.entity;
 
 /**
- * Bean for zookeeper node information.
+ * Bean for ZooKeeper ZNode information.
  * 
  * @author ZhangQingliang
  *

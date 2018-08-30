@@ -1,7 +1,7 @@
 package org.exp.jmemadmin.entity;
 
 /**
- * stats统计系统信息
+ * Stats统计系统信息
  * 
  * @author ZhangQingliang
  *
