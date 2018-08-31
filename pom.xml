@@ -20,6 +20,7 @@
     <module>jmemadmin-common</module>
     <module>jmemadmin-server</module>
     <module>jmemadmin-agent</module>
+    <module>jmemadmin-monitor</module>
   </modules>
   
   <dependencies>
