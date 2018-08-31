@@ -2,8 +2,8 @@ package org.exp.jmemadmin.monitor;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 public class MCMonitor implements Monitor {
     private static final Log LOG = LogFactory.getLog(MCMonitor.class);
 
-    private Executor service = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
     private String host;
 
@@ -34,9 +34,9 @@ public class MCMonitor implements Monitor {
 
     @Override
     public void start() {
-        service.execute(() -> {
+        service.scheduleAtFixedRate(() -> {
             // TODO Auto-generated method stub
-        });
+        }, 0, 0, null);
     }
 
 }
