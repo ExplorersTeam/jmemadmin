@@ -1,8 +1,11 @@
 package org.exp.jmemadmin.agent;
 
-public interface Agent {
-    void start();
+import org.exp.jmemadmin.entity.MemInstance;
+import org.exp.jmemadmin.entity.Response;
 
-    void stop();
+public interface Agent {
+    Response start(MemInstance instance);
+
+    Response stop(MemInstance instance);
 
 }
