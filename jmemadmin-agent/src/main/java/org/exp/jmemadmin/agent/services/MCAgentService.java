@@ -77,7 +77,7 @@ public class MCAgentService implements Agent {
             String nodePath = MemCachedUtils.composeNodePath(getHost(), port);
             LOG.info("Instance ZNode [" + nodePath + "] will be created.");
 
-            int pid = Integer.valueOf(HostCmdUtils.executeLocalCmd(MemCachedUtils.composeReadPidFileCmd(port), null));
+            int pid = Integer.parseInt(HostCmdUtils.executeLocalCmd(MemCachedUtils.composeReadPidFileCmd(port), null));
             ZKNodeInfo zkNodeInfo = new ZKNodeInfo(startupCmd, pid, instance.isMaster());
             byte[] data = JSON.toJSONString(zkNodeInfo).getBytes();
             ZKUtils.create(nodePath, data);
