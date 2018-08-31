@@ -9,7 +9,7 @@
   <description>A RESTful administration service for memcached.</description>
   
   <properties>
-  	<default.encoding>UTF-8</default.encoding>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<java.version>1.8</java.version>
   	<maven.plugin.version>3.1.0</maven.plugin.version>
   	<curator.version>2.12.0</curator.version>
@@ -18,6 +18,8 @@
   
   <modules>
     <module>jmemadmin-common</module>
+    <module>jmemadmin-server</module>
+    <module>jmemadmin-agent</module>
   </modules>
   
   <dependencies>
@@ -150,6 +152,14 @@
 	    <artifactId>fastjson</artifactId>
 	    <version>1.2.47</version>
 	</dependency>
+	
+	<!-- JUnit Dependencies -->
+	<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   
   <build>
@@ -162,43 +172,43 @@
   				<configuration>
   					<source>${java.version}</source>
   					<target>${java.version}</target>
-  					<encoding>${default.encoding}</encoding>
+  					<encoding>${project.build.sourceEncoding}</encoding>
   				</configuration>
   			</plugin>
   			<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>${maven.plugin.version}</version>
-					<configuration>
-						<filesets>
-							<fileset>
-								<directory>${project.basedir}/jmemadmin-dist/conf</directory>
-								<followSymlinks>false</followSymlinks>
-								<useDefaultExcludes>true</useDefaultExcludes>
-							</fileset>
-							<fileset>
-								<directory>${project.basedir}/jmemadmin-dist/lib</directory>
-								<followSymlinks>false</followSymlinks>
-								<useDefaultExcludes>true</useDefaultExcludes>
-							</fileset>
-							<fileset>
-								<directory>${project.basedir}/jmemadmin-dist</directory>
-								<followSymlinks>false</followSymlinks>
-								<useDefaultExcludes>true</useDefaultExcludes>
-								<includes>
-									<include>*.jar</include>
-								</includes>
-							</fileset>
-						</filesets>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>${maven.plugin.version}</version>
-					<configuration>
-						<outputDirectory>${project.parent.basedir}/jmemadmin-dist</outputDirectory>
-					</configuration>
-				</plugin>
+  				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven.plugin.version}</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${project.basedir}/jmemadmin-dist/conf</directory>
+							<followSymlinks>false</followSymlinks>
+							<useDefaultExcludes>true</useDefaultExcludes>
+						</fileset>
+						<fileset>
+							<directory>${project.basedir}/jmemadmin-dist/lib</directory>
+							<followSymlinks>false</followSymlinks>
+							<useDefaultExcludes>true</useDefaultExcludes>
+						</fileset>
+						<fileset>
+							<directory>${project.basedir}/jmemadmin-dist</directory>
+							<followSymlinks>false</followSymlinks>
+							<useDefaultExcludes>true</useDefaultExcludes>
+							<includes>
+								<include>*.jar</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.plugin.version}</version>
+				<configuration>
+					<outputDirectory>${project.parent.basedir}/jmemadmin-dist</outputDirectory>
+				</configuration>
+			</plugin>
   		</plugins>
   	</pluginManagement>
   </build>

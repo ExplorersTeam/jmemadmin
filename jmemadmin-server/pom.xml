@@ -7,10 +7,19 @@
     <artifactId>jmemadmin</artifactId>
     <version>1.0.0</version>
   </parent>
-  <artifactId>jmemadmin-common</artifactId>
-  <name>jmemadmin-common</name>
+  <artifactId>jmemadmin-server</artifactId>
+  <name>jmemadmin-server</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <component.version>1.0.0</component.version>
   </properties>
+  <dependencies>
+    <!-- JMemAdmin Dependencies -->
+    <dependency>
+      <groupId>org.exp</groupId>
+      <artifactId>jmemadmin-common</artifactId>
+      <version>${component.version}</version>
+    </dependency>
+  </dependencies>
 </project>

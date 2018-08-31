@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.rest.services.agent;
+package org.exp.jmemadmin.agent.services;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
