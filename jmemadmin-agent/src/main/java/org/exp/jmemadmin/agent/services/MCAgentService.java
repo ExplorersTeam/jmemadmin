@@ -26,6 +26,12 @@ import org.exp.jmemadmin.instance.MemCachedUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+/**
+ * Agent operations service.
+ *
+ * @author ChenJintong
+ *
+ */
 @Singleton
 @Path(Constants.REST_AGENT_PATH)
 public class MCAgentService implements Agent {
@@ -36,6 +42,7 @@ public class MCAgentService implements Agent {
     }
 
     @POST
+    @Path("start")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
@@ -92,6 +99,7 @@ public class MCAgentService implements Agent {
     }
 
     @POST
+    @Path("stop")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Override

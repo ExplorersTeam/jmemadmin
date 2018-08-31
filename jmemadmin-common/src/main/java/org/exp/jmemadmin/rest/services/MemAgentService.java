@@ -16,6 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.spi.resource.Singleton;
 
+/**
+ * Agent operations service.
+ * 
+ * @author ZhangQingliang
+ * @see org.exp.jmemadmin.agent.services.MCAgentService
+ *
+ */
+@Deprecated
 @Singleton
 @Path(Constants.REST_AGENT_PATH)
 public class MemAgentService {
