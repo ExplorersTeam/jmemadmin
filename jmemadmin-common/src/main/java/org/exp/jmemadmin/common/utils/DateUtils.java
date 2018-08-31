@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.utils;
+package org.exp.jmemadmin.common.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

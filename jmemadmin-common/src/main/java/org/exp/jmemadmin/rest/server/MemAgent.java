@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
-import org.exp.jmemadmin.utils.HTTPUtils;
+import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.logging.LoggingFeature;

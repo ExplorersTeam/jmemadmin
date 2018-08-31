@@ -15,13 +15,13 @@ import org.apache.commons.logging.LogFactory;
 import org.exp.jmemadmin.agent.Agent;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
+import org.exp.jmemadmin.common.utils.HostCmdUtils;
+import org.exp.jmemadmin.common.utils.ZKUtils;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
 import org.exp.jmemadmin.entity.Response.ResultStatus;
 import org.exp.jmemadmin.entity.ZKNodeInfo;
 import org.exp.jmemadmin.instance.MemCachedUtils;
-import org.exp.jmemadmin.utils.HostCmdUtils;
-import org.exp.jmemadmin.utils.ZKUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

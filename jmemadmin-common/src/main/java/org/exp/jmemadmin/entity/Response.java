@@ -3,7 +3,7 @@ package org.exp.jmemadmin.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.exp.jmemadmin.utils.DateUtils;
+import org.exp.jmemadmin.common.utils.DateUtils;
 
 @XmlRootElement
 public class Response {

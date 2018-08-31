@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.utils;
+package org.exp.jmemadmin.common.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exp</groupId>
   <artifactId>jmemadmin</artifactId>
   <version>1.0.0</version>
+  <packaging>pom</packaging>
   <name>jmemadmin</name>
   <description>A RESTful administration service for memcached.</description>
   
@@ -12,6 +14,10 @@
   	<curator.version>2.12.0</curator.version>
   	<jersey.version>2.27</jersey.version>
   </properties>
+  
+  <modules>
+    <module>jmemadmin-common</module>
+  </modules>
   
   <dependencies>
   	<!-- MemCached Java Client Dependency -->
