@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.monitor;
+package org.exp.jmemadmin.trash;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

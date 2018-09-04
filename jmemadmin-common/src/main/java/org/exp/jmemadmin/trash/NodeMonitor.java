@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.monitor;
+package org.exp.jmemadmin.trash;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
