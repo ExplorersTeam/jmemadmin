@@ -1,7 +1,15 @@
 package org.exp.jmemadmin.monitor;
 
-@FunctionalInterface
-public interface Monitor {
-    void start();
+public abstract class Monitor implements Runnable {
+    protected abstract boolean check();
+
+    protected abstract void report();
+
+    @Override
+    public void run() {
+        if (!check()) {
+            report();
+        }
+    }
 
 }

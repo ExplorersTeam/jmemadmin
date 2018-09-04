@@ -8,10 +8,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MCMonitor implements Monitor {
+public class MCMonitor extends Monitor {
     private static final Log LOG = LogFactory.getLog(MCMonitor.class);
-
-    private ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
     private String host;
 
@@ -33,10 +31,21 @@ public class MCMonitor implements Monitor {
     }
 
     @Override
-    public void start() {
-        service.scheduleAtFixedRate(() -> {
-            // TODO Auto-generated method stub
-        }, 0, 0, null);
+    protected boolean check() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected void report() {
+        // TODO Auto-generated method stub
+
+    }
+
+    public static void main(String[] args) {
+        Runnable monitor = new MCMonitor();
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleAtFixedRate(monitor, 0, 0, null);// TODO Complete it.
     }
 
 }
