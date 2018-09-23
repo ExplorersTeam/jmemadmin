@@ -1,6 +1,6 @@
 package org.exp.jmemadmin.monitor;
 
-public abstract class Monitor implements Runnable {
+public abstract class AbstractMonitor implements Runnable {
     protected abstract boolean check();
 
     protected abstract void report();

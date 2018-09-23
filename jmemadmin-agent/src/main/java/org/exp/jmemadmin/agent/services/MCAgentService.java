@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exp.jmemadmin.agent.Agent;
+import org.exp.jmemadmin.agent.AgentService;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
@@ -28,14 +28,11 @@ import com.alibaba.fastjson.JSONObject;
 
 /**
  * Agent operations service.
- *
- * @author ChenJintong
- *
  */
 @Singleton
 @Path(Constants.REST_AGENT_PATH)
-public class MCAgentService implements Agent {
-    private static final Log LOG = LogFactory.getLog(Agent.class);
+public class MCAgentService implements AgentService {
+    private static final Log LOG = LogFactory.getLog(AgentService.class);
 
     private static String getHost() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();

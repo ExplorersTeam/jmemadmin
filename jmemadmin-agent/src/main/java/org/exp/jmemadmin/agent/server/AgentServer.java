@@ -2,6 +2,7 @@ package org.exp.jmemadmin.agent.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
@@ -19,12 +20,12 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class AgentServer {
     private static final Log LOG = LogFactory.getLog(AgentServer.class);
 
-    private String hostAddress = null;
+    private String hostAddress;
 
     // TODO Agent server port.
     private int port;
 
-    private HttpServer httpServer = null;
+    private HttpServer httpServer;
 
     public AgentServer() {
         init();
@@ -38,12 +39,24 @@ public class AgentServer {
     private void init() {
         try {
             this.hostAddress = InetAddress.getLocalHost().getHostAddress();
+
+            /*
+             * Resource configurations.
+             */
             ResourceConfig config = new ResourceConfig();
             config.packages(false, MCAgentService.class.getPackage().getName());
             config.register(MoxyJsonFeature.class);
             config.register(LoggingFeature.class).property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
-            this.httpServer = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
-            LOG.info("REST server initialized, address is [" + getHostAddress() + Constants.COLON_DELIMITER + getPort() + "].");
+
+            URI httpServerURI = HTTPUtils.buildURI(getHostAddress(), getPort());
+            this.httpServer = GrizzlyHttpServerFactory.createHttpServer(httpServerURI, config, false, null, false);
+
+            /*
+             * Log.
+             */
+            String serverAddrLogStr = getHostAddress() + Constants.COLON_DELIMITER + getPort();
+            LOG.info("REST server initialized, address is [" + serverAddrLogStr + "].");
+
         } catch (UnknownHostException | URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }
@@ -73,7 +86,13 @@ public class AgentServer {
     }
 
     public static void main(String[] args) {
-        AgentServer server = 0 == args.length ? new AgentServer() : new AgentServer(Integer.parseInt(args[0]));
+        AgentServer server = null;
+        if (0 == args.length) {
+            server = new AgentServer();
+        } else {
+            server = new AgentServer(Integer.parseInt(args[0]));
+        }
+
         try {
             server.start();
         } catch (IOException e) {

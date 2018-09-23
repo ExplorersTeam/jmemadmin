@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MCMonitor extends Monitor {
+public class MCMonitor extends AbstractMonitor {
     private static final Log LOG = LogFactory.getLog(MCMonitor.class);
 
     private String host;
