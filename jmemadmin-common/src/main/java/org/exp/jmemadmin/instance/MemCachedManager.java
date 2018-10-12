@@ -55,7 +55,6 @@ public class MemCachedManager {
         return activeName;
     }
 
-    @Deprecated
     public static boolean start(String host, int port, int memorySize, boolean isMaster) throws Exception {
         boolean flag = false;
         try {
@@ -95,7 +94,6 @@ public class MemCachedManager {
         return HostCmdUtils.checkPortBySocket(host, port);// 再次通过检测端口来判断是否启动成功
     }
 
-    @Deprecated
     public static boolean stop(String host, int port) throws Exception {
         boolean flag = false;
         serversList.remove(host + ":" + String.valueOf(port));

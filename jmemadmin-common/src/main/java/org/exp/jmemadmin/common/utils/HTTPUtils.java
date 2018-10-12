@@ -17,6 +17,11 @@ import org.exp.jmemadmin.common.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ *
+ * @author ZhangQingliang
+ *
+ */
 public class HTTPUtils {
     private static final Logger LOG = LoggerFactory.getLogger(HTTPUtils.class);
 
