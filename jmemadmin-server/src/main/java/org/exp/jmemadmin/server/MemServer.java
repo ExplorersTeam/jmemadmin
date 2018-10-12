@@ -2,12 +2,14 @@ package org.exp.jmemadmin.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
+import org.exp.jmemadmin.server.services.MCServerService;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -36,11 +38,15 @@ public class MemServer {
         try {
             this.hostAddress = InetAddress.getLocalHost().getHostAddress();
             ResourceConfig config = new ResourceConfig();
-            config.packages(false, "org.exp.jmemadmin.server.services");
+            config.packages(false, MCServerService.class.getPackage().getName());
             config.register(MoxyJsonFeature.class);
             config.register(LoggingFeature.class).property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
-            this.server = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
-            LOG.info("REST server initialized, address is [" + getHostAddress() + Constants.COLON_DELIMITER + getPort() + "].");
+
+            URI httpServerURI = HTTPUtils.buildURI(getHostAddress(), getPort());
+            this.server = GrizzlyHttpServerFactory.createHttpServer(httpServerURI, config, false, null, false);
+
+            String serverAddrLogStr = getHostAddress() + Constants.COLON_DELIMITER + getPort();
+            LOG.info("REST server initialized, address is [" + serverAddrLogStr + "].");
         } catch (UnknownHostException | URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }
@@ -70,7 +76,7 @@ public class MemServer {
     }
 
     public static void main(String[] args) {
-        MemServer memServer = 0 == args.length ? new MemServer() : new MemServer(Integer.parseInt(args[0]));
+        MemServer memServer = (0 == args.length) ? new MemServer() : new MemServer(Integer.parseInt(args[0]));
         try {
             memServer.start();
         } catch (IOException e) {
