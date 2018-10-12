@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.rest.server;
+package org.exp.jmemadmin.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,7 +36,7 @@ public class MemServer {
         try {
             this.hostAddress = InetAddress.getLocalHost().getHostAddress();
             ResourceConfig config = new ResourceConfig();
-            config.packages(false, "org.exp.jmemadmin.rest.services");
+            config.packages(false, "org.exp.jmemadmin.server.services");
             config.register(MoxyJsonFeature.class);
             config.register(LoggingFeature.class).property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "INFO");
             this.server = GrizzlyHttpServerFactory.createHttpServer(HTTPUtils.buildURI(getHostAddress(), getPort()), config, false, null, false);
