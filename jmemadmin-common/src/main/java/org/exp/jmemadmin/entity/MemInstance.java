@@ -3,6 +3,12 @@ package org.exp.jmemadmin.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Bean for memcached instance.
+ * 
+ * @author ZhangQingliang
+ *
+ */
 @XmlRootElement
 public class MemInstance {
     @XmlElement(required = false)

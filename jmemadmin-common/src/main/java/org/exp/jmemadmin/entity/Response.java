@@ -5,6 +5,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.exp.jmemadmin.common.utils.DateUtils;
 
+/**
+ * Bean for response.
+ * 
+ * @author ZhangQingliang
+ *
+ */
+
 @XmlRootElement
 public class Response {
     @XmlElement(name = "result")
