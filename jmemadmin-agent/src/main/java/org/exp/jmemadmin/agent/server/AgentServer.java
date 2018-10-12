@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.jmemadmin.agent.services.MCAgentService;
+import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -17,15 +18,20 @@ import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.moxy.json.MoxyJsonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
+/**
+ *
+ * @author ZhangQingliang
+ *
+ */
+
 public class AgentServer {
     private static final Log LOG = LogFactory.getLog(AgentServer.class);
 
-    private String hostAddress;
+    private String hostAddress = null;
 
-    // TODO Agent server port.
-    private int port;
+    private int port = Configs.getRESTfulAGENTPort();
 
-    private HttpServer httpServer;
+    private HttpServer httpServer = null;
 
     public AgentServer() {
         init();
@@ -42,6 +48,8 @@ public class AgentServer {
 
             /*
              * Resource configurations.
+             *
+             * false stand for no recursion.
              */
             ResourceConfig config = new ResourceConfig();
             config.packages(false, MCAgentService.class.getPackage().getName());
