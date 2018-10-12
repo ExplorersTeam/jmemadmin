@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.common.utils;
+package org.exp.jmemadmin.trash;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
