@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.rest.services;
+package org.exp.jmemadmin.server.services;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,8 +13,8 @@ import com.sun.jersey.spi.resource.Singleton;
 
 @Singleton
 @Path(Constants.REST_SERVER_PATH)
-public class MemServerService {
-    private static final Logger LOG = LoggerFactory.getLogger(MemServerService.class);
+public class MCServerService {
+    private static final Logger LOG = LoggerFactory.getLogger(MCServerService.class);
 
     @GET
     @Path("/key")
