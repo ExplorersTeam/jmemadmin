@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.instance;
+package org.exp.jmemadmin.common.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
-import org.exp.jmemadmin.common.utils.ZKUtils;
 import org.exp.jmemadmin.entity.ZKNodeInfo;
 
 import com.alibaba.fastjson.JSONObject;

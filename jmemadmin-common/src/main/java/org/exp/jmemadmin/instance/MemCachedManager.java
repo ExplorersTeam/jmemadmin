@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
+import org.exp.jmemadmin.common.utils.MemToolUtils;
 import org.exp.jmemadmin.common.utils.ZKUtils;
 import org.exp.jmemadmin.entity.ZKNodeInfo;
 import org.slf4j.Logger;

@@ -13,8 +13,8 @@ import org.apache.commons.logging.LogFactory;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
+import org.exp.jmemadmin.common.utils.MemToolUtils;
 import org.exp.jmemadmin.common.utils.ZKUtils;
-import org.exp.jmemadmin.instance.MemToolUtils;
 
 public class MCMonitor extends AbstractMonitor {
     private static final Log LOG = LogFactory.getLog(MCMonitor.class);

@@ -16,12 +16,12 @@ import org.exp.jmemadmin.agent.AgentService;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
+import org.exp.jmemadmin.common.utils.MemToolUtils;
 import org.exp.jmemadmin.common.utils.ZKUtils;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
 import org.exp.jmemadmin.entity.Response.ResultStatus;
 import org.exp.jmemadmin.entity.ZKNodeInfo;
-import org.exp.jmemadmin.instance.MemToolUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

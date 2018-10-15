@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.instance;
+package org.exp.jmemadmin.common.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.exp.jmemadmin.entity.KeysBean;
+import org.exp.jmemadmin.instance.MemCachedManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
