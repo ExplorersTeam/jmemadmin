@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.exp.jmemadmin.common.Configs;
 
 public class MCMonitor extends AbstractMonitor {
     private static final Log LOG = LogFactory.getLog(MCMonitor.class);
@@ -45,7 +46,6 @@ public class MCMonitor extends AbstractMonitor {
     public static void main(String[] args) {
         Runnable monitor = new MCMonitor();
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleAtFixedRate(monitor, 0, 0, null);// TODO Complete it.
+        service.scheduleAtFixedRate(monitor, Configs.getMonitorThreadInitaldelay(), Configs.getMonitorThreadPeriod(), null);
     }
-
 }

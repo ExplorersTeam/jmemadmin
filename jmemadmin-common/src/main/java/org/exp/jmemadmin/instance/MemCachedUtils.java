@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.exp.jmemadmin.common.Configs;
-import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.entity.KeysBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,34 +162,6 @@ public class MemCachedUtils {
         LOG.info("****************listKeys******************");
         LOG.info(keylist.values().toString());
         return keylist;
-    }
-
-    public static String composeNodePath(String host, int port) {
-        StringBuffer nodePath = new StringBuffer();
-        nodePath.append(Configs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
-        return nodePath.toString();
-    }
-
-    public static String composeStartupCmd(String host, int port, int memorySize) {
-        // xx/memcached -d -u root -l 10.142.90.152 -p 12301 -m 200 -c 1000 -P
-        // /tmp/memcached12301.pid
-        StringBuffer cmd = new StringBuffer();
-        cmd.append(Configs.getMCStartupShellPath()).append(" -l ").append(host).append(" -p ").append(port).append(" -m ").append(memorySize)
-                .append(Constants.COMMAND_DELIMITER).append(" -P ").append(Configs.getInsPIDDir()).append(Constants.SLASH_DELIMITER)
-                .append(Configs.getInsPrefix()).append(port).append(Configs.getInsSuffix()).append(Configs.getMCStartupConfigurableParams());
-        return cmd.toString();
-    }
-
-    public static String composeReadPidFileCmd(int port) {
-        StringBuffer cmd = new StringBuffer();
-        cmd.append("cat ").append(Configs.getInsPIDDir()).append(Configs.getInsPrefix()).append(port).append(Configs.getInsSuffix());
-        return cmd.toString();
-    }
-
-    public static String composeRemovePidFileCmd(int port) {
-        StringBuffer cmd = new StringBuffer();
-        cmd.append("rm ").append(Configs.getInsPIDDir()).append(Configs.getInsPrefix()).append(port).append(Configs.getInsSuffix());
-        return cmd.toString();
     }
 
     public static void main() {

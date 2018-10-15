@@ -21,7 +21,7 @@ import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
 import org.exp.jmemadmin.entity.Response.ResultStatus;
 import org.exp.jmemadmin.entity.ZKNodeInfo;
-import org.exp.jmemadmin.instance.MemCachedUtils;
+import org.exp.jmemadmin.instance.MemToolUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -67,13 +67,13 @@ public class MCAgentService implements AgentService {
         }
 
         try {
-            String startupCmd = MemCachedUtils.composeStartupCmd(getHost(), port, memSize);
+            String startupCmd = MemToolUtils.composeStartupCmd(getHost(), port, memSize);
             HostCmdUtils.executeLocalCmd(startupCmd, null);
 
-            String readPidCmd = MemCachedUtils.composeReadPidFileCmd(port);
+            String readPidCmd = MemToolUtils.composeReadPidFileCmd(port);
             int pid = Integer.parseInt(HostCmdUtils.executeLocalCmd(readPidCmd, null));
 
-            String removePidCmd = MemCachedUtils.composeRemovePidFileCmd(port);
+            String removePidCmd = MemToolUtils.composeRemovePidFileCmd(port);
             HostCmdUtils.executeLocalCmd(removePidCmd, null);
 
             if (!HostCmdUtils.checkPortBySocket(getHost(), port)) {// 再次通过检测端口来判断是否启动成功
@@ -82,7 +82,7 @@ public class MCAgentService implements AgentService {
                 return response;
             }
 
-            String nodePath = MemCachedUtils.composeNodePath(getHost(), port);
+            String nodePath = MemToolUtils.composeNodePath(getHost(), port);
             LOG.info("Instance ZNode [" + nodePath + "] will be created.");
             ZKNodeInfo zkNodeInfo = new ZKNodeInfo(startupCmd, pid, instance.isMaster());
             byte[] data = JSON.toJSONString(zkNodeInfo).getBytes();

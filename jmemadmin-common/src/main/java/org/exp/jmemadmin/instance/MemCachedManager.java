@@ -61,11 +61,11 @@ public class MemCachedManager {
             flag = HostCmdUtils.checkPortBySocket(host, port);
             if (flag) {// 端口未被占时
                 serversList.add(host + ":" + String.valueOf(port));
-                String startupCmd = MemCachedUtils.composeStartupCmd(host, port, memorySize);
+                String startupCmd = MemToolUtils.composeStartupCmd(host, port, memorySize);
                 HostCmdUtils.executeLocalCmd(startupCmd, null);
-                String readPidCmd = MemCachedUtils.composeReadPidFileCmd(port);
+                String readPidCmd = MemToolUtils.composeReadPidFileCmd(port);
                 String pid = HostCmdUtils.executeLocalCmd(readPidCmd, null);
-                String removePidCmd = MemCachedUtils.composeRemovePidFileCmd(port);
+                String removePidCmd = MemToolUtils.composeRemovePidFileCmd(port);
                 HostCmdUtils.executeLocalCmd(removePidCmd, null);
                 if (null == activePool) {
                     initActiveMemcached((String[]) serversList.toArray());
@@ -83,7 +83,7 @@ public class MemCachedManager {
                     timer.schedule(task, 100000);// 在指定延迟后执行指定的任务。task是所要安排的任务。10000是执行任务前的延迟时间，单位是毫秒。
                     initActiveMemcached((String[]) serversList.toArray());
                 }
-                String nodePath = MemCachedUtils.composeNodePath(host, port);
+                String nodePath = MemToolUtils.composeNodePath(host, port);
                 ZKNodeInfo zkNodeInfo = new ZKNodeInfo(startupCmd, Integer.valueOf(pid), isMaster);
                 byte[] data = JSON.toJSONString(zkNodeInfo).getBytes();
                 ZKUtils.create(nodePath, data);
@@ -94,15 +94,24 @@ public class MemCachedManager {
         return HostCmdUtils.checkPortBySocket(host, port);// 再次通过检测端口来判断是否启动成功
     }
 
-    public static boolean stop(String host, int port) throws Exception {
+    public static boolean stop(String host, int port) {
         boolean flag = false;
         serversList.remove(host + ":" + String.valueOf(port));
         StringBuffer memNodePath = new StringBuffer();
         memNodePath.append(Configs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
-        byte[] data = ZKUtils.get(memNodePath.toString());
+        byte[] data = null;
+        try {
+            data = ZKUtils.get(memNodePath.toString());
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
         ZKNodeInfo zkNodeInfo = JSONObject.parseObject(data, ZKNodeInfo.class);
         int pid = zkNodeInfo.getInstancePid();
-        ZKUtils.delete(memNodePath.toString());// 删除节点
+        try {
+            ZKUtils.delete(memNodePath.toString());
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        } // 删除节点
         String killPidCmd = "kill " + pid;
         String grepPidCmd = "ps -ef|grep -v grep|grep " + pid;
         do {
