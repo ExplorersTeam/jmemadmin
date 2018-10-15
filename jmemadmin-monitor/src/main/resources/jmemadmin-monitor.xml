@@ -1,0 +1,11 @@
+<configuration>
+	<!-- Monitor Service Configuration Items -->
+	<property>
+		<name>jmemadmin.monitor.thread.initaldelay.ms</name>
+		<value>0</value>
+	</property>
+	<property>
+		<name>jmemadmin.monitor.thread.period.ms</name>
+		<value>5000</value>
+	</property>
+</configuration>

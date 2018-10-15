@@ -15,6 +15,7 @@ import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
 import org.exp.jmemadmin.common.utils.MemToolUtils;
 import org.exp.jmemadmin.common.utils.ZKUtils;
+import org.exp.jmemadmin.monitor.common.MonitorConfig;
 
 public class MCMonitor extends AbstractMonitor {
     private static final Log LOG = LogFactory.getLog(MCMonitor.class);
@@ -83,6 +84,6 @@ public class MCMonitor extends AbstractMonitor {
     public static void main(String[] args) {
         Runnable monitor = new MCMonitor();
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleAtFixedRate(monitor, Configs.getMonitorThreadInitaldelay(), Configs.getMonitorThreadPeriod(), null);
+        service.scheduleAtFixedRate(monitor, MonitorConfig.getMonitorThreadInitaldelay(), MonitorConfig.getMonitorThreadPeriod(), null);
     }
 }
