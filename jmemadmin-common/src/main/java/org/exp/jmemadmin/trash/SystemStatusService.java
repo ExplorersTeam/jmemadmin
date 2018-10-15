@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.rest.services;
+package org.exp.jmemadmin.trash;
 
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
