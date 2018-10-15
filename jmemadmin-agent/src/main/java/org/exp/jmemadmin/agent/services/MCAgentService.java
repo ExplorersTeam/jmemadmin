@@ -69,6 +69,10 @@ public class MCAgentService implements AgentService {
         try {
             String startupCmd = MemCachedUtils.composeStartupCmd(getHost(), port, memSize);
             HostCmdUtils.executeLocalCmd(startupCmd, null);
+
+            String readPidCmd = MemCachedUtils.composeReadPidFileCmd(port);
+            int pid = Integer.parseInt(HostCmdUtils.executeLocalCmd(readPidCmd, null));
+
             String removePidCmd = MemCachedUtils.composeRemovePidFileCmd(port);
             HostCmdUtils.executeLocalCmd(removePidCmd, null);
 
@@ -80,8 +84,6 @@ public class MCAgentService implements AgentService {
 
             String nodePath = MemCachedUtils.composeNodePath(getHost(), port);
             LOG.info("Instance ZNode [" + nodePath + "] will be created.");
-
-            int pid = Integer.parseInt(HostCmdUtils.executeLocalCmd(MemCachedUtils.composeReadPidFileCmd(port), null));
             ZKNodeInfo zkNodeInfo = new ZKNodeInfo(startupCmd, pid, instance.isMaster());
             byte[] data = JSON.toJSONString(zkNodeInfo).getBytes();
             ZKUtils.create(nodePath, data);

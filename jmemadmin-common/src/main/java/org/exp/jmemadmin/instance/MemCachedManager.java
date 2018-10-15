@@ -100,7 +100,7 @@ public class MemCachedManager {
         StringBuffer memNodePath = new StringBuffer();
         memNodePath.append(Configs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
         byte[] data = ZKUtils.get(memNodePath.toString());
-        ZKNodeInfo zkNodeInfo = JSONObject.parseObject(data, ZKNodeInfo.class, null);
+        ZKNodeInfo zkNodeInfo = JSONObject.parseObject(data, ZKNodeInfo.class);
         int pid = zkNodeInfo.getInstancePid();
         ZKUtils.delete(memNodePath.toString());// 删除节点
         String killPidCmd = "kill " + pid;
