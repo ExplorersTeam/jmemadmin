@@ -37,6 +37,9 @@ public class Configs {
     private static final String ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_KEY = "jmemadmin.zookeeper.retry.exponential-back-off.sleep-time.max.ms";
     private static final int DEFAULT_ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_VALUE = 1000;
 
+    private static final String ZK_NODE_DELETED_MARK = "jmemadmin.zookeeper.deletednode.mark";
+    private static final String DEFAULT_ZK_NODE_DELETED_MARK = "-deleted";
+
     /*
      * RESTful service configurations.
      */
@@ -178,6 +181,10 @@ public class Configs {
 
     public static int getZKExponentialBackoffRetryMaxSleepTimeMS() {
         return getConf().getInt(ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_KEY, DEFAULT_ZK_RETRY_EBOP_MAX_SLEEP_TIME_MS_VALUE);
+    }
+
+    public static String getZKDeletedNodeMark() {
+        return getConf().getTrimmed(ZK_NODE_DELETED_MARK, DEFAULT_ZK_NODE_DELETED_MARK);
     }
 
     public static int getRESTfulServerPort() {

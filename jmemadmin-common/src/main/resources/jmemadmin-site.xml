@@ -28,6 +28,10 @@
 		<name>jmemadmin.zookeeper.retry.exponential-back-off.sleep-time.max.ms</name>
 		<value>2000</value>
 	</property>
+	<property>
+		<name>jmemadmin.zookeeper.deletednode.mark</name>
+		<value>-deleted</value>
+	</property>
 
 	<!-- Monitor Service Configuration Items -->
 	<property>
