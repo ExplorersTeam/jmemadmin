@@ -63,6 +63,12 @@ public class Configs {
     private static final String MONITOR_MC_STAT_INTERVAL_MS_KEY = "jmemadmin.monitor.mc.status.interval.ms";
     private static final int DEFAULT_MONITOR_MC_STAT_INTERVAL_MS_VALUE = 10000;
 
+    private static final String THREAD_INITIAL_DELAY = "jmemadmin.monitor.thread.initaldelay.ms";
+    private static final long DEFAULT_THREAD_INITIAL_DELAY = 0;
+
+    private static final String THREAD_PERIOD = "jmemadmin.monitor.thread.period.ms";
+    private static final long DEFAULT_THREAD_PERIOD = 5000;
+
     /*
      * Memcached startup command configurations.
      * /opt/memcached/1.5.9/memcached-1.5.9/memcached -d -m 200 -u root -l
@@ -188,6 +194,14 @@ public class Configs {
 
     public static int getMCStatMonitorIntervalMS() {
         return getConf().getInt(MONITOR_MC_STAT_INTERVAL_MS_KEY, DEFAULT_MONITOR_MC_STAT_INTERVAL_MS_VALUE);
+    }
+
+    public static long getMonitorThreadInitaldelay() {
+        return getConf().getLong(THREAD_INITIAL_DELAY, DEFAULT_THREAD_INITIAL_DELAY);
+    }
+
+    public static long getMonitorThreadPeriod() {
+        return getConf().getLong(THREAD_PERIOD, DEFAULT_THREAD_PERIOD);
     }
 
     public static String getMCStartupShellPath() {
