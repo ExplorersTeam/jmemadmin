@@ -48,4 +48,9 @@
 		<name>jmemadmin.sockiopool.garbage.collection.interval.ms</name>
 		<value>1000000</value>
 	</property>
+	<!-- RESTful Service Configuration Items -->
+	<property>
+		<name>jmemadmin.rest.server.port</name>
+		<value>8725</value>
+	</property>
 </configuration>

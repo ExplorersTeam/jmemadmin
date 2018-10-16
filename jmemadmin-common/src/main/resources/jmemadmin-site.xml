@@ -82,11 +82,4 @@
 		<value> -d -u root -c 1000 </value>
 	</property>
 
-
-	<!-- RESTful Service Configuration Items -->
-	<property>
-		<name>jmemadmin.rest.server.port</name>
-		<value>8725</value>
-	</property>
-	
 </configuration>

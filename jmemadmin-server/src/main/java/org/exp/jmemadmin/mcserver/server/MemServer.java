@@ -6,9 +6,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
-import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
+import org.exp.jmemadmin.mcserver.common.ServerConfig;
 import org.exp.jmemadmin.mcserver.services.MCServerService;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -22,7 +22,7 @@ public class MemServer {
     private static final Logger LOG = LoggerFactory.getLogger(MemServer.class);
 
     private String hostAddress = null;
-    private int port = CommonConfigs.getRESTfulServerPort();
+    private int port = ServerConfig.getRESTfulServerPort();
     private HttpServer server = null;
 
     public MemServer() {

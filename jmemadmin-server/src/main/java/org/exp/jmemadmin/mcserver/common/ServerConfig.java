@@ -60,6 +60,12 @@ public class ServerConfig {
     private static final String SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_KEY = "jmemadmin.sockiopool.garbage.collection.interval.ms";
     private static final int DEFAULT_SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_VALUE = 1000000;
 
+    /*
+     * RESTful service configurations.
+     */
+    private static final String REST_SERVER_PORT_KEY = "jmemadmin.rest.server.port";
+    private static final int DEFAULT_REST_SERVER_PORT_VALUE = 8725;
+
     public static boolean getPoolFailover() {
         return getConf().getBoolean(SOCKIOPOOL_FAILOVER_KEY, DEFAULT_SOCKIOPOOL_FAILOVER_VALUE);
     }
@@ -106,5 +112,9 @@ public class ServerConfig {
 
     public static int getPoolGCIntervalMs() {
         return getConf().getInt(SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_KEY, DEFAULT_SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_VALUE);
+    }
+
+    public static int getRESTfulServerPort() {
+        return getConf().getInt(REST_SERVER_PORT_KEY, DEFAULT_REST_SERVER_PORT_VALUE);
     }
 }

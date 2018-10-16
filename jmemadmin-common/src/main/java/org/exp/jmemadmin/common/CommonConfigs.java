@@ -41,12 +41,6 @@ public class CommonConfigs {
     private static final String DEFAULT_ZK_NODE_DELETED_MARK = "-deleted";
 
     /*
-     * RESTful service configurations.
-     */
-    private static final String REST_SERVER_PORT_KEY = "jmemadmin.rest.server.port";
-    private static final int DEFAULT_REST_SERVER_PORT_VALUE = 8725;
-
-    /*
      * Monitor service configurations.
      */
     private static final String MC_INS_PREFIX_KEY = "jmemadmin.mc.instance.prefix";
@@ -138,10 +132,6 @@ public class CommonConfigs {
 
     public static String getZKDeletedNodeMark() {
         return getConf().getTrimmed(ZK_NODE_DELETED_MARK, DEFAULT_ZK_NODE_DELETED_MARK);
-    }
-
-    public static int getRESTfulServerPort() {
-        return getConf().getInt(REST_SERVER_PORT_KEY, DEFAULT_REST_SERVER_PORT_VALUE);
     }
 
     public static int getMCHistoryLifetime() {
