@@ -8,9 +8,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.exp.jmemadmin.entity.KeysBean;
-import org.exp.jmemadmin.instance.MemCachedManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.whalin.MemCached.MemCachedClient;
 
 /**
  * Basic API operations for memcached.
@@ -24,14 +25,23 @@ public class MemCachedUtils {
     // TODO:测试直接用获取静态实例后的一个静态变量，当pool启停时会不会还是用的原来pool中的实例。
     // private static MemCachedClient memCachedClient =
     // MemCachedManager.getActiveClient();
+    private static MemCachedClient memCachedClient;
 
     private MemCachedUtils() {
         // DO nothing
     }
 
+    public static MemCachedClient getMemCachedClient() {
+        return memCachedClient;
+    }
+
+    public static void setMemCachedClient(MemCachedClient mcClient) {
+        memCachedClient = mcClient;
+    }
+
     public static boolean add(String key, Object value) {
         boolean flag = false;
-        flag = MemCachedManager.getActiveClient().add(key, value);
+        flag = memCachedClient.add(key, value);
         if (flag == false) {
             LOG.info(key + "is already existed!");
         } else {
@@ -41,12 +51,12 @@ public class MemCachedUtils {
     }
 
     public static boolean keyExists(String key) {
-        return MemCachedManager.getActiveClient().keyExists(key);
+        return memCachedClient.keyExists(key);
     }
 
     public static boolean set(String key, Object value) {
         boolean flag = false;
-        flag = MemCachedManager.getActiveClient().set(key, value);
+        flag = memCachedClient.set(key, value);
         if (flag == false) {
             LOG.info("*******set [" + key + "] fail!*******");
         } else {
@@ -57,13 +67,13 @@ public class MemCachedUtils {
 
     // TODO:方法待测试
     public static boolean add(String key, Object value, Date exptime) {
-        return MemCachedManager.getActiveClient().add(key, value, exptime);
+        return memCachedClient.add(key, value, exptime);
     }
 
     // TODO:方法待测试
     public static boolean set(String key, Object value, Date expiry) {
         boolean flag = false;
-        flag = MemCachedManager.getActiveClient().set(key, value, expiry);
+        flag = memCachedClient.set(key, value, expiry);
         if (flag == false) {
             LOG.info("*******set [" + key + "] fail!*******");
         } else {
@@ -73,30 +83,30 @@ public class MemCachedUtils {
     }
 
     public static Object get(String key) {
-        return MemCachedManager.getActiveClient().get(key);
+        return memCachedClient.get(key);
     }
 
     public static boolean delete(String key) {
-        return MemCachedManager.getActiveClient().delete(key);
+        return memCachedClient.delete(key);
     }
 
     public static boolean flushAll() {
-        return MemCachedManager.getActiveClient().flushAll();
+        return memCachedClient.flushAll();
     }
 
     public static boolean flushAll(String[] servers) {
-        return MemCachedManager.getActiveClient().flushAll(servers);
+        return memCachedClient.flushAll(servers);
     }
 
     public static Map<String, Map<String, String>> stats() {
-        Map<String, Map<String, String>> serversStatus = MemCachedManager.getActiveClient().stats();
+        Map<String, Map<String, String>> serversStatus = memCachedClient.stats();
         LOG.info("***********************ServersStatus************************");
         LOG.info(serversStatus.values().toString());
         return serversStatus;
     }
 
     public static Map<String, Map<String, String>> stats(String[] servers) {
-        Map<String, Map<String, String>> serversStatus = MemCachedManager.getActiveClient().stats(servers);
+        Map<String, Map<String, String>> serversStatus = memCachedClient.stats(servers);
         LOG.info("***********************ServersStatus************************");
         LOG.info(serversStatus.values().toString());
         return serversStatus;
@@ -115,7 +125,7 @@ public class MemCachedUtils {
     public static Map<String, KeysBean> listKeys() throws NumberFormatException, UnsupportedEncodingException {
         Map<String, KeysBean> keylist = new HashMap<String, KeysBean>();
         // 遍历statsItems STAT items:32:number 2446
-        Map<String, Map<String, String>> statsItems = MemCachedManager.getActiveClient().statsItems();
+        Map<String, Map<String, String>> statsItems = memCachedClient.statsItems();
         Map<String, String> statsItems_sub = null;
 
         String statsItems_sub_key = null;
@@ -137,8 +147,8 @@ public class MemCachedUtils {
                 if (statsItems_sub_key.toUpperCase().startsWith("items:".toUpperCase()) && statsItems_sub_key.toUpperCase().endsWith(":number".toUpperCase())) {
                     items_number = Integer.parseInt(statsItems_sub.get(statsItems_sub_key).trim());
                     // LOG.info(statsItems_sub_key+":=:"+items_number);
-                    statsCacheDump = MemCachedManager.getActiveClient().statsCacheDump(new String[] { keyName },
-                            Integer.parseInt(statsItems_sub_key.split(":")[1].trim()), items_number);
+                    statsCacheDump = memCachedClient.statsCacheDump(new String[] { keyName }, Integer.parseInt(statsItems_sub_key.split(":")[1].trim()),
+                            items_number);
                     for (Iterator<String> statsCacheDump_iterator = statsCacheDump.keySet().iterator(); statsCacheDump_iterator.hasNext();) {
                         statsCacheDump_sub = statsCacheDump.get(statsCacheDump_iterator.next());
                         LOG.info(statsCacheDump_sub.toString());

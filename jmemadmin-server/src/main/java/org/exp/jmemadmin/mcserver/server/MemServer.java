@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.server;
+package org.exp.jmemadmin.mcserver.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.exp.jmemadmin.common.Configs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
-import org.exp.jmemadmin.server.services.MCServerService;
+import org.exp.jmemadmin.mcserver.services.MCServerService;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.logging.LoggingFeature;

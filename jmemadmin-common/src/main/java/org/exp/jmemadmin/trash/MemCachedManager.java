@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.instance;
+package org.exp.jmemadmin.trash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class MemCachedManager {
         return activeClient;
     }
 
-    private static MemCachedClient initSocketIOPool(SockIOPool pool, String name, String[] servers) {
+    private static MemCachedClient initSocketIOPool(SockIOPool pool, String poolName, String[] servers) {
         pool.setServers(servers); // 设置memcached服务器地址
         // pool.setWeights(weights); //设置每个memcached服务器权重
         pool.setFailover(Configs.getPoolFailover()); // 当一个memcached服务器失效的时候是否去连接另一个memcached服务器.
@@ -52,8 +52,14 @@ public class MemCachedManager {
         pool.setMaintSleep(Configs.getPoolMaintSleep()); // 设置主线程睡眠时间，每30秒苏醒一次，维持连接池大小
         pool.initialize(); // 初始化连接池
         LOG.info("****************初始化连接池成功*******************");
-        MemCachedClient activeName = new MemCachedClient(name);
+        MemCachedClient activeName = new MemCachedClient(poolName);
         return activeName;
+    }
+
+    private static void initActiveMemcached(String[] servers) {
+        String activePoolName = Configs.getPoolMemnamePrefix() + ID.incrementAndGet();
+        activePool = SockIOPool.getInstance(activePoolName);
+        activeClient = initSocketIOPool(activePool, activePoolName, servers);
     }
 
     public static boolean start(String host, int port, int memorySize, boolean isMaster) throws Exception {
@@ -61,7 +67,7 @@ public class MemCachedManager {
         try {
             flag = HostCmdUtils.checkPortBySocket(host, port);
             if (flag) {// 端口未被占时
-                serversList.add(host + ":" + String.valueOf(port));
+                serversList.add(host + Constants.COLON_DELIMITER + String.valueOf(port));
                 String startupCmd = MemToolUtils.composeStartupCmd(host, port, memorySize);
                 HostCmdUtils.executeLocalCmd(startupCmd, null);
                 String readPidCmd = MemToolUtils.composeReadPidFileCmd(port);
@@ -121,9 +127,4 @@ public class MemCachedManager {
         return flag;
     }
 
-    private static void initActiveMemcached(String[] servers) {
-        String activeMemName = Configs.getPoolMemnamePrefix() + ID.incrementAndGet();
-        activePool = SockIOPool.getInstance(activeMemName);
-        activeClient = initSocketIOPool(activePool, activeMemName, servers);
-    }
 }
