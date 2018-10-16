@@ -88,9 +88,5 @@
 		<name>jmemadmin.rest.server.port</name>
 		<value>8725</value>
 	</property>
-	<property>
-		<name>jmemadmin.rest.agent.port</name>
-		<value>8726</value>
-	</property>
 	
 </configuration>

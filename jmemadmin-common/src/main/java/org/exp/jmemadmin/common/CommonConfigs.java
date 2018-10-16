@@ -45,8 +45,6 @@ public class CommonConfigs {
      */
     private static final String REST_SERVER_PORT_KEY = "jmemadmin.rest.server.port";
     private static final int DEFAULT_REST_SERVER_PORT_VALUE = 8725;
-    private static final String REST_AGENT_PORT_KEY = "jmemadmin.rest.agent.port";
-    private static final int DEFAULT_REST_AGENT_PORT_VALUE = 8726;
 
     /*
      * Monitor service configurations.
@@ -144,10 +142,6 @@ public class CommonConfigs {
 
     public static int getRESTfulServerPort() {
         return getConf().getInt(REST_SERVER_PORT_KEY, DEFAULT_REST_SERVER_PORT_VALUE);
-    }
-
-    public static int getRESTfulAGENTPort() {
-        return getConf().getInt(REST_AGENT_PORT_KEY, DEFAULT_REST_AGENT_PORT_VALUE);
     }
 
     public static int getMCHistoryLifetime() {
