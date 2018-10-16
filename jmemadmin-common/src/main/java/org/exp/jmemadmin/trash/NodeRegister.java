@@ -10,7 +10,7 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs.Ids;
-import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.apache.zookeeper.ZooKeeper;
 
@@ -44,7 +44,7 @@ public class NodeRegister extends Thread{
 	}
 	
 	public void connectZookeeper(String address) throws IOException, KeeperException, InterruptedException {
-		ZooKeeper zk = new ZooKeeper(Configs.getZKQuorum(), 5000, new Watcher() {			
+		ZooKeeper zk = new ZooKeeper(CommonConfigs.getZKQuorum(), 5000, new Watcher() {			
 			@Override
 			public void process(WatchedEvent event) {
 				// TODO Auto-generated method stub
@@ -54,7 +54,7 @@ public class NodeRegister extends Thread{
 		//关键方法，创建包含自增长id名称的目录，这个方法支持了分布式锁的实现
 		//四个参数：1、目录名称 2、目录文本信息 3、文件夹权限，Ids.OPEN_ACL_UNSAFE表示所有权限 
 		//4、目录类型，CreateMode.EPHEMERAL_SEQUENTIAL表示创建临时目录，session断开连接则目录自动删除
-		String createPath = zk.create(Configs.getZNodeRoot() + "/instance", address.getBytes(Constants.DEFAULT_ENCODING), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+		String createPath = zk.create(CommonConfigs.getZNodeRoot() + "/instance", address.getBytes(Constants.DEFAULT_ENCODING), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
 		LOG.info("*********create: " + createPath);
 		Thread.sleep(sleepTime);
 	}

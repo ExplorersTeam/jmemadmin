@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.jmemadmin.agent.AgentService;
-import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
 import org.exp.jmemadmin.common.utils.MemToolUtils;
@@ -107,7 +107,7 @@ public class MCAgentService implements AgentService {
         response.setCode(ResultStatus.FAILED.value());
 
         StringBuilder memNodePath = new StringBuilder();
-        String znodeRoot = Configs.getZNodeRoot();
+        String znodeRoot = CommonConfigs.getZNodeRoot();
         if (!znodeRoot.startsWith(Constants.SLASH_DELIMITER)) {
             memNodePath.append(Constants.SLASH_DELIMITER);
         }

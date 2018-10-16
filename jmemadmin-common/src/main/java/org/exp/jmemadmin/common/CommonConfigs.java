@@ -9,7 +9,7 @@ import org.apache.hadoop.conf.Configuration;
  * @author ChenJintong
  *
  */
-public class Configs {
+public class CommonConfigs {
     // Configuration file name.
     private static final String CONF_FILENAME = "jmemadmin-site.xml";
 
@@ -90,7 +90,7 @@ public class Configs {
         CONF.addResource(CONF_FILENAME);
     }
 
-    private Configs() {
+    private CommonConfigs() {
         // Do nothing.
     }
 

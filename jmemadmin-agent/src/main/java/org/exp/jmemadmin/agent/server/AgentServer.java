@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exp.jmemadmin.agent.services.MCAgentService;
-import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -29,7 +29,7 @@ public class AgentServer {
 
     private String hostAddress = null;
 
-    private int port = Configs.getRESTfulAGENTPort();
+    private int port = CommonConfigs.getRESTfulAGENTPort();
 
     private HttpServer httpServer = null;
 

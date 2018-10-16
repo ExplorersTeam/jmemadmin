@@ -6,7 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
-import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.exp.jmemadmin.mcserver.services.MCServerService;
@@ -22,7 +22,7 @@ public class MemServer {
     private static final Logger LOG = LoggerFactory.getLogger(MemServer.class);
 
     private String hostAddress = null;
-    private int port = Configs.getRESTfulServerPort();
+    private int port = CommonConfigs.getRESTfulServerPort();
     private HttpServer server = null;
 
     public MemServer() {

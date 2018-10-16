@@ -10,7 +10,7 @@ import org.apache.curator.framework.CuratorFrameworkFactory.Builder;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
-import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 
 /**
@@ -25,20 +25,20 @@ public class ZKUtils {
 
     static {
         Builder builder = CuratorFrameworkFactory.builder();
-        builder.connectString(Configs.getZKQuorum());
-        builder.connectionTimeoutMs(Configs.getZKConnectionTimeoutMS());
-        builder.sessionTimeoutMs(Configs.getZKSessionTimeoutMS());// session超时时间
+        builder.connectString(CommonConfigs.getZKQuorum());
+        builder.connectionTimeoutMs(CommonConfigs.getZKConnectionTimeoutMS());
+        builder.sessionTimeoutMs(CommonConfigs.getZKSessionTimeoutMS());// session超时时间
                                                                   // ms
-        builder.retryPolicy(new ExponentialBackoffRetry(Configs.getZKExponentialBackoffRetryBaseSleepTimeMS(), Configs.getZKMaxRetries(),
-                Configs.getZKExponentialBackoffRetryMaxSleepTimeMS()));// 重试策略
+        builder.retryPolicy(new ExponentialBackoffRetry(CommonConfigs.getZKExponentialBackoffRetryBaseSleepTimeMS(), CommonConfigs.getZKMaxRetries(),
+                CommonConfigs.getZKExponentialBackoffRetryMaxSleepTimeMS()));// 重试策略
         curator = builder.build();// 通过工厂创建连接
         curator.start();
         LOG.info("Curator initialized, state is [" + curator.getState().name() + "].");
 
         try {
-            boolean flag = checkExists(Configs.getZNodeRoot());
+            boolean flag = checkExists(CommonConfigs.getZNodeRoot());
             if (!flag) {
-                create(Configs.getZNodeRoot());
+                create(CommonConfigs.getZNodeRoot());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,7 +158,7 @@ public class ZKUtils {
     public static void markDeletedNode(String path) throws Exception {
         LOG.info("Marking node to be deleted,path is [" + path + "].");
         path = path.endsWith(Constants.SLASH_DELIMITER) ? path.substring(0, path.length() - 1) : path;
-        String markedPath = path + Configs.getZKDeletedNodeMark();
+        String markedPath = path + CommonConfigs.getZKDeletedNodeMark();
         create(markedPath, get(path));
         delete(path);
     }

@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
 import org.exp.jmemadmin.common.utils.MemToolUtils;
@@ -107,7 +107,7 @@ public class MemCachedManager {
         boolean flag = false;
         serversList.remove(host + ":" + String.valueOf(port));
         StringBuffer memNodePath = new StringBuffer();
-        memNodePath.append(Configs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
+        memNodePath.append(CommonConfigs.getZNodeRoot()).append(Constants.SLASH_DELIMITER).append(host).append(Constants.SLASH_DELIMITER).append(port);
         byte[] data = null;
         try {
             data = ZKUtils.get(memNodePath.toString());

@@ -10,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exp.jmemadmin.common.Configs;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
 import org.exp.jmemadmin.common.utils.MemToolUtils;
@@ -67,7 +67,7 @@ public class MCMonitor extends AbstractMonitor {
             LOG.info("Memcached instances are all normal.");
         } else {
             StringBuffer nodePartialPath = new StringBuffer();
-            nodePartialPath.append(MemToolUtils.unifyStartEndSlash(Configs.getZNodeRoot())).append(host).append(Constants.SLASH_DELIMITER);
+            nodePartialPath.append(MemToolUtils.unifyStartEndSlash(CommonConfigs.getZNodeRoot())).append(host).append(Constants.SLASH_DELIMITER);
             String partialPath = nodePartialPath.toString();
             for (int i = 0; i < deletedNodePorts.size(); i++) {
                 String nodePath = partialPath + deletedNodePorts.poll();
