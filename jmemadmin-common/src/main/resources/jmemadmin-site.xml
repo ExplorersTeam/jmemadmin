@@ -82,21 +82,5 @@
 		<value> -d -u root -c 1000 </value>
 	</property>
 
-	<!-- MemInstance attribute name configurations -->
-	<property>
-		<name>jmemadmin.memInstance.host.attribute.name</name>
-		<value>host</value>
-	</property>
-	<property>
-		<name>jmemadmin.memInstance.port.attribute.name</name>
-		<value>port</value>
-	</property>
-	<property>
-		<name>jmemadmin.memInstance.memSize.attribute.name</name>
-		<value>mem</value>
-	</property>
-	<property>
-		<name>jmemadmin.memInstance.isMaster.attribute.name</name>
-		<value>master</value>
-	</property>
+	
 </configuration>
