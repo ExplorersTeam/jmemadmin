@@ -17,6 +17,8 @@ import org.exp.jmemadmin.common.utils.MemToolUtils;
 import org.exp.jmemadmin.common.utils.ZKUtils;
 import org.exp.jmemadmin.monitor.common.MonitorConfig;
 
+import com.whalin.MemCached.SockIOPool;
+
 public class MCMonitor extends AbstractMonitor {
     private static final Log LOG = LogFactory.getLog(MCMonitor.class);
 
@@ -62,6 +64,8 @@ public class MCMonitor extends AbstractMonitor {
 
     @Override
     protected void report() {
+        String poolName = null;
+        String port = null;
         // TODO:added kafka plugin
         if (deletedNodePorts.isEmpty()) {
             LOG.info("Memcached instances are all normal.");
@@ -70,7 +74,11 @@ public class MCMonitor extends AbstractMonitor {
             nodePartialPath.append(MemToolUtils.unifyStartEndSlash(CommonConfigs.getZNodeRoot())).append(host).append(Constants.SLASH_DELIMITER);
             String partialPath = nodePartialPath.toString();
             for (int i = 0; i < deletedNodePorts.size(); i++) {
-                String nodePath = partialPath + deletedNodePorts.poll();
+                port = deletedNodePorts.poll();
+                // TODO:adjust pool name
+                poolName = CommonConfigs.getPoolMemnamePrefix() + host + Constants.COLON_DELIMITER + port;
+                SockIOPool.getInstance(poolName).shutDown();
+                String nodePath = partialPath + port;
                 LOG.warn("Memcached instance exception, node path is [" + nodePath + "]");
                 try {
                     ZKUtils.markDeletedNode(nodePath);

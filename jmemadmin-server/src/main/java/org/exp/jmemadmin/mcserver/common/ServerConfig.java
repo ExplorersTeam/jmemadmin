@@ -54,9 +54,6 @@ public class ServerConfig {
     private static final String SOCKIOPOOL_CONNECT_TIMEOUT_KEY = "jmemadmin.sockiopool.connect.timeout";
     private static final int DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_VALUE = 0;
 
-    private static final String SOCKIOPOOL_MEMNAME_PREFIX_KEY = "jmemadmin.sockiopool.memname.prefix";
-    private static final String DEFAULT_SOCKIOPOOL_MEMNAME_PREFIX_VALUE = "mem";
-
     private static final String SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_KEY = "jmemadmin.sockiopool.garbage.collection.interval.ms";
     private static final int DEFAULT_SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_VALUE = 1000000;
 
@@ -104,10 +101,6 @@ public class ServerConfig {
 
     public static int getPoolConnectTimeout() {
         return getConf().getInt(SOCKIOPOOL_CONNECT_TIMEOUT_KEY, DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_VALUE);
-    }
-
-    public static String getPoolMemnamePrefix() {
-        return getConf().getTrimmed(SOCKIOPOOL_MEMNAME_PREFIX_KEY, DEFAULT_SOCKIOPOOL_MEMNAME_PREFIX_VALUE);
     }
 
     public static int getPoolGCIntervalMs() {

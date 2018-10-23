@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.Header;
+import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.exp.jmemadmin.entity.MemInstance;
@@ -83,12 +84,12 @@ public class MCManager {
             LOG.error(e.getMessage(), e);
         }
         // TODO:check instance status code.
-        String server = host + Constants.COLON_DELIMITER + String.valueOf(port);
+        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(port);
         List<String> serversList = new ArrayList<>();
-        serversList.add(server);
+        serversList.add(serverKey);
         // TODO:adjust pool name
-        String poolName = ServerConfig.getPoolMemnamePrefix() + server;
-        historyPoolNames.put(server, poolName);
+        String poolName = CommonConfigs.getPoolMemnamePrefix() + serverKey;
+        historyPoolNames.put(serverKey, poolName);
         createMCClient(poolName, (String[]) serversList.toArray());
         return response;
     }
@@ -118,10 +119,10 @@ public class MCManager {
             LOG.error(e.getMessage(), e);
         }
         // TODO:check instance status code.
-        String server = host + Constants.COLON_DELIMITER + String.valueOf(port);
-        String poolName = historyPoolNames.get(server);
+        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(port);
+        String poolName = historyPoolNames.get(serverKey);
         shutdownPool(poolName);
-        historyPoolNames.remove(server);
+        historyPoolNames.remove(serverKey);
         return response;
     }
 

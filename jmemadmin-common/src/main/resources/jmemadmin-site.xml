@@ -62,7 +62,10 @@
 		<name>jmemadmin.monitor.thread.period.ms</name>
 		<value>5000</value>
 	</property>
-
+	<property>
+		<name>jmemadmin.sockiopool.memname.prefix</name>
+		<value>mem</value>
+	</property>
 
 	<!-- Memcached startup command configurations -->
 	<property>

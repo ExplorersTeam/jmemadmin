@@ -58,6 +58,9 @@ public class CommonConfigs {
     private static final String MONITOR_MC_STAT_INTERVAL_MS_KEY = "jmemadmin.monitor.mc.status.interval.ms";
     private static final int DEFAULT_MONITOR_MC_STAT_INTERVAL_MS_VALUE = 10000;
 
+    private static final String SOCKIOPOOL_MEMNAME_PREFIX_KEY = "jmemadmin.sockiopool.memname.prefix";
+    private static final String DEFAULT_SOCKIOPOOL_MEMNAME_PREFIX_VALUE = "mem";
+
     /*
      * Memcached startup command configurations.
      * /opt/memcached/1.5.9/memcached-1.5.9/memcached -d -m 200 -u root -l
@@ -140,6 +143,10 @@ public class CommonConfigs {
 
     public static int getMCStatMonitorIntervalMS() {
         return getConf().getInt(MONITOR_MC_STAT_INTERVAL_MS_KEY, DEFAULT_MONITOR_MC_STAT_INTERVAL_MS_VALUE);
+    }
+
+    public static String getPoolMemnamePrefix() {
+        return getConf().getTrimmed(SOCKIOPOOL_MEMNAME_PREFIX_KEY, DEFAULT_SOCKIOPOOL_MEMNAME_PREFIX_VALUE);
     }
 
     public static String getMCStartupShellPath() {
