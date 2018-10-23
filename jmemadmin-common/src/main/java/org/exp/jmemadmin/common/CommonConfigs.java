@@ -76,6 +76,22 @@ public class CommonConfigs {
     private static final String MC_STARTUP_CONFIGURABLE_PARAMETERS_KEY = "jmemadmin.mc.startup.configurable.parameters";
     private static final String DEFAULT_MC_STARTUP_CONFIGURABLE_PARAMETERS_VALUE = " -d -u root -c 1000 ";
 
+    /*
+     * MemInstance attribute name configurations
+     */
+    // TODO:wait to deleted
+    private static final String MC_INSTANCE_HOST_ATTRIBUTE_NAME = "";
+    private static final String DEFAULT_MC_INSTANCE_HOST_ATTRIBUTE_NAME = "host";
+
+    private static final String MC_INSTANCE_PORT_ATTRIBUTE_NAME = "";
+    private static final String DEFAULT_MC_INSTANCE_PORT_ATTRIBUTE_NAME = "port";
+
+    private static final String MC_INSTANCE_MEMSIZE_ATTRIBUTE_NAME = "";
+    private static final String DEFAULT_MC_INSTANCE_MEMSIZE_ATTRIBUTE_NAME = "size";
+
+    private static final String MC_INSTANCE_ISMASTER_ATTRIBUTE_NAME = "";
+    private static final String DEFAULT_MC_INSTANCE_ISMASTER_ATTRIBUTE_NAME = "master";
+
     private static final Configuration CONF = new Configuration();
 
     static {
@@ -156,6 +172,22 @@ public class CommonConfigs {
 
     public static String getMCStartupConfigurableParams() {
         return getConf().getTrimmed(MC_STARTUP_CONFIGURABLE_PARAMETERS_KEY, DEFAULT_MC_STARTUP_CONFIGURABLE_PARAMETERS_VALUE);
+    }
+
+    public static String getMCInstanceHostAttributeName() {
+        return getConf().getTrimmed(MC_INSTANCE_HOST_ATTRIBUTE_NAME, DEFAULT_MC_INSTANCE_HOST_ATTRIBUTE_NAME);
+    }
+
+    public static String getMCInstancePortAttributeName() {
+        return getConf().getTrimmed(MC_INSTANCE_PORT_ATTRIBUTE_NAME, DEFAULT_MC_INSTANCE_PORT_ATTRIBUTE_NAME);
+    }
+
+    public static String getMCInstanceMemSizeAttributeName() {
+        return getConf().getTrimmed(MC_INSTANCE_MEMSIZE_ATTRIBUTE_NAME, DEFAULT_MC_INSTANCE_MEMSIZE_ATTRIBUTE_NAME);
+    }
+
+    public static String getMCInstanceIsMasterAttributeName() {
+        return getConf().getTrimmed(MC_INSTANCE_ISMASTER_ATTRIBUTE_NAME, DEFAULT_MC_INSTANCE_ISMASTER_ATTRIBUTE_NAME);
     }
 
 }
