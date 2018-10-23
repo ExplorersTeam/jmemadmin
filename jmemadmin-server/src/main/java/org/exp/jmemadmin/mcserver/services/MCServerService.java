@@ -1,18 +1,16 @@
 package org.exp.jmemadmin.mcserver.services;
 
-import java.net.InetAddress;
-
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.exp.jmemadmin.common.Constants;
-import org.exp.jmemadmin.mcserver.MemCachedManager;
+import org.exp.jmemadmin.entity.MemInstance;
+import org.exp.jmemadmin.entity.Response;
+import org.exp.jmemadmin.entity.Response.ResultStatus;
+import org.exp.jmemadmin.mcserver.MCManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,26 +22,39 @@ public class MCServerService {
     private static final Logger LOG = LoggerFactory.getLogger(MCServerService.class);
 
     @POST
-    @Path("/start")
+    @Path(Constants.REST_SERVER_START_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-
-    public boolean startMemInstance(@QueryParam(Constants.PORT) int port, @DefaultValue("256") @QueryParam(Constants.MEMORY_SIZE) int memorySize,
-            @QueryParam(Constants.IS_MASTER) boolean isMaster) throws Exception {
-        String host = InetAddress.getLocalHost().getHostName();
-        boolean result = MemCachedManager.start(host, port, memorySize, isMaster);
-        return result;
+    public Response startMemInstance(MemInstance instance) {
+        Response response = new Response();
+        response.setCode(ResultStatus.FAILED.value());
+        try {
+            String result = MCManager.startMemInstance(instance);
+            // TODO:adjust result content.
+            response.setContent(result);
+            response.setCode(ResultStatus.SUCCESS.value());
+        } catch (Exception e) {
+            LOG.warn(e.getMessage());
+        }
+        return response;
     }
 
-    @GET
-
-    @Path("/stop")
-
+    @POST
+    @Path(Constants.REST_SERVER_STOP_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
-    public boolean stopMemInstance(@QueryParam(Constants.PORT) int port) throws Exception {
-        String host = InetAddress.getLocalHost().getHostName();
-        boolean result = MemCachedManager.stop(host, port);
-        return result;
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response stopMemInstance(MemInstance instance) {
+        Response response = new Response();
+        response.setCode(ResultStatus.FAILED.value());
+        try {
+            String result = MCManager.stopMemInstance(instance);
+            // TODO:adjust result content.
+            response.setContent(result);
+            response.setCode(ResultStatus.SUCCESS.value());
+        } catch (Exception e) {
+            LOG.warn(e.getMessage());
+        }
+        return response;
     }
 
 }
