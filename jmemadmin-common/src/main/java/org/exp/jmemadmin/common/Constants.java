@@ -23,17 +23,24 @@ public class Constants {
     public static final String SLASH_DELIMITER = "/";
     public static final String COLON_DELIMITER = ":";
     public static final String COMMAND_DELIMITER = " ";
-    public static String DEFAULT_CHART = "UTF-8";
 
     /**
      * Rest
      */
-    public static final String REST_AGENT_PATH = "/memcached/agent";
+    public static final String REST_AGENT_ROOT_PATH = "/memcached/agent";
+    public static final String REST_AGENT_START_SUBPATH = "/start";
+    public static final String REST_AGENT_STOP_SUBPATH = "/stop";
     public static final String REST_SERVER_PATH = "/memcached";
     public static final String PORT = "port";
     public static final String HOST_QUERY_KEY = "host";
     public static final String MEMORY_SIZE = "memorySize";
     public static final String IS_MASTER = "isMaster";
+
+    public static final String REQUEST_BODY_HOST_NAME = "host";
+    public static final String REQUEST_BODY_PORT_NAME = "port";
+    public static final String REQUEST_BODY_MEMSIZE_NAME = "mem";
+    public static final String REQUEST_BODY_ISMASTER_NAME = "master";
+
     /*
      * TODO Delete codes below.
      */
