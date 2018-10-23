@@ -59,7 +59,7 @@ public class MemCachedManager {
     }
 
     private static void initActiveMemcached(String[] servers) {
-        String activePoolName = ServerConfig.getPoolMemnamePrefix() + ID.incrementAndGet();
+        String activePoolName = CommonConfigs.getPoolMemnamePrefix() + ID.incrementAndGet();
         activePool = SockIOPool.getInstance(activePoolName);
         activeClient = initSocketIOPool(activePool, activePoolName, servers);
     }
@@ -79,7 +79,7 @@ public class MemCachedManager {
                 if (null == activePool) {
                     initActiveMemcached((String[]) serversList.toArray());
                 } else {
-                    String key = ServerConfig.getPoolMemnamePrefix() + ID.get();
+                    String key = CommonConfigs.getPoolMemnamePrefix() + ID.get();
                     historyPools.put(key, activePool);
                     Timer timer = new Timer();
                     TimerTask task = new TimerTask() {// 创建一个新的计时器任务

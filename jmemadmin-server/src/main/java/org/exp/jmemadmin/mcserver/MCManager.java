@@ -64,13 +64,14 @@ public class MCManager {
         SockIOPool.getInstance(poolName).shutDown();
     }
 
-    public String startMemInstance(MemInstance instance) {
+    public static String startMemInstance(MemInstance instance) {
         String host = instance.getHost();
-        int port = instance.getPort();
+        int instancePort = instance.getPort();
+        int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
 
         Map<String, Object> params = new ConcurrentHashMap<>();
         params.put(Constants.REQUEST_BODY_HOST_NAME, host);
-        params.put(Constants.REQUEST_BODY_PORT_NAME, port);
+        params.put(Constants.REQUEST_BODY_PORT_NAME, instancePort);
         params.put(Constants.REQUEST_BODY_MEMSIZE_NAME, instance.getMemSize());
         params.put(Constants.REQUEST_BODY_ISMASTER_NAME, instance.isMaster());
 
@@ -78,13 +79,13 @@ public class MCManager {
         startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
         String response = null;
         try {
-            URI uri = HTTPUtils.buildURI(host, port, startInstancePath.toString());
+            URI uri = HTTPUtils.buildURI(host, agentServicePort, startInstancePath.toString());
             response = HTTPUtils.sendPOSTRequest(uri, params, new Header[] {});
         } catch (URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }
         // TODO:check instance status code.
-        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(port);
+        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(instancePort);
         List<String> serversList = new ArrayList<>();
         serversList.add(serverKey);
         // TODO:adjust pool name
@@ -99,13 +100,14 @@ public class MCManager {
      * @param instance
      * @return
      */
-    public String stopMemInstance(MemInstance instance) {
+    public static String stopMemInstance(MemInstance instance) {
         String host = instance.getHost();
-        int port = instance.getPort();
+        int instancePort = instance.getPort();
+        int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
 
         Map<String, Object> params = new ConcurrentHashMap<>();
         params.put(Constants.REQUEST_BODY_HOST_NAME, host);
-        params.put(Constants.REQUEST_BODY_PORT_NAME, port);
+        params.put(Constants.REQUEST_BODY_PORT_NAME, instancePort);
         params.put(Constants.REQUEST_BODY_MEMSIZE_NAME, instance.getMemSize());
         params.put(Constants.REQUEST_BODY_ISMASTER_NAME, instance.isMaster());
 
@@ -113,13 +115,13 @@ public class MCManager {
         stopInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_STOP_SUBPATH);
         String response = null;
         try {
-            URI uri = HTTPUtils.buildURI(host, port, stopInstancePath.toString());
+            URI uri = HTTPUtils.buildURI(host, agentServicePort, stopInstancePath.toString());
             response = HTTPUtils.sendPOSTRequest(uri, params, new Header[] {});
         } catch (URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }
         // TODO:check instance status code.
-        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(port);
+        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(instancePort);
         String poolName = historyPoolNames.get(serverKey);
         shutdownPool(poolName);
         historyPoolNames.remove(serverKey);

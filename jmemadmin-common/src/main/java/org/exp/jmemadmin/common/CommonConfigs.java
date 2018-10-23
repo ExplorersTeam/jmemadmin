@@ -79,6 +79,12 @@ public class CommonConfigs {
     private static final String MC_STARTUP_CONFIGURABLE_PARAMETERS_KEY = "jmemadmin.mc.startup.configurable.parameters";
     private static final String DEFAULT_MC_STARTUP_CONFIGURABLE_PARAMETERS_VALUE = " -d -u root -c 1000 ";
 
+    /*
+     * RESTful service configurations.
+     */
+    private static final String REST_AGENT_PORT_KEY = "jmemadmin.rest.agent.port";
+    private static final int DEFAULT_REST_AGENT_PORT_VALUE = 8726;
+
     private static final Configuration CONF = new Configuration();
 
     static {
@@ -163,6 +169,10 @@ public class CommonConfigs {
 
     public static String getMCStartupConfigurableParams() {
         return getConf().getTrimmed(MC_STARTUP_CONFIGURABLE_PARAMETERS_KEY, DEFAULT_MC_STARTUP_CONFIGURABLE_PARAMETERS_VALUE);
+    }
+
+    public static int getRESTfulAGENTPort() {
+        return getConf().getInt(REST_AGENT_PORT_KEY, DEFAULT_REST_AGENT_PORT_VALUE);
     }
 
 }

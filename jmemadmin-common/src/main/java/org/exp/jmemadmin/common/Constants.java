@@ -31,6 +31,8 @@ public class Constants {
     public static final String REST_AGENT_START_SUBPATH = "/start";
     public static final String REST_AGENT_STOP_SUBPATH = "/stop";
     public static final String REST_SERVER_PATH = "/memcached";
+    public static final String REST_SERVER_START_SUBPATH = "/start";
+    public static final String REST_SERVER_STOP_SUBPATH = "/stop";
     public static final String PORT = "port";
     public static final String HOST_QUERY_KEY = "host";
     public static final String MEMORY_SIZE = "memorySize";
