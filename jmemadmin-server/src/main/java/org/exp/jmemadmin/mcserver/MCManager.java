@@ -1,5 +1,16 @@
 package org.exp.jmemadmin.mcserver;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.http.Header;
+import org.exp.jmemadmin.common.Constants;
+import org.exp.jmemadmin.common.utils.HTTPUtils;
+import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.mcserver.common.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +21,21 @@ import com.whalin.MemCached.SockIOPool;
 public class MCManager {
     private static final Logger LOG = LoggerFactory.getLogger(MCManager.class);
 
-    private static MemCachedClient activeClient = null;
+    private static Map<String, String> historyPoolNames = new ConcurrentHashMap<>();
 
     private MCManager() {
         // DO nothing
     }
 
-    public static MemCachedClient getActiveClient() {
-        return activeClient;
+    public static String getPoolName(String host, int port) {
+        String key = host + Constants.COLON_DELIMITER + String.valueOf(port);
+        String poolName = historyPoolNames.get(key);
+        return poolName;
+    }
+
+    public static MemCachedClient getClient(String poolName) {
+        MemCachedClient client = new MemCachedClient(poolName);
+        return client;
     }
 
     public static MemCachedClient createMCClient(String poolName, String[] servers) {
@@ -44,4 +62,67 @@ public class MCManager {
     public static void shutdownPool(String poolName) {
         SockIOPool.getInstance(poolName).shutDown();
     }
+
+    public String startMemInstance(MemInstance instance) {
+        String host = instance.getHost();
+        int port = instance.getPort();
+
+        Map<String, Object> params = new ConcurrentHashMap<>();
+        params.put(Constants.REQUEST_BODY_HOST_NAME, host);
+        params.put(Constants.REQUEST_BODY_PORT_NAME, port);
+        params.put(Constants.REQUEST_BODY_MEMSIZE_NAME, instance.getMemSize());
+        params.put(Constants.REQUEST_BODY_ISMASTER_NAME, instance.isMaster());
+
+        StringBuffer startInstancePath = new StringBuffer();
+        startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
+        String response = null;
+        try {
+            URI uri = HTTPUtils.buildURI(host, port, startInstancePath.toString());
+            response = HTTPUtils.sendPOSTRequest(uri, params, new Header[] {});
+        } catch (URISyntaxException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        // TODO:check instance status code.
+        String server = host + Constants.COLON_DELIMITER + String.valueOf(port);
+        List<String> serversList = new ArrayList<>();
+        serversList.add(server);
+        // TODO:adjust pool name
+        String poolName = ServerConfig.getPoolMemnamePrefix() + server;
+        historyPoolNames.put(server, poolName);
+        createMCClient(poolName, (String[]) serversList.toArray());
+        return response;
+    }
+
+    /**
+     *
+     * @param instance
+     * @return
+     */
+    public String stopMemInstance(MemInstance instance) {
+        String host = instance.getHost();
+        int port = instance.getPort();
+
+        Map<String, Object> params = new ConcurrentHashMap<>();
+        params.put(Constants.REQUEST_BODY_HOST_NAME, host);
+        params.put(Constants.REQUEST_BODY_PORT_NAME, port);
+        params.put(Constants.REQUEST_BODY_MEMSIZE_NAME, instance.getMemSize());
+        params.put(Constants.REQUEST_BODY_ISMASTER_NAME, instance.isMaster());
+
+        StringBuffer stopInstancePath = new StringBuffer();
+        stopInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_STOP_SUBPATH);
+        String response = null;
+        try {
+            URI uri = HTTPUtils.buildURI(host, port, stopInstancePath.toString());
+            response = HTTPUtils.sendPOSTRequest(uri, params, new Header[] {});
+        } catch (URISyntaxException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        // TODO:check instance status code.
+        String server = host + Constants.COLON_DELIMITER + String.valueOf(port);
+        String poolName = historyPoolNames.get(server);
+        shutdownPool(poolName);
+        historyPoolNames.remove(server);
+        return response;
+    }
+
 }
