@@ -17,28 +17,28 @@ import com.sun.jersey.spi.resource.Singleton;
  */
 @Deprecated
 @Singleton
-@Path(Constants.REST_AGENT_PATH)
+@Path(Constants.REST_AGENT_ROOT_PATH)
 public class MemAgentService {
     private static final Logger LOG = LoggerFactory.getLogger(MemAgentService.class);
     /*
      * @GET
-     * 
+     *
      * @Path("/start")
-     * 
+     *
      * @Produces(MediaType.APPLICATION_JSON) public boolean
      * startMemInstance(@QueryParam(Constants.PORT) int
      * port, @DefaultValue("256") @QueryParam(Constants.MEMORY_SIZE) int
      * memorySize,
-     * 
+     *
      * @QueryParam(Constants.IS_MASTER) boolean isMaster) throws Exception {
      * String host = InetAddress.getLocalHost().getHostName(); boolean result =
      * MemCachedManager.start(host, port, memorySize, isMaster); return result;
      * }
-     * 
+     *
      * @GET
-     * 
+     *
      * @Path("/stop")
-     * 
+     *
      * @Produces(MediaType.APPLICATION_JSON) public boolean
      * stopMemInstance(@QueryParam(Constants.PORT) int port) throws Exception {
      * String host = InetAddress.getLocalHost().getHostName(); boolean result =

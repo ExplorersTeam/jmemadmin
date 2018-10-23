@@ -72,7 +72,7 @@ public class HostCmdUtils {
             Runtime runtime = Runtime.getRuntime();
             process = runtime.exec(command);
             // process.waitFor(); // 方法阻塞, 等待命令执行完成（成功会返回0）
-            result = processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_CHART);
+            result = processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_ENCODING);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -101,7 +101,7 @@ public class HostCmdUtils {
             process = Runtime.getRuntime().exec(command, null, dir);// 执行命令,
                                                                     // 返回一个子进程对象（命令在子进程中执行）
             // process.waitFor();// 方法阻塞, 等待命令执行完成（成功会返回0）
-            result = processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_CHART);
+            result = processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_ENCODING);
 
         } finally {
             // 销毁子进程
@@ -118,7 +118,7 @@ public class HostCmdUtils {
             if (login()) {
                 Session session = conn.openSession();// 打开一个会话
                 session.execCommand(cmd);// 执行命令
-                result = processStdout(session.getStdout(), session.getStderr(), Constants.DEFAULT_CHART);
+                result = processStdout(session.getStdout(), session.getStderr(), Constants.DEFAULT_ENCODING);
                 // TODO:这里输出为空，待解决。。。
                 LOG.info("命令执行结果：[" + result + "]");
                 // if(StringUtils.isBlank(result)) {

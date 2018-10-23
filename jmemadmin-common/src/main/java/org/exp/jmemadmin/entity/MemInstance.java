@@ -3,23 +3,26 @@ package org.exp.jmemadmin.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.exp.jmemadmin.common.Constants;
+
 /**
  * Bean for memcached instance.
- * 
+ *
  * @author ZhangQingliang
  *
  */
 @XmlRootElement
 public class MemInstance {
-    @XmlElement(required = false)
+    @XmlElement(name = Constants.REQUEST_BODY_HOST_NAME, required = false)
     private String host;
 
+    @XmlElement(name = Constants.REQUEST_BODY_PORT_NAME)
     private int port = -1;
 
-    @XmlElement(name = "mem", required = false)
+    @XmlElement(name = Constants.REQUEST_BODY_MEMSIZE_NAME, required = false)
     private int memSize = -1;
 
-    @XmlElement(name = "master", required = false)
+    @XmlElement(name = Constants.REQUEST_BODY_ISMASTER_NAME, required = false)
     private boolean isMaster;
 
     public MemInstance() {

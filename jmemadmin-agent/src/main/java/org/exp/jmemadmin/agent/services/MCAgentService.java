@@ -30,7 +30,7 @@ import com.alibaba.fastjson.JSONObject;
  * Agent operations service.
  */
 @Singleton
-@Path(Constants.REST_AGENT_PATH)
+@Path(Constants.REST_AGENT_ROOT_PATH)
 public class MCAgentService implements AgentService {
     private static final Log LOG = LogFactory.getLog(AgentService.class);
 
@@ -39,7 +39,7 @@ public class MCAgentService implements AgentService {
     }
 
     @POST
-    @Path("start")
+    @Path(Constants.REST_AGENT_START_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
@@ -98,7 +98,7 @@ public class MCAgentService implements AgentService {
     }
 
     @POST
-    @Path("stop")
+    @Path(Constants.REST_AGENT_STOP_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
