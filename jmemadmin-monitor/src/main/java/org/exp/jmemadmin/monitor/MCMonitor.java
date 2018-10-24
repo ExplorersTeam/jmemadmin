@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
-import org.exp.jmemadmin.common.utils.MemToolUtils;
+import org.exp.jmemadmin.common.utils.MCToolUtils;
 import org.exp.jmemadmin.common.utils.ZKUtils;
 import org.exp.jmemadmin.monitor.common.MonitorConfig;
 
@@ -46,7 +46,7 @@ public class MCMonitor extends AbstractMonitor {
     @Override
     protected boolean check() {
         List<String> listPorts = new ArrayList<>();
-        listPorts = MemToolUtils.listZKNodePorts(host);
+        listPorts = MCToolUtils.listZKNodePorts(host);
         boolean portStateFlag;
         for (int i = 0; i < listPorts.size(); i++) {
             portStateFlag = false;
@@ -71,7 +71,7 @@ public class MCMonitor extends AbstractMonitor {
             LOG.info("Memcached instances are all normal.");
         } else {
             StringBuffer nodePartialPath = new StringBuffer();
-            nodePartialPath.append(MemToolUtils.unifyStartEndSlash(CommonConfigs.getZNodeRoot())).append(host).append(Constants.SLASH_DELIMITER);
+            nodePartialPath.append(MCToolUtils.unifyStartEndSlash(CommonConfigs.getZNodeRoot())).append(host).append(Constants.SLASH_DELIMITER);
             String partialPath = nodePartialPath.toString();
             for (int i = 0; i < deletedNodePorts.size(); i++) {
                 port = deletedNodePorts.poll();
