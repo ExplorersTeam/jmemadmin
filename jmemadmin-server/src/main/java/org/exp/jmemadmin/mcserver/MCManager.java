@@ -23,6 +23,7 @@ public class MCManager {
     private static final Logger LOG = LoggerFactory.getLogger(MCManager.class);
 
     private static Map<String, String> historyPoolNames = new ConcurrentHashMap<>();
+    private static Map<String, MemCachedClient> historyClients = new ConcurrentHashMap<>();
 
     private MCManager() {
         // DO nothing
@@ -35,7 +36,8 @@ public class MCManager {
     }
 
     public static MemCachedClient getClient(String poolName) {
-        MemCachedClient client = new MemCachedClient(poolName);
+        // MemCachedClient client = new MemCachedClient(poolName);
+        MemCachedClient client = historyClients.get(poolName);
         return client;
     }
 
@@ -91,7 +93,8 @@ public class MCManager {
         // TODO:adjust pool name
         String poolName = CommonConfigs.getPoolMemnamePrefix() + serverKey;
         historyPoolNames.put(serverKey, poolName);
-        createMCClient(poolName, (String[]) serversList.toArray());
+        MemCachedClient client = createMCClient(poolName, (String[]) serversList.toArray());
+        historyClients.put(poolName, client);
         return response;
     }
 
@@ -125,6 +128,7 @@ public class MCManager {
         String poolName = historyPoolNames.get(serverKey);
         shutdownPool(poolName);
         historyPoolNames.remove(serverKey);
+        historyClients.remove(poolName);
         return response;
     }
 

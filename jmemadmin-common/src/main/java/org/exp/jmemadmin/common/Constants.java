@@ -33,6 +33,10 @@ public class Constants {
     public static final String REST_SERVER_PATH = "/memcached";
     public static final String REST_SERVER_START_SUBPATH = "/start";
     public static final String REST_SERVER_STOP_SUBPATH = "/stop";
+    public static final String REST_SERVER_GET_SUBPATH = "/get";
+    public static final String REST_SERVER_SET_SUBPATH = "/set";
+    public static final String REST_SERVER_STAT_SUBPATH = "/stat";
+    public static final String REST_SERVER_LIST_SUBPATH = "/list";
     public static final String PORT = "port";
     public static final String HOST_QUERY_KEY = "host";
     public static final String MEMORY_SIZE = "memorySize";
