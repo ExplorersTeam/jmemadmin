@@ -19,15 +19,15 @@ import com.whalin.MemCached.MemCachedClient;
  * @author ZhangQingliang
  *
  */
-public class MemCachedUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(MemCachedUtils.class);
+public class MCOperationUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(MCOperationUtils.class);
 
     // TODO:测试直接用获取静态实例后的一个静态变量，当pool启停时会不会还是用的原来pool中的实例。
     // private static MemCachedClient memCachedClient =
     // MemCachedManager.getActiveClient();
     private static MemCachedClient memCachedClient;
 
-    private MemCachedUtils() {
+    private MCOperationUtils() {
         // DO nothing
     }
 
@@ -177,13 +177,13 @@ public class MemCachedUtils {
 
     public static void main() {
         // TODO:若要在此运行，要先初始化SocketIOPool哦
-        MemCachedUtils.flushAll();
+        MCOperationUtils.flushAll();
         Object value = "dfafafafaf";
-        MemCachedUtils.add("name13", value);
-        MemCachedUtils.set("name3", value);
-        boolean existence = MemCachedUtils.keyExists("name3");
+        MCOperationUtils.add("name13", value);
+        MCOperationUtils.set("name3", value);
+        boolean existence = MCOperationUtils.keyExists("name3");
         LOG.info("existence= " + existence);
-        String result = (String) MemCachedUtils.get("name1");
+        String result = (String) MCOperationUtils.get("name1");
         LOG.info("get运行结果为：name3 = " + result);
     }
 }

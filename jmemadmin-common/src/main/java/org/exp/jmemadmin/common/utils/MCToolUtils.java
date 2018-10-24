@@ -11,8 +11,8 @@ import org.exp.jmemadmin.entity.ZKNodeInfo;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class MemToolUtils {
-    private static final Log LOG = LogFactory.getLog(MemToolUtils.class);
+public class MCToolUtils {
+    private static final Log LOG = LogFactory.getLog(MCToolUtils.class);
 
     public static String unifyStartEndSlash(String path) {
         StringBuffer unifiedPath = new StringBuffer();

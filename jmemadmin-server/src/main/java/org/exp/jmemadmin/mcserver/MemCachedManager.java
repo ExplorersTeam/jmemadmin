@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HostCmdUtils;
-import org.exp.jmemadmin.common.utils.MemToolUtils;
+import org.exp.jmemadmin.common.utils.MCToolUtils;
 import org.exp.jmemadmin.common.utils.ZKUtils;
 import org.exp.jmemadmin.entity.ZKNodeInfo;
 import org.exp.jmemadmin.mcserver.common.ServerConfig;
@@ -70,11 +70,11 @@ public class MemCachedManager {
             flag = HostCmdUtils.checkPortBySocket(host, port);
             if (flag) {// 端口未被占时
                 serversList.add(host + Constants.COLON_DELIMITER + String.valueOf(port));
-                String startupCmd = MemToolUtils.composeStartupCmd(host, port, memorySize);
+                String startupCmd = MCToolUtils.composeStartupCmd(host, port, memorySize);
                 HostCmdUtils.executeLocalCmd(startupCmd, null);
-                String readPidCmd = MemToolUtils.composeReadPidFileCmd(port);
+                String readPidCmd = MCToolUtils.composeReadPidFileCmd(port);
                 String pid = HostCmdUtils.executeLocalCmd(readPidCmd, null);
-                String removePidCmd = MemToolUtils.composeRemovePidFileCmd(port);
+                String removePidCmd = MCToolUtils.composeRemovePidFileCmd(port);
                 HostCmdUtils.executeLocalCmd(removePidCmd, null);
                 if (null == activePool) {
                     initActiveMemcached((String[]) serversList.toArray());
@@ -92,7 +92,7 @@ public class MemCachedManager {
                     timer.schedule(task, 100000);// 在指定延迟后执行指定的任务。task是所要安排的任务。10000是执行任务前的延迟时间，单位是毫秒。
                     initActiveMemcached((String[]) serversList.toArray());
                 }
-                String nodePath = MemToolUtils.composeNodePath(host, port);
+                String nodePath = MCToolUtils.composeNodePath(host, port);
                 ZKNodeInfo zkNodeInfo = new ZKNodeInfo(startupCmd, Integer.valueOf(pid), isMaster);
                 byte[] data = JSON.toJSONString(zkNodeInfo).getBytes();
                 ZKUtils.create(nodePath, data);
