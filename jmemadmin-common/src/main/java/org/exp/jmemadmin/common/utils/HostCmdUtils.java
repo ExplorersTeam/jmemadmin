@@ -103,14 +103,13 @@ public class HostCmdUtils {
                                                                     // 返回一个子进程对象（命令在子进程中执行）
             // process.waitFor();// 方法阻塞, 等待命令执行完成（成功会返回0）
             result = processStdout(process.getInputStream(), process.getErrorStream(), Constants.DEFAULT_ENCODING);
-
         } finally {
             // 销毁子进程
             if (process != null) {
                 process.destroy();
             }
         }
-        return result.toString();
+        return result;
     }
 
     public static String executeRemoteCmd(String cmd) {
@@ -153,14 +152,25 @@ public class HostCmdUtils {
             bufrError = new BufferedReader(new InputStreamReader(error, charset));
             // 读取输出
             String line = null;
+            boolean flag = false;
             while ((line = bufrIn.readLine()) != null) {
-                result.append(line).append('\n');
+                if (flag == false) {
+                    result.append(line);
+                } else {
+                    result.append("\n").append(line);
+                }
+                flag = true;
             }
+            flag = false;
             while ((line = bufrError.readLine()) != null) {
-                result.append(line).append('\n');
+                if (flag == false) {
+                    result.append(line);
+                } else {
+                    result.append("\n").append(line);
+                }
+                flag = true;
             }
-            LOG.info("********** result **********");
-            LOG.info(result.toString());
+            LOG.info("Result is [" + result.toString() + "].");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {

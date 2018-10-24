@@ -39,19 +39,22 @@ public class MCToolUtils {
         StringBuffer cmd = new StringBuffer();
         cmd.append(CommonConfigs.getMCStartupShellPath()).append(" -l ").append(host).append(" -p ").append(port).append(" -m ").append(memorySize)
                 .append(Constants.COMMAND_DELIMITER).append(" -P ").append(CommonConfigs.getInsPIDDir()).append(Constants.SLASH_DELIMITER)
-                .append(CommonConfigs.getInsPrefix()).append(port).append(CommonConfigs.getInsSuffix()).append(CommonConfigs.getMCStartupConfigurableParams());
+                .append(CommonConfigs.getInsPrefix()).append(port).append(CommonConfigs.getInsSuffix()).append(Constants.COMMAND_DELIMITER)
+                .append(CommonConfigs.getMCStartupConfigurableParams());
         return cmd.toString();
     }
 
     public static String composeReadPidFileCmd(int port) {
         StringBuffer cmd = new StringBuffer();
-        cmd.append("cat ").append(CommonConfigs.getInsPIDDir()).append(CommonConfigs.getInsPrefix()).append(port).append(CommonConfigs.getInsSuffix());
+        cmd.append("head -1 ").append(CommonConfigs.getInsPIDDir()).append(Constants.SLASH_DELIMITER).append(CommonConfigs.getInsPrefix()).append(port)
+                .append(CommonConfigs.getInsSuffix());
         return cmd.toString();
     }
 
     public static String composeRemovePidFileCmd(int port) {
         StringBuffer cmd = new StringBuffer();
-        cmd.append("rm ").append(CommonConfigs.getInsPIDDir()).append(CommonConfigs.getInsPrefix()).append(port).append(CommonConfigs.getInsSuffix());
+        cmd.append("rm ").append(CommonConfigs.getInsPIDDir()).append(Constants.SLASH_DELIMITER).append(CommonConfigs.getInsPrefix()).append(port)
+                .append(CommonConfigs.getInsSuffix());
         return cmd.toString();
     }
 

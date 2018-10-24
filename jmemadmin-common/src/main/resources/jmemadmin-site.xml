@@ -52,7 +52,7 @@
 	</property>
 	<property>
 		<name>jmemadmin.mc.instance.pid.dir</name>
-		<value>/tmp/</value>
+		<value>/tmp</value>
 	</property>
 	<property>
 		<name>jmemadmin.monitor.thread.initaldelay.ms</name>

@@ -50,7 +50,7 @@ public class CommonConfigs {
     private static final String DEFAULT_MC_INS_SUFFIX_VALUE = ".pid";
 
     private static final String MC_INS_PID_DIR_KEY = "jmemadmin.mc.instance.pid.dir";
-    private static final String DEFAULT_MC_INS_PID_DIR_VALUE = "/tmp/";
+    private static final String DEFAULT_MC_INS_PID_DIR_VALUE = "/tmp";
 
     private static final String MC_HISTORY_LIFETIME_KEY = "jmemadmin.mc.history.lifetime";
     private static final int DEFAULT_MC_HISTORY_LIFETIME_VALUE = 5;

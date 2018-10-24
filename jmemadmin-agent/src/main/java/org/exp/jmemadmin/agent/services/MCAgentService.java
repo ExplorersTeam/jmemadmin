@@ -68,15 +68,18 @@ public class MCAgentService implements AgentService {
 
         try {
             String startupCmd = MCToolUtils.composeStartupCmd(getHost(), port, memSize);
+            LOG.info("StartupCmd is [" + startupCmd + "].");
             HostCmdUtils.executeLocalCmd(startupCmd, null);
 
             String readPidCmd = MCToolUtils.composeReadPidFileCmd(port);
+            LOG.info("ReadPidCmd is [" + readPidCmd + "].");
             int pid = Integer.parseInt(HostCmdUtils.executeLocalCmd(readPidCmd, null));
 
             String removePidCmd = MCToolUtils.composeRemovePidFileCmd(port);
+            LOG.info("RemovePidCmd is [" + removePidCmd + "].");
             HostCmdUtils.executeLocalCmd(removePidCmd, null);
 
-            if (HostCmdUtils.isPortUsing(getHost(), port)) {// 再次通过检测端口来判断是否启动成功
+            if (!HostCmdUtils.isPortUsing(getHost(), port)) {// 再次通过检测端口来判断是否启动成功
                 LOG.error("Instance process start failed.");
                 response.setContent("Instance process start failed.");
                 return response;
