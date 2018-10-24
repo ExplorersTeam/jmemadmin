@@ -47,15 +47,15 @@ public class MCMonitor extends AbstractMonitor {
     protected boolean check() {
         List<String> listPorts = new ArrayList<>();
         listPorts = MCToolUtils.listZKNodePorts(host);
-        boolean portStateFlag;
+        boolean isPortUsingflag;
         for (int i = 0; i < listPorts.size(); i++) {
-            portStateFlag = false;
+            isPortUsingflag = false;
             try {
-                portStateFlag = HostCmdUtils.checkPortBySocket(host, Integer.valueOf(listPorts.get(i)));
-            } catch (NumberFormatException | UnknownHostException e) {
+                isPortUsingflag = HostCmdUtils.isPortUsing(host, Integer.valueOf(listPorts.get(i)));
+            } catch (NumberFormatException e) {
                 LOG.error(e.getMessage(), e);
             }
-            if (false == portStateFlag) {
+            if (false == isPortUsingflag) {
                 deletedNodePorts.offer(listPorts.get(i));
             }
         }

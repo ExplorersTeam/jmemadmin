@@ -56,7 +56,7 @@ public class MCAgentService implements AgentService {
         int port = instance.getPort();
 
         try {
-            if (!HostCmdUtils.checkPortBySocket(getHost(), port)) {
+            if (HostCmdUtils.isPortUsing(getHost(), port)) {
                 response.setContent("Port [" + port + "] conflict.");
                 return response;
             }
@@ -76,7 +76,7 @@ public class MCAgentService implements AgentService {
             String removePidCmd = MCToolUtils.composeRemovePidFileCmd(port);
             HostCmdUtils.executeLocalCmd(removePidCmd, null);
 
-            if (!HostCmdUtils.checkPortBySocket(getHost(), port)) {// 再次通过检测端口来判断是否启动成功
+            if (HostCmdUtils.isPortUsing(getHost(), port)) {// 再次通过检测端口来判断是否启动成功
                 LOG.error("Instance process start failed.");
                 response.setContent("Instance process start failed.");
                 return response;

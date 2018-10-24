@@ -24,6 +24,7 @@ import ch.ethz.ssh2.Session;
  */
 public class HostCmdUtils {
     private static final Logger LOG = LoggerFactory.getLogger(HostCmdUtils.class);
+
     private static Connection conn;
     private static String ip;
     private static String userName;
@@ -194,17 +195,17 @@ public class HostCmdUtils {
      * @param host.
      *            it can be IP or domainName
      * @param port
-     * @return using:false not using:true
+     * @return using:true unusing:false
      * @throws UnknownHostException
      */
-    public static boolean checkPortBySocket(String host, int port) throws UnknownHostException {
+    public static boolean isPortUsing(String host, int port) {
         boolean flag = false;
-        InetAddress Address = InetAddress.getByName(host);
         try {
-            Socket socket = new Socket(Address, port); // 建立一个Socket连接
+            InetAddress address = InetAddress.getByName(host);
+            Socket socket = new Socket(address, port); // 建立一个Socket连接
             flag = true;
-        } catch (IOException e) {
-            //
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
         }
         return flag;
     }
@@ -219,10 +220,14 @@ public class HostCmdUtils {
 
     // TODO:Delete codes below. Just for test.
     public static void main(String[] args) throws Exception {
-        HostCmdUtils.executeLocalCmd("ls", null);
-        HostCmdUtils.executeLocalCmd("java -version");
-        HostCmdUtils.executeLocalCmd("ps -ax|grep memcached|grep 12301", null);
-        HostCmdUtils.executeLocalCmd("ps -ax|grep memcached|grep 12301");
-        HostCmdUtils.executeRemoteCmd("ps -ef|grep memcached|grep 12301|grep -v grep");
+        boolean flag = HostCmdUtils.isPortUsing("10.142.90.152", Integer.parseInt(args[0]));
+        LOG.info("port-" + args[0] + "is using : " + flag);
+        // HostCmdUtils.executeLocalCmd("ls", null);
+        // HostCmdUtils.executeLocalCmd("java -version");
+        // HostCmdUtils.executeLocalCmd("ps -ax|grep memcached|grep 12301",
+        // null);
+        // HostCmdUtils.executeLocalCmd("ps -ax|grep memcached|grep 12301");
+        // HostCmdUtils.executeRemoteCmd("ps -ef|grep memcached|grep 12301|grep
+        // -v grep");
     }
 }

@@ -67,8 +67,8 @@ public class MemCachedManager {
     public static boolean start(String host, int port, int memorySize, boolean isMaster) throws Exception {
         boolean flag = false;
         try {
-            flag = HostCmdUtils.checkPortBySocket(host, port);
-            if (flag) {// 端口未被占时
+            flag = HostCmdUtils.isPortUsing(host, port);
+            if (!flag) {// 端口未被占时
                 serversList.add(host + Constants.COLON_DELIMITER + String.valueOf(port));
                 String startupCmd = MCToolUtils.composeStartupCmd(host, port, memorySize);
                 HostCmdUtils.executeLocalCmd(startupCmd, null);
@@ -100,7 +100,7 @@ public class MemCachedManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return HostCmdUtils.checkPortBySocket(host, port);// 再次通过检测端口来判断是否启动成功
+        return !HostCmdUtils.isPortUsing(host, port);// 再次通过检测端口来判断是否启动成功
     }
 
     public static boolean stop(String host, int port) {
