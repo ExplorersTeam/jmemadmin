@@ -28,7 +28,7 @@ public class ZKUtils {
         builder.connectString(CommonConfigs.getZKQuorum());
         builder.connectionTimeoutMs(CommonConfigs.getZKConnectionTimeoutMS());
         builder.sessionTimeoutMs(CommonConfigs.getZKSessionTimeoutMS());// session超时时间
-                                                                  // ms
+        // ms
         builder.retryPolicy(new ExponentialBackoffRetry(CommonConfigs.getZKExponentialBackoffRetryBaseSleepTimeMS(), CommonConfigs.getZKMaxRetries(),
                 CommonConfigs.getZKExponentialBackoffRetryMaxSleepTimeMS()));// 重试策略
         curator = builder.build();// 通过工厂创建连接
@@ -53,10 +53,10 @@ public class ZKUtils {
         Stat stat = curator.checkExists().forPath(path);// 判断指定路径是否存在
         boolean existence = false;
         if (null == stat) {
-            LOG.info("********The path of [" + path + "] isn't existed********");
+            LOG.info("ZK path [" + path + "] isn't existed.");
         } else {
             existence = true;
-            LOG.info("********The path of [" + path + "] is existed********");
+            LOG.info("ZK path [" + path + "] is existed.");
         }
         return existence;
     }
@@ -151,7 +151,7 @@ public class ZKUtils {
 
     /**
      * Mark deleted ZNode
-     * 
+     *
      * @param path
      * @throws Exception
      */

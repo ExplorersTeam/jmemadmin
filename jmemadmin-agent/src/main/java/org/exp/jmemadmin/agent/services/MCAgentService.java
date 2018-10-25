@@ -126,14 +126,13 @@ public class MCAgentService implements AgentService {
             return response;
         }
         String znodePath = memNodePath.toString();
-        LOG.info("Got instance ZNode path, value is [" + znodePath + "].");
 
         try {
             byte[] data = ZKUtils.get(znodePath);
             ZKNodeInfo zkNodeInfo = JSONObject.parseObject(data, ZKNodeInfo.class);
 
             int pid = zkNodeInfo.getInstancePid();
-            LOG.info("Got instance process ID, value is [" + pid + "], now KILL it.");
+            LOG.info("Got instance process ID, value is [" + pid + "], now kill it.");
             ZKUtils.delete(znodePath);// 删除节点
 
             String killPidCmd = "kill " + pid;
@@ -143,6 +142,7 @@ public class MCAgentService implements AgentService {
                 HostCmdUtils.executeLocalCmd(killPidCmd);
                 flag = HostCmdUtils.executeLocalCmd(grepPidCmd).isEmpty();
             }
+            response.setContent("stop instance success.");
             response.setCode(ResultStatus.SUCCESS.value());
             return response;
         } catch (Exception e) {

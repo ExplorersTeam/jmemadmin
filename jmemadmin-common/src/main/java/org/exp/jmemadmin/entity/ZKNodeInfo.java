@@ -2,7 +2,7 @@ package org.exp.jmemadmin.entity;
 
 /**
  * Bean for ZooKeeper ZNode information.
- * 
+ *
  * @author ZhangQingliang
  *
  */
@@ -11,6 +11,16 @@ public class ZKNodeInfo {
     private String instanceCmd;
     private int instancePid;
     private boolean isMaster;
+
+    public ZKNodeInfo() {
+        super();
+    }
+
+    public ZKNodeInfo(String instanceCmd, int instancePid) {
+        super();
+        this.instanceCmd = instanceCmd;
+        this.instancePid = instancePid;
+    }
 
     public ZKNodeInfo(String instanceCmd, int instancePid, boolean isMaster) {
         super();
