@@ -160,6 +160,9 @@ public class ZKUtils {
         LOG.info("Marking node to be deleted,path is [" + path + "].");
         path = path.endsWith(Constants.SLASH_DELIMITER) ? path.substring(0, path.length() - 1) : path;
         String markedPath = path + CommonConfigs.getZKDeletedNodeMark();
+        if (checkExists(markedPath)) {
+            delete(markedPath);
+        }
         create(markedPath, get(path));
         delete(path);
     }
