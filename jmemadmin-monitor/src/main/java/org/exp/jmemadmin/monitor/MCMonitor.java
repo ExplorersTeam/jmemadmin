@@ -88,7 +88,9 @@ public class MCMonitor extends AbstractMonitor {
                 LOG.info("PoolName is [" + poolName + "].");
                 // TODO:wait to debug 2 methods.
                 // SockIOPool.getInstance(poolName).shutDown();
-                // historyPools.get(poolName).shutDown();
+                if (historyPools.containsKey(poolName)) {
+                    historyPools.get(poolName).shutDown();
+                }
                 String nodePath = partialPath + port;
                 try {
                     ZKUtils.markDeletedNode(nodePath);
