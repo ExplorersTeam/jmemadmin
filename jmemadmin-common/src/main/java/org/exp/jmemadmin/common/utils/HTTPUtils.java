@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -19,6 +20,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.exp.jmemadmin.common.Constants;
+import org.exp.jmemadmin.entity.Response;
+import org.exp.jmemadmin.entity.Response.ResultStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,7 +137,7 @@ public class HTTPUtils {
         return client.execute(get).getStatusLine().getStatusCode();
     }
 
-    public static String sendPOSTRequest(URI uri, String body) throws ParseException, ClientProtocolException, IOException {
+    public static String sendPOSTRequestTmp(URI uri, String body) throws ParseException, ClientProtocolException, IOException {
         LOG.info("Send HTTP POST request, URI is [" + uri.toString() + "].");
         String response = null;
         HttpPost post = new HttpPost();
@@ -146,6 +149,27 @@ public class HTTPUtils {
             post.setEntity(new StringEntity(body, Constants.DEFAULT_ENCODING));
         }
         response = EntityUtils.toString(client.execute(post).getEntity(), Constants.DEFAULT_ENCODING);
+        return response;
+    }
+
+    public static Response sendPOSTRequest(URI uri, String body) throws ParseException, ClientProtocolException, IOException {
+        LOG.info("Send HTTP POST request, URI is [" + uri.toString() + "].");
+        HttpPost post = new HttpPost();
+        post.setURI(uri);
+        // post.setHeader("Content-type", "application/json;charset=utf-8");
+        post.setHeader("Content-Type", "application/json");
+        if (null != body) {
+            LOG.info("Request body is [" + body + "].");
+            post.setEntity(new StringEntity(body, Constants.DEFAULT_ENCODING));
+        }
+        Response response = new Response();
+        HttpResponse httpResponse = client.execute(post);
+        if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            response.setCode(ResultStatus.SUCCESS.value());
+        } else {
+            response.setCode(ResultStatus.FAILED.value());
+        }
+        response.setContent(EntityUtils.toString(httpResponse.getEntity(), Constants.DEFAULT_ENCODING));
         return response;
     }
 }

@@ -10,7 +10,6 @@ import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.MCManager;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
-import org.exp.jmemadmin.entity.Response.ResultStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +25,10 @@ public class MCServerService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response startMemInstance(MemInstance instance) {
-        Response response = new Response();
-        response.setCode(ResultStatus.FAILED.value());
+        Response response = null;
         try {
-            String result = MCManager.startMemInstance(instance);
-            // TODO:adjust result content.
-            response.setContent(result);
-            response.setCode(ResultStatus.SUCCESS.value());
+            LOG.info("[[[[[]]]]]");
+            response = MCManager.startMemInstance(instance);
         } catch (Exception e) {
             LOG.warn(e.getMessage());
         }
@@ -44,13 +40,9 @@ public class MCServerService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response stopMemInstance(MemInstance instance) {
-        Response response = new Response();
-        response.setCode(ResultStatus.FAILED.value());
+        Response response = null;
         try {
-            String result = MCManager.stopMemInstance(instance);
-            // TODO:adjust result content.
-            response.setContent(result);
-            response.setCode(ResultStatus.SUCCESS.value());
+            response = MCManager.stopMemInstance(instance);
         } catch (Exception e) {
             LOG.warn(e.getMessage());
         }

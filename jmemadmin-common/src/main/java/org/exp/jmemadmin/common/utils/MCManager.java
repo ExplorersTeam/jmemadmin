@@ -13,6 +13,7 @@ import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.RequestBody;
+import org.exp.jmemadmin.entity.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +74,7 @@ public class MCManager {
         SockIOPool.getInstance(poolName).shutDown();
     }
 
-    public static String executeRequest(MemInstance instance, String requestPath) {
+    public static Response executeRequest(MemInstance instance, String requestPath) {
         String host = instance.getHost();
         int instancePort = instance.getPort();
         int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
@@ -87,20 +88,22 @@ public class MCManager {
         String body = JSONObject.toJSONString(requestBody);
         LOG.info("Request body is [" + body + "].");
 
-        String response = null;
+        Response response = null;
         try {
             URI uri = HTTPUtils.buildURI(host, agentServicePort, requestPath);
             response = HTTPUtils.sendPOSTRequest(uri, body);
+            LOG.info("Response is [" + response.toString() + "].");
         } catch (URISyntaxException | ParseException | IOException e) {
             LOG.error(e.getMessage(), e);
         }
         return response;
     }
 
-    public static String startMemInstance(MemInstance instance) {
+    public static Response startMemInstance(MemInstance instance) {
         StringBuffer startInstancePath = new StringBuffer();
         startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
-        String response = executeRequest(instance, startInstancePath.toString());
+        Response response = executeRequest(instance, startInstancePath.toString());
+        LOG.info("Response of startMemInstance is [" + response + "].");
         // TODO:check instance status code.
         String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
         List<String> serversList = new ArrayList<>();
@@ -113,10 +116,10 @@ public class MCManager {
         return response;
     }
 
-    public static String stopMemInstance(MemInstance instance) {
+    public static Response stopMemInstance(MemInstance instance) {
         StringBuffer stopInstancePath = new StringBuffer();
         stopInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_STOP_SUBPATH);
-        String response = executeRequest(instance, stopInstancePath.toString());
+        Response response = executeRequest(instance, stopInstancePath.toString());
         LOG.info("Response of stopMemInstance is [" + response + "].");
         // TODO:check instance status code.
         String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());

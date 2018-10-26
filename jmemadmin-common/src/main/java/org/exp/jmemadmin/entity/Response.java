@@ -7,7 +7,7 @@ import org.exp.jmemadmin.common.utils.DateUtils;
 
 /**
  * Bean for response.
- * 
+ *
  * @author ZhangQingliang
  *
  */
@@ -67,6 +67,11 @@ public class Response {
 
     public void setTime(String time) {
         // Do nothing.
+    }
+
+    @Override
+    public String toString() {
+        return "Response [code=" + code + ", content=" + content + ", time=" + time + "]";
     }
 
     public enum ResultStatus {
