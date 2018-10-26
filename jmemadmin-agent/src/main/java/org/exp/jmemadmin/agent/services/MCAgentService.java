@@ -133,7 +133,7 @@ public class MCAgentService implements AgentService {
 
             int pid = zkNodeInfo.getInstancePid();
             LOG.info("Got instance process ID, value is [" + pid + "], now kill it.");
-            ZKUtils.delete(znodePath);// 删除节点
+            ZKUtils.markDeletedNode(znodePath);// 打标删除节点
 
             String killPidCmd = "kill " + pid;
             String grepPidCmd = "ps -ef|grep -v grep|grep " + pid;

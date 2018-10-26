@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.http.Header;
 import org.apache.http.ParseException;
 import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
@@ -74,63 +73,36 @@ public class MCManager {
         SockIOPool.getInstance(poolName).shutDown();
     }
 
-    public static String startMemInstance(MemInstance instance) {
+    public static String executeRequest(MemInstance instance, String requestPath) {
         String host = instance.getHost();
         int instancePort = instance.getPort();
         int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
-
         RequestBody requestBody = new RequestBody();
         requestBody.setHost(host);
         requestBody.setPort(instancePort);
         requestBody.setMem(instance.getMemSize());
         requestBody.setMaster(instance.isMaster());
+
         LOG.info("host:[" + host + "];port:[" + instancePort + "]");
         String body = JSONObject.toJSONString(requestBody);
         LOG.info("Request body is [" + body + "].");
-        StringBuffer startInstancePath = new StringBuffer();
-        startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
+
         String response = null;
         try {
-            URI uri = HTTPUtils.buildURI(host, agentServicePort, startInstancePath.toString());
+            URI uri = HTTPUtils.buildURI(host, agentServicePort, requestPath);
             response = HTTPUtils.sendPOSTRequest(uri, body);
         } catch (URISyntaxException | ParseException | IOException e) {
             LOG.error(e.getMessage(), e);
         }
-        // TODO:check instance status code.
-        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(instancePort);
-        List<String> serversList = new ArrayList<>();
-        serversList.add(serverKey);
-        // TODO:adjust pool name
-        String poolName = CommonConfigs.getPoolMemnamePrefix() + serverKey;
-        historyPoolNames.put(serverKey, poolName);
-        MemCachedClient client = createMCClient(poolName, (String[]) serversList.toArray());
-        historyClients.put(poolName, client);
         return response;
     }
 
-    // TODO:wait to adjust or delete.
-    public static String startMemInstanceBAK(MemInstance instance) {
-        String host = instance.getHost();
-        int instancePort = instance.getPort();
-        int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
-
-        Map<String, Object> params = new ConcurrentHashMap<>();
-        params.put(Constants.REQUEST_BODY_HOST_NAME, host);
-        params.put(Constants.REQUEST_BODY_PORT_NAME, instancePort);
-        params.put(Constants.REQUEST_BODY_MEMSIZE_NAME, instance.getMemSize());
-        params.put(Constants.REQUEST_BODY_ISMASTER_NAME, instance.isMaster());
-
+    public static String startMemInstance(MemInstance instance) {
         StringBuffer startInstancePath = new StringBuffer();
         startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
-        String response = null;
-        try {
-            URI uri = HTTPUtils.buildURI(host, agentServicePort, startInstancePath.toString());
-            response = HTTPUtils.sendPOSTRequestBAK(uri, params, new Header[] {});
-        } catch (URISyntaxException e) {
-            LOG.error(e.getMessage(), e);
-        }
+        String response = executeRequest(instance, startInstancePath.toString());
         // TODO:check instance status code.
-        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(instancePort);
+        String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
         List<String> serversList = new ArrayList<>();
         serversList.add(serverKey);
         // TODO:adjust pool name
@@ -141,35 +113,15 @@ public class MCManager {
         return response;
     }
 
-    /**
-     *
-     * @param instance
-     * @return
-     */
     public static String stopMemInstance(MemInstance instance) {
-        String host = instance.getHost();
-        int instancePort = instance.getPort();
-        int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
-
-        Map<String, Object> params = new ConcurrentHashMap<>();
-        params.put(Constants.REQUEST_BODY_HOST_NAME, host);
-        params.put(Constants.REQUEST_BODY_PORT_NAME, instancePort);
-        params.put(Constants.REQUEST_BODY_MEMSIZE_NAME, instance.getMemSize());
-        params.put(Constants.REQUEST_BODY_ISMASTER_NAME, instance.isMaster());
-
         StringBuffer stopInstancePath = new StringBuffer();
         stopInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_STOP_SUBPATH);
-        String response = null;
-        try {
-            URI uri = HTTPUtils.buildURI(host, agentServicePort, stopInstancePath.toString());
-            response = HTTPUtils.sendPOSTRequestBAK(uri, params, new Header[] {});
-        } catch (URISyntaxException e) {
-            LOG.error(e.getMessage(), e);
-        }
+        String response = executeRequest(instance, stopInstancePath.toString());
+        LOG.info("Response of stopMemInstance is [" + response + "].");
         // TODO:check instance status code.
-        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(instancePort);
+        String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
         String poolName = historyPoolNames.get(serverKey);
-        shutdownPool(poolName);
+        // shutdownPool(poolName);
         historyPools.remove(poolName);
         historyPoolNames.remove(serverKey);
         historyClients.remove(poolName);

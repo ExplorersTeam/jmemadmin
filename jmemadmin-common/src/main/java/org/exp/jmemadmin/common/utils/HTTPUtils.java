@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -15,13 +12,11 @@ import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.exp.jmemadmin.common.Constants;
 import org.slf4j.Logger;
@@ -153,40 +148,4 @@ public class HTTPUtils {
         response = EntityUtils.toString(client.execute(post).getEntity(), Constants.DEFAULT_ENCODING);
         return response;
     }
-
-    /**
-     * Send a HTTP POST request and get response body string.
-     *
-     * @param uri
-     * @param params
-     * @param headers
-     * @return
-     */
-    // TODO:wait to adjust or delete.
-    public static String sendPOSTRequestBAK(URI uri, Map<String, Object> params, Header... headers) {
-        LOG.info("Send HTTP POST request, URI is [" + uri.toString() + "].");
-        String response = null;
-        HttpPost post = new HttpPost();
-        post.setURI(uri);
-        for (Header header : headers) {
-            post.setHeader(header);
-        }
-        try {
-            List<NameValuePair> pairs = null;
-            if (params != null && !params.isEmpty()) {
-                pairs = new ArrayList<NameValuePair>(params.size());
-                for (String key : params.keySet()) {
-                    pairs.add(new BasicNameValuePair(key, params.get(key).toString()));
-                }
-            }
-            if (pairs != null && pairs.size() > 0) {
-                post.setEntity(new UrlEncodedFormEntity(pairs, Constants.DEFAULT_ENCODING));
-            }
-            response = EntityUtils.toString(client.execute(post).getEntity(), Constants.DEFAULT_ENCODING);
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return response;
-    }
-
 }
