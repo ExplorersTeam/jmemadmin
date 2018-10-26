@@ -1,5 +1,6 @@
 package org.exp.jmemadmin.common.utils;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -8,12 +9,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.Header;
+import org.apache.http.ParseException;
 import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.entity.MemInstance;
+import org.exp.jmemadmin.entity.RequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONObject;
 import com.whalin.MemCached.MemCachedClient;
 import com.whalin.MemCached.SockIOPool;
 
@@ -75,6 +79,41 @@ public class MCManager {
         int instancePort = instance.getPort();
         int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
 
+        RequestBody requestBody = new RequestBody();
+        requestBody.setHost(host);
+        requestBody.setPort(instancePort);
+        requestBody.setMem(instance.getMemSize());
+        requestBody.setMaster(instance.isMaster());
+        LOG.info("host:[" + host + "];port:[" + instancePort + "]");
+        String body = JSONObject.toJSONString(requestBody);
+        LOG.info("Request body is [" + body + "].");
+        StringBuffer startInstancePath = new StringBuffer();
+        startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
+        String response = null;
+        try {
+            URI uri = HTTPUtils.buildURI(host, agentServicePort, startInstancePath.toString());
+            response = HTTPUtils.sendPOSTRequest(uri, body);
+        } catch (URISyntaxException | ParseException | IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        // TODO:check instance status code.
+        String serverKey = host + Constants.COLON_DELIMITER + String.valueOf(instancePort);
+        List<String> serversList = new ArrayList<>();
+        serversList.add(serverKey);
+        // TODO:adjust pool name
+        String poolName = CommonConfigs.getPoolMemnamePrefix() + serverKey;
+        historyPoolNames.put(serverKey, poolName);
+        MemCachedClient client = createMCClient(poolName, (String[]) serversList.toArray());
+        historyClients.put(poolName, client);
+        return response;
+    }
+
+    // TODO:wait to adjust or delete.
+    public static String startMemInstanceBAK(MemInstance instance) {
+        String host = instance.getHost();
+        int instancePort = instance.getPort();
+        int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
+
         Map<String, Object> params = new ConcurrentHashMap<>();
         params.put(Constants.REQUEST_BODY_HOST_NAME, host);
         params.put(Constants.REQUEST_BODY_PORT_NAME, instancePort);
@@ -86,7 +125,7 @@ public class MCManager {
         String response = null;
         try {
             URI uri = HTTPUtils.buildURI(host, agentServicePort, startInstancePath.toString());
-            response = HTTPUtils.sendPOSTRequest(uri, params, new Header[] {});
+            response = HTTPUtils.sendPOSTRequestBAK(uri, params, new Header[] {});
         } catch (URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }
@@ -123,7 +162,7 @@ public class MCManager {
         String response = null;
         try {
             URI uri = HTTPUtils.buildURI(host, agentServicePort, stopInstancePath.toString());
-            response = HTTPUtils.sendPOSTRequest(uri, params, new Header[] {});
+            response = HTTPUtils.sendPOSTRequestBAK(uri, params, new Header[] {});
         } catch (URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         }

@@ -151,7 +151,7 @@ public class ZKUtils {
     }
 
     /**
-     * Mark deleted ZNode
+     * Mark deleted ZNode 注意：同一端口只保留对应的最新删除的实例节点
      *
      * @param path
      * @throws Exception

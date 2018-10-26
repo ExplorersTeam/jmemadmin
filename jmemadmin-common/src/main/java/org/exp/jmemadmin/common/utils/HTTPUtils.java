@@ -12,11 +12,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -136,6 +139,21 @@ public class HTTPUtils {
         return client.execute(get).getStatusLine().getStatusCode();
     }
 
+    public static String sendPOSTRequest(URI uri, String body) throws ParseException, ClientProtocolException, IOException {
+        LOG.info("Send HTTP POST request, URI is [" + uri.toString() + "].");
+        String response = null;
+        HttpPost post = new HttpPost();
+        post.setURI(uri);
+        // post.setHeader("Content-type", "application/json;charset=utf-8");
+        post.setHeader("Content-Type", "application/json");
+        if (null != body) {
+            LOG.info("Request body is [" + body + "].");
+            post.setEntity(new StringEntity(body, Constants.DEFAULT_ENCODING));
+        }
+        response = EntityUtils.toString(client.execute(post).getEntity(), Constants.DEFAULT_ENCODING);
+        return response;
+    }
+
     /**
      * Send a HTTP POST request and get response body string.
      *
@@ -144,7 +162,8 @@ public class HTTPUtils {
      * @param headers
      * @return
      */
-    public static String sendPOSTRequest(URI uri, Map<String, Object> params, Header... headers) {
+    // TODO:wait to adjust or delete.
+    public static String sendPOSTRequestBAK(URI uri, Map<String, Object> params, Header... headers) {
         LOG.info("Send HTTP POST request, URI is [" + uri.toString() + "].");
         String response = null;
         HttpPost post = new HttpPost();

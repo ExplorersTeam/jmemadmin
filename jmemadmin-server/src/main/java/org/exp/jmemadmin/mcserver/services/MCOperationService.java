@@ -45,11 +45,11 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_SET_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object setMCRecord(@BeanParam MemInstance instance, @QueryParam("key") String key, @QueryParam("value") Object value) {
+    public boolean setMCRecord(@BeanParam MemInstance instance, @QueryParam("key") String key, @QueryParam("value") String value) {
         String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
         MemCachedClient client = MCManager.getClient(poolName);
         MCOperationUtils.setMemCachedClient(client);
-        Object result = MCOperationUtils.set(key, value);
+        boolean result = MCOperationUtils.set(key, value);
         return result;
     }
 
