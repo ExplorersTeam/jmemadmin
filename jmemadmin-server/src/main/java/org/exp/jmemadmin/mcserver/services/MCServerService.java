@@ -7,10 +7,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.exp.jmemadmin.common.Constants;
+import org.exp.jmemadmin.common.utils.MCManager;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
 import org.exp.jmemadmin.entity.Response.ResultStatus;
-import org.exp.jmemadmin.mcserver.MCManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

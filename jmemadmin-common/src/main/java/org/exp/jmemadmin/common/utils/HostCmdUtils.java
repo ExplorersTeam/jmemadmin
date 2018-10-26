@@ -218,9 +218,9 @@ public class HostCmdUtils {
             flag = true;
             LOG.info("Port [" + port + "] is using.");
         } catch (UnknownHostException e1) {
-            LOG.info(e1.getMessage(), e1);
+            // LOG.info(e1.getMessage(), e1);
         } catch (IOException e2) {
-            LOG.info(e2.getMessage(), e2);
+            // LOG.info(e2.getMessage(), e2);
         }
         return flag;
     }

@@ -13,10 +13,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.exp.jmemadmin.common.Constants;
+import org.exp.jmemadmin.common.utils.MCManager;
 import org.exp.jmemadmin.common.utils.MCOperationUtils;
 import org.exp.jmemadmin.entity.KeysBean;
 import org.exp.jmemadmin.entity.MemInstance;
-import org.exp.jmemadmin.mcserver.MCManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
