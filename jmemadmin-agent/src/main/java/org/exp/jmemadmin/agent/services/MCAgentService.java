@@ -60,7 +60,7 @@ public class MCAgentService implements AgentService {
                 response.setContent("Port [" + port + "] conflict.");
                 return response;
             }
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             response.setContent(e.getMessage());
             return response;

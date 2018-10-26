@@ -208,14 +208,19 @@ public class HostCmdUtils {
      * @return using:true unusing:false
      * @throws UnknownHostException
      */
+    @SuppressWarnings("resource")
     public static boolean isPortUsing(String host, int port) {
         boolean flag = false;
         try {
             InetAddress address = InetAddress.getByName(host);
-            Socket socket = new Socket(address, port); // 建立一个Socket连接
+            @SuppressWarnings("unused")
+            Socket socket = new Socket(address, port);// 建立一个Socket连接
             flag = true;
-        } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.info("Port [" + port + "] is using.");
+        } catch (UnknownHostException e1) {
+            LOG.info(e1.getMessage(), e1);
+        } catch (IOException e2) {
+            LOG.info(e2.getMessage(), e2);
         }
         return flag;
     }

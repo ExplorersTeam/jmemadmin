@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,12 +50,10 @@ public class MCMonitor extends AbstractMonitor {
         listPorts = MCToolUtils.listZKNodePorts(host);
         boolean isPortUsingflag;
         for (int i = 0; i < listPorts.size(); i++) {
-            isPortUsingflag = false;
-            try {
-                isPortUsingflag = HostCmdUtils.isPortUsing(host, Integer.valueOf(listPorts.get(i)));
-            } catch (NumberFormatException e) {
-                LOG.error(e.getMessage(), e);
-            }
+            LOG.info("Monitor port : [" + listPorts.get(i) + "].");
+            isPortUsingflag = true;
+            isPortUsingflag = HostCmdUtils.isPortUsing(host, Integer.parseInt(listPorts.get(i)));
+            LOG.info("isPortUsingflag : [" + isPortUsingflag + "].");
             if (false == isPortUsingflag) {
                 deletedNodePorts.offer(listPorts.get(i));
             }
@@ -64,12 +63,14 @@ public class MCMonitor extends AbstractMonitor {
 
     @Override
     protected void report() {
+        LOG.info("Come into report function");
         String poolName = null;
         String port = null;
         // TODO:added kafka plugin
         if (deletedNodePorts.isEmpty()) {
             LOG.info("Memcached instances are all normal.");
         } else {
+            LOG.info("Abnormal memcached instance ports : [" + deletedNodePorts.toString() + "].");
             StringBuffer nodePartialPath = new StringBuffer();
             nodePartialPath.append(MCToolUtils.unifyStartEndSlash(CommonConfigs.getZNodeRoot())).append(host).append(Constants.SLASH_DELIMITER);
             String partialPath = nodePartialPath.toString();
@@ -92,6 +93,6 @@ public class MCMonitor extends AbstractMonitor {
     public static void main(String[] args) {
         Runnable monitor = new MCMonitor();
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleAtFixedRate(monitor, MonitorConfig.getMonitorThreadInitaldelay(), MonitorConfig.getMonitorThreadPeriod(), null);
+        service.scheduleAtFixedRate(monitor, MonitorConfig.getMonitorThreadInitaldelay(), MonitorConfig.getMonitorThreadPeriod(), TimeUnit.MILLISECONDS);
     }
 }

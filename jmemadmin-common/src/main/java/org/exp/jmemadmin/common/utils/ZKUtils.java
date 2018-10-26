@@ -135,6 +135,7 @@ public class ZKUtils {
      */
     public static List<String> list(String path) throws Exception {
         LOG.info("List ZNode children, path is [" + path + "].");
+        LOG.info("List ZNode children : [" + curator.getChildren().forPath(path).toString() + "].");
         return curator.getChildren().forPath(path);
     }
 
