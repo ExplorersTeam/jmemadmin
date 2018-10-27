@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
 import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.entity.MemInstance;
@@ -49,8 +50,11 @@ public class MCManager {
     }
 
     public static MemCachedClient createMCClient(String poolName, String[] servers) {
+        LOG.info("Come into createMCClient function.");
         SockIOPool pool = SockIOPool.getInstance(poolName);
+        LOG.info("Come into createMCClient function.");
         pool.setServers(servers); // 设置memcached服务器地址
+        LOG.info("Come into createMCClient function.");
         // pool.setWeights(weights); //设置每个memcached服务器权重
         pool.setFailover(CommonConfigs.getPoolFailover()); // 当一个memcached服务器失效的时候是否去连接另一个memcached服务器.
         pool.setInitConn(CommonConfigs.getPoolInitConns()); // 初始化时对每个服务器建立的连接数目
@@ -74,7 +78,8 @@ public class MCManager {
         SockIOPool.getInstance(poolName).shutDown();
     }
 
-    public static Response executeRequest(MemInstance instance, String requestPath) {
+    public static Response executeRequest(MemInstance instance, String requestPath)
+            throws URISyntaxException, ParseException, ClientProtocolException, IOException {
         String host = instance.getHost();
         int instancePort = instance.getPort();
         int agentServicePort = CommonConfigs.getRESTfulAGENTPort();
@@ -88,46 +93,56 @@ public class MCManager {
         String body = JSONObject.toJSONString(requestBody);
         LOG.info("Request body is [" + body + "].");
 
-        Response response = null;
-        try {
-            URI uri = HTTPUtils.buildURI(host, agentServicePort, requestPath);
-            response = HTTPUtils.sendPOSTRequest(uri, body);
-            LOG.info("Response is [" + response.toString() + "].");
-        } catch (URISyntaxException | ParseException | IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
+        URI uri = HTTPUtils.buildURI(host, agentServicePort, requestPath);
+        Response response = HTTPUtils.sendPOSTRequest(uri, body);
+        LOG.info("Response is [" + response.toString() + "].");
         return response;
     }
 
     public static Response startMemInstance(MemInstance instance) {
         StringBuffer startInstancePath = new StringBuffer();
         startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
-        Response response = executeRequest(instance, startInstancePath.toString());
-        LOG.info("Response of startMemInstance is [" + response + "].");
-        // TODO:check instance status code.
-        String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
-        List<String> serversList = new ArrayList<>();
-        serversList.add(serverKey);
-        // TODO:adjust pool name
-        String poolName = CommonConfigs.getPoolMemnamePrefix() + serverKey;
-        historyPoolNames.put(serverKey, poolName);
-        MemCachedClient client = createMCClient(poolName, (String[]) serversList.toArray());
-        historyClients.put(poolName, client);
+        Response response = null;
+        try {
+            response = executeRequest(instance, startInstancePath.toString());
+            LOG.info("Response of normal startMemInstance is [" + response + "].");
+            String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
+            List<String> serversList = new ArrayList<String>();
+            serversList.add(serverKey);
+            // TODO:adjust pool name
+            String poolName = CommonConfigs.getPoolMemnamePrefix() + serverKey;
+            historyPoolNames.put(serverKey, poolName);
+            LOG.info("serverKey is [" + serverKey + "]; poolname is [" + poolName + "]; historyPoolNames is [" + historyPoolNames + "].");
+            MemCachedClient client = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
+            historyClients.put(poolName, client);
+            LOG.info("historyClients is [" + historyClients.toString() + "].");
+        } catch (ParseException | URISyntaxException | IOException e) {
+            LOG.info("Response of Exception startMemInstance is [" + response + "].");
+            LOG.error(e.getMessage(), e);
+        }
         return response;
     }
 
     public static Response stopMemInstance(MemInstance instance) {
         StringBuffer stopInstancePath = new StringBuffer();
         stopInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_STOP_SUBPATH);
-        Response response = executeRequest(instance, stopInstancePath.toString());
-        LOG.info("Response of stopMemInstance is [" + response + "].");
-        // TODO:check instance status code.
-        String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
-        String poolName = historyPoolNames.get(serverKey);
-        // shutdownPool(poolName);
-        historyPools.remove(poolName);
-        historyPoolNames.remove(serverKey);
-        historyClients.remove(poolName);
+        Response response = null;
+        try {
+            response = executeRequest(instance, stopInstancePath.toString());
+            LOG.info("Response of normal stopMemInstance is [" + response + "].");
+            String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
+            LOG.info("serverKey is [" + serverKey + "]; historyPoolNames is [" + historyPoolNames.toString() + "].");
+            if (historyPoolNames.containsKey(serverKey)) {
+                String poolName = historyPoolNames.get(serverKey);
+                // shutdownPool(poolName);
+                historyPools.remove(poolName);
+                historyPoolNames.remove(serverKey);
+                historyClients.remove(poolName);
+            }
+        } catch (ParseException | URISyntaxException | IOException e) {
+            LOG.info("Response of Exception stopMemInstance is [" + response + "].");
+            LOG.error(e.getMessage(), e);
+        }
         return response;
     }
 

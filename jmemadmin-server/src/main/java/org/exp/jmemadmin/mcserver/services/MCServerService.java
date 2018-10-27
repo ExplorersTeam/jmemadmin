@@ -24,7 +24,7 @@ public class MCServerService {
     @Path(Constants.REST_SERVER_START_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response startMemInstance(MemInstance instance) {
+    public Response startService(MemInstance instance) {
         Response response = null;
         try {
             LOG.info("[[[[[]]]]]");
@@ -39,10 +39,11 @@ public class MCServerService {
     @Path(Constants.REST_SERVER_STOP_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response stopMemInstance(MemInstance instance) {
+    public Response stopService(MemInstance instance) {
         Response response = null;
         try {
             response = MCManager.stopMemInstance(instance);
+            LOG.info("Response of stopService is [" + response + "].");
         } catch (Exception e) {
             LOG.warn(e.getMessage());
         }
