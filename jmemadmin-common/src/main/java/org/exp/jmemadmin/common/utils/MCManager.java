@@ -50,11 +50,8 @@ public class MCManager {
     }
 
     public static MemCachedClient createMCClient(String poolName, String[] servers) {
-        LOG.info("Come into createMCClient function.");
         SockIOPool pool = SockIOPool.getInstance(poolName);
-        LOG.info("Come into createMCClient function.");
         pool.setServers(servers); // 设置memcached服务器地址
-        LOG.info("Come into createMCClient function.");
         // pool.setWeights(weights); //设置每个memcached服务器权重
         pool.setFailover(CommonConfigs.getPoolFailover()); // 当一个memcached服务器失效的时候是否去连接另一个memcached服务器.
         pool.setInitConn(CommonConfigs.getPoolInitConns()); // 初始化时对每个服务器建立的连接数目
@@ -134,7 +131,8 @@ public class MCManager {
             LOG.info("serverKey is [" + serverKey + "]; historyPoolNames is [" + historyPoolNames.toString() + "].");
             if (historyPoolNames.containsKey(serverKey)) {
                 String poolName = historyPoolNames.get(serverKey);
-                // shutdownPool(poolName);
+                shutdownPool(poolName);
+                LOG.info("PoolName [" + poolName + "] shutdown success.");
                 historyPools.remove(poolName);
                 historyPoolNames.remove(serverKey);
                 historyClients.remove(poolName);

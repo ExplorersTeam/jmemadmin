@@ -41,7 +41,7 @@ public class CommonConfigs {
     private static final boolean DEFAULT_SOCKIOPOOL_ALIVE_CHECK_VALUE = true;
 
     private static final String SOCKIOPOOL_MAX_IDLE_KEY = "jmemadmin.sockiopool.max.idle";
-    private static final int DEFAULT_SOCKIOPOOL_MAX_IDLE_VALUE = 1000 * 30 * 30;
+    private static final int DEFAULT_SOCKIOPOOL_MAX_IDLE_VALUE = 900000;
 
     private static final String SOCKIOPOOL_CONNECT_TIMEOUT_KEY = "jmemadmin.sockiopool.connect.timeout";
     private static final int DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_VALUE = 0;

@@ -27,8 +27,8 @@ public class MCServerService {
     public Response startService(MemInstance instance) {
         Response response = null;
         try {
-            LOG.info("[[[[[]]]]]");
             response = MCManager.startMemInstance(instance);
+            LOG.info("Response of startService is [" + response + "].");
         } catch (Exception e) {
             LOG.warn(e.getMessage());
         }

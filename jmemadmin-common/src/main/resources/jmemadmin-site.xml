@@ -34,7 +34,7 @@
 	</property>
 	<property>
 		<name>jmemadmin.sockiopool.max.idle</name>
-		<value>1000*30*30</value>
+		<value>900000</value>
 	</property>
 	<property>
 		<name>jmemadmin.sockiopool.connect.timeout</name>
