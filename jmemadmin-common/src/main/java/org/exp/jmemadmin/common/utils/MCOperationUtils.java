@@ -25,7 +25,7 @@ public class MCOperationUtils {
     // TODO:测试直接用获取静态实例后的一个静态变量，当pool启停时会不会还是用的原来pool中的实例。
     // private static MemCachedClient memCachedClient =
     // MemCachedManager.getActiveClient();
-    private static MemCachedClient memCachedClient;
+    private static MemCachedClient memCachedClient = null;
 
     private MCOperationUtils() {
         // DO nothing
@@ -43,9 +43,9 @@ public class MCOperationUtils {
         boolean flag = false;
         flag = memCachedClient.add(key, value);
         if (flag == false) {
-            LOG.info(key + "is already existed!");
+            LOG.info("Key [" + key + "] is already existed!");
         } else {
-            LOG.info("add [" + key + "]success!");
+            LOG.info("Add [" + key + "]success!");
         }
         return flag;
     }
@@ -58,9 +58,9 @@ public class MCOperationUtils {
         boolean flag = false;
         flag = memCachedClient.set(key, value);
         if (flag == false) {
-            LOG.info("*******set [" + key + "] fail!*******");
+            LOG.info("Set [" + key + "] fail!");
         } else {
-            LOG.info("*******set [" + key + "] success!*******");
+            LOG.info("Set [" + key + "] success!");
         }
         return flag;
     }
@@ -75,9 +75,9 @@ public class MCOperationUtils {
         boolean flag = false;
         flag = memCachedClient.set(key, value, expiry);
         if (flag == false) {
-            LOG.info("*******set [" + key + "] fail!*******");
+            LOG.info("Set [" + key + "] fail!");
         } else {
-            LOG.info("*******set [" + key + "] success!*******");
+            LOG.info("Set [" + key + "] success!");
         }
         return flag;
     }
@@ -100,15 +100,13 @@ public class MCOperationUtils {
 
     public static Map<String, Map<String, String>> stats() {
         Map<String, Map<String, String>> serversStatus = memCachedClient.stats();
-        LOG.info("***********************ServersStatus************************");
-        LOG.info(serversStatus.values().toString());
+        LOG.info("ServersStatus is [" + serversStatus.values().toString() + "].");
         return serversStatus;
     }
 
     public static Map<String, Map<String, String>> stats(String[] servers) {
         Map<String, Map<String, String>> serversStatus = memCachedClient.stats(servers);
-        LOG.info("***********************ServersStatus************************");
-        LOG.info(serversStatus.values().toString());
+        LOG.info("ServersStatus is [" + serversStatus.values().toString() + "].");
         return serversStatus;
     }
 
@@ -170,8 +168,7 @@ public class MCOperationUtils {
                 }
             }
         }
-        LOG.info("****************listKeys******************");
-        LOG.info(keylist.values().toString());
+        LOG.info("ListKeys are [" + keylist.values().toString() + "].");
         return keylist;
     }
 

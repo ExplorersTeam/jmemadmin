@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.sun.jersey.spi.resource.Singleton;
 import com.whalin.MemCached.MemCachedClient;
 
-//TODO:wait to test
 @Singleton
 @Path(Constants.REST_SERVER_PATH)
 public class MCOperationService {
@@ -33,7 +31,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_GET_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getMCRecordByKey(@BeanParam MemInstance instance, @QueryParam("key") String key) {
+    public Object getMCRecordByKey(MemInstance instance, @QueryParam("key") String key) {
         String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
         MemCachedClient client = MCManager.getClient(poolName);
         MCOperationUtils.setMemCachedClient(client);
@@ -45,7 +43,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_SET_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean setMCRecord(@BeanParam MemInstance instance, @QueryParam("key") String key, @QueryParam("value") String value) {
+    public boolean setMCRecord(MemInstance instance, @QueryParam("key") String key, @QueryParam("value") String value) {
         String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
         MemCachedClient client = MCManager.getClient(poolName);
         MCOperationUtils.setMemCachedClient(client);
@@ -57,7 +55,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_LIST_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Map<String, KeysBean> listMCRecordKeys(@BeanParam MemInstance instance) {
+    public Map<String, KeysBean> listMCRecordKeys(MemInstance instance) {
         String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
         MemCachedClient client = MCManager.getClient(poolName);
         MCOperationUtils.setMemCachedClient(client);
@@ -76,7 +74,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_STAT_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Map<String, Map<String, String>> statMCServersStatus(@BeanParam MemInstance instance) {
+    public Map<String, Map<String, String>> statMCServersStatus(MemInstance instance) {
         String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
         MemCachedClient client = MCManager.getClient(poolName);
         MCOperationUtils.setMemCachedClient(client);
