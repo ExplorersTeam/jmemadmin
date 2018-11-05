@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.entity;
+package org.exp.jmemadmin.trash;
 
 /**
  * Stats统计系统信息
