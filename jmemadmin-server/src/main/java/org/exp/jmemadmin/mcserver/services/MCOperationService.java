@@ -52,6 +52,18 @@ public class MCOperationService {
     }
 
     @POST
+    @Path(Constants.REST_SERVER_DELETE_SUBPATH)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean deleteMCRecord(MemInstance instance, @QueryParam("key") String key) {
+        String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
+        MemCachedClient client = MCManager.getClient(poolName);
+        MCOperationUtils.setMemCachedClient(client);
+        boolean result = MCOperationUtils.delete(key);
+        return result;
+    }
+
+    @POST
     @Path(Constants.REST_SERVER_LIST_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
