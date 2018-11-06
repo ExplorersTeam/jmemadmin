@@ -5,10 +5,14 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.exp.jmemadmin.mcserver.common.ServerConfig;
+import org.exp.jmemadmin.mcserver.manager.Observer;
 import org.exp.jmemadmin.mcserver.services.MCServerService;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -79,6 +83,9 @@ public class MemServer {
         MemServer memServer = (0 == args.length) ? new MemServer() : new MemServer(Integer.parseInt(args[0]));
         try {
             memServer.start();
+            Runnable observer = new Observer();
+            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+            service.scheduleAtFixedRate(observer, ServerConfig.getObserverThreadInitaldelay(), ServerConfig.getObserverThreadPeriod(), TimeUnit.MILLISECONDS);
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
