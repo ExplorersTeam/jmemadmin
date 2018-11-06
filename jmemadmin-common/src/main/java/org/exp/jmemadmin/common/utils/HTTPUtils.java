@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -21,9 +20,10 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.entity.Response;
-import org.exp.jmemadmin.entity.Response.ResultStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  *
@@ -162,14 +162,9 @@ public class HTTPUtils {
             LOG.info("Request body is [" + body + "].");
             post.setEntity(new StringEntity(body, Constants.DEFAULT_ENCODING));
         }
-        Response response = new Response();
         HttpResponse httpResponse = client.execute(post);
-        if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            response.setCode(ResultStatus.SUCCESS.value());
-        } else {
-            response.setCode(ResultStatus.FAILED.value());
-        }
-        response.setContent(EntityUtils.toString(httpResponse.getEntity(), Constants.DEFAULT_ENCODING));
+        String contentTmp = EntityUtils.toString(httpResponse.getEntity(), Constants.DEFAULT_ENCODING);
+        Response response = JSON.parseObject(contentTmp, Response.class);
         return response;
     }
 }
