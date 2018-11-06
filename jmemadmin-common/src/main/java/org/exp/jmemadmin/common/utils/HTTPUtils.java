@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 
 /**
  *
@@ -166,9 +165,7 @@ public class HTTPUtils {
         HttpResponse httpResponse = client.execute(post);
         String contentTmp = EntityUtils.toString(httpResponse.getEntity(), Constants.DEFAULT_ENCODING);
         LOG.info("ContentTmp is [" + contentTmp + "].");
-        Response response = JSON.parseObject(contentTmp, new TypeReference<Response>() {
-        });
-        // Response response = JSON.parseObject(contentTmp, Response.class);
+        Response response = JSON.parseObject(contentTmp, Response.class);
         LOG.info("Response of sendPOSTRequest is [" + response + "].");
         return response;
     }
