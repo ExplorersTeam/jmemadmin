@@ -14,7 +14,6 @@ import org.exp.jmemadmin.common.utils.DateUtils;
 
 @XmlRootElement
 public class Response {
-    @XmlElement(name = "result")
     private int code;
 
     @XmlElement(required = false)
