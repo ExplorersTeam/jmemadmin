@@ -147,26 +147,29 @@ public class MCManager {
         StringBuffer stopInstancePath = new StringBuffer();
         stopInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_STOP_SUBPATH);
         Response response = null;
-        // TODO:Solve bug about stop instance when serversList is null.
         try {
             response = executeRequest(instance, stopInstancePath.toString());
             LOG.info("Response of normal stopMemInstance is [" + response + "].");
+        } catch (Exception e) {
+            LOG.info("Response of Exception stopMemInstance is [" + response + "].");
+            LOG.error(e.getMessage(), e);
+        }
+        /**
+         * Solve bug about stop instance when serversList is null.
+         *
+         */
+        if (response.getCode() == Response.ResultStatus.SUCCESS.value()) {
             String server = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
             serversList.remove(server);
             String poolName = tenant + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
             LOG.info("server is [" + server + "]; poolname is [" + poolName + "]");
-            if (null == activeClient) {
-                activeClient = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
-            } else {
-                String poolNameKey = poolName + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
-                historyClients.put(poolNameKey, activeClient);
-                historyPoolNames.put(poolNameKey, poolName);
+            String poolNameKey = poolName + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
+            historyClients.put(poolNameKey, activeClient);
+            historyPoolNames.put(poolNameKey, poolName);
+            if (!serversList.isEmpty()) {
                 activeClient = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
             }
             LOG.info("historyPoolNames is [" + historyPoolNames.toString() + "].");
-        } catch (Exception e) {
-            LOG.info("Response of Exception stopMemInstance is [" + response + "].");
-            LOG.error(e.getMessage(), e);
         }
         return response;
     }
