@@ -35,8 +35,7 @@ public class MCOperationService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getMCRecordByKey(MemInstance instance, @QueryParam("key") String key) {
-        String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
-        MemCachedClient client = MCManager.getClient(poolName);
+        MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         Response response = new Response();
         try {
@@ -55,8 +54,7 @@ public class MCOperationService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setMCRecord(MemInstance instance, @QueryParam("key") String key, @QueryParam("value") String value) {
-        String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
-        MemCachedClient client = MCManager.getClient(poolName);
+        MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         boolean result = MCOperationUtils.set(key, value);
         Response response = new Response();
@@ -75,8 +73,7 @@ public class MCOperationService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteMCRecord(MemInstance instance, @QueryParam("key") String key) {
-        String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
-        MemCachedClient client = MCManager.getClient(poolName);
+        MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         boolean result = MCOperationUtils.delete(key);
         Response response = new Response();
@@ -95,8 +92,7 @@ public class MCOperationService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response listMCRecordKeys(MemInstance instance) {
-        String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
-        MemCachedClient client = MCManager.getClient(poolName);
+        MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         Response response = new Response();
         Map<String, KeysBean> result = new HashMap<String, KeysBean>();
@@ -116,9 +112,8 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_STAT_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response statMCServersStatus(MemInstance instance) {
-        String poolName = MCManager.getPoolName(instance.getHost(), instance.getPort());
-        MemCachedClient client = MCManager.getClient(poolName);
+    public Response statsMCServersStatus(MemInstance instance) {
+        MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         Response response = new Response();
         try {

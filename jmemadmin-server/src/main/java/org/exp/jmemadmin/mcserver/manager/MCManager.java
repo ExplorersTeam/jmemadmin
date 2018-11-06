@@ -10,8 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.util.EntityUtils;
 import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
+import org.exp.jmemadmin.common.utils.DateUtils;
 import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.RequestBody;
@@ -27,28 +29,45 @@ import com.whalin.MemCached.SockIOPool;
 public class MCManager {
     private static final Logger LOG = LoggerFactory.getLogger(MCManager.class);
 
+    private static Map<String, MemCachedClient> historyClients = new ConcurrentHashMap<>();// 暂时未起作用
+    private static Map<String, SockIOPool> historyPools = new ConcurrentHashMap<>();// 暂时未起作用
     private static Map<String, String> historyPoolNames = new ConcurrentHashMap<>();
-    private static Map<String, MemCachedClient> historyClients = new ConcurrentHashMap<>();
-    private static Map<String, SockIOPool> historyPools = new ConcurrentHashMap<>();
+    private static List<String> serversList = new ArrayList<>();
+    private static MemCachedClient activeClient = null;
+    private static String tenant = "memcached";
+    private static String activePoolName = null;
 
     private MCManager() {
         // DO nothing
     }
 
-    public static String getPoolName(String host, int port) {
-        String key = host + Constants.COLON_DELIMITER + String.valueOf(port);
-        String poolName = historyPoolNames.get(key);
-        return poolName;
-    }
-
-    public static MemCachedClient getClient(String poolName) {
-        // MemCachedClient client = new MemCachedClient(poolName);
-        MemCachedClient client = historyClients.get(poolName);
-        return client;
+    public static MemCachedClient getClient() {
+        return activeClient;
     }
 
     public static Map<String, SockIOPool> getHistoryPools() {
         return historyPools;
+    }
+
+    public static Map<String, String> getHistoryPoolNames() {
+        return historyPoolNames;
+    }
+
+    public static void removeHistoryPoolNamesByKey(String poolNameKey) {
+        historyPoolNames.remove(poolNameKey);
+    }
+
+    public static void removeHistoryClientsByKey(String poolNameKey) {
+        historyClients.remove(poolNameKey);
+    }
+
+    public static void removeHistoryPoolsByKey(String poolNameKey) {
+        historyPools.remove(historyPoolNames.get(poolNameKey));
+    }
+
+    public static void shutdownPool(String poolName) {
+        // historyPools.get(poolName).shutDown();
+        SockIOPool.getInstance(poolName).shutDown();
     }
 
     public static MemCachedClient createMCClient(String poolName, String[] servers) {
@@ -71,10 +90,6 @@ public class MCManager {
         historyPools.put(poolName, pool);
         MemCachedClient activeClient = new MemCachedClient(poolName);
         return activeClient;
-    }
-
-    public static void shutdownPool(String poolName) {
-        SockIOPool.getInstance(poolName).shutDown();
     }
 
     public static Response executeRequest(MemInstance instance, String requestPath)
@@ -103,18 +118,26 @@ public class MCManager {
         startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
         Response response = null;
         try {
+            // TODO:analysis code of response
+            // String str = EntityUtils.toString(httpResponse.getEntity(), Constants.DEFAULT_ENCODING);
+            // JSON.parseObject(str, Response.class).getCode();
             response = executeRequest(instance, startInstancePath.toString());
             LOG.info("Response of normal startMemInstance is [" + response + "].");
-            String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
-            List<String> serversList = new ArrayList<String>();
-            serversList.add(serverKey);
-            // TODO:adjust pool name
-            String poolName = CommonConfigs.getPoolMemnamePrefix() + serverKey;
-            historyPoolNames.put(serverKey, poolName);
-            LOG.info("serverKey is [" + serverKey + "]; poolname is [" + poolName + "]; historyPoolNames is [" + historyPoolNames + "].");
-            MemCachedClient client = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
-            historyClients.put(poolName, client);
-            LOG.info("historyClients is [" + historyClients.toString() + "].");
+            String server = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
+            serversList.add(server);
+            String poolName = tenant + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
+            LOG.info("server is [" + server + "]; poolname is [" + poolName + "]");
+            if (null == activeClient) {
+                activeClient = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
+                activePoolName = poolName;
+            } else {
+                String poolNameKey = activePoolName + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
+                historyClients.put(poolNameKey, activeClient);
+                historyPoolNames.put(poolNameKey, activePoolName);
+                activeClient = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
+                activePoolName = poolName;
+            }
+            LOG.info("historyPoolNames is [" + historyPoolNames.toString() + "].");
         } catch (ParseException | URISyntaxException | IOException e) {
             LOG.info("Response of Exception startMemInstance is [" + response + "].");
             LOG.error(e.getMessage(), e);
@@ -126,20 +149,24 @@ public class MCManager {
         StringBuffer stopInstancePath = new StringBuffer();
         stopInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_STOP_SUBPATH);
         Response response = null;
+        // TODO:Solve bug about stop instance when serversList is null.
         try {
             response = executeRequest(instance, stopInstancePath.toString());
             LOG.info("Response of normal stopMemInstance is [" + response + "].");
-            String serverKey = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
-            LOG.info("serverKey is [" + serverKey + "]; historyPoolNames is [" + historyPoolNames.toString() + "].");
-            if (historyPoolNames.containsKey(serverKey)) {
-                String poolName = historyPoolNames.get(serverKey);
-                shutdownPool(poolName);
-                LOG.info("PoolName [" + poolName + "] shutdown success.");
-                historyPools.remove(poolName);
-                historyPoolNames.remove(serverKey);
-                historyClients.remove(poolName);
+            String server = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
+            serversList.remove(server);
+            String poolName = tenant + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
+            LOG.info("server is [" + server + "]; poolname is [" + poolName + "]");
+            if (null == activeClient) {
+                activeClient = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
+            } else {
+                String poolNameKey = poolName + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
+                historyClients.put(poolNameKey, activeClient);
+                historyPoolNames.put(poolNameKey, poolName);
+                activeClient = createMCClient(poolName, serversList.toArray(new String[serversList.size()]));
             }
-        } catch (ParseException | URISyntaxException | IOException e) {
+            LOG.info("historyPoolNames is [" + historyPoolNames.toString() + "].");
+        } catch (Exception e) {
             LOG.info("Response of Exception stopMemInstance is [" + response + "].");
             LOG.error(e.getMessage(), e);
         }
