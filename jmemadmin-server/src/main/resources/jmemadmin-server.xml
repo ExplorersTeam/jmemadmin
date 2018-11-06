@@ -49,4 +49,17 @@
 		<name>jmemadmin.rest.server.port</name>
 		<value>8725</value>
 	</property>
+	<!-- Observer Service Configuration Items -->
+	<property>
+		<name>jmemadmin.observer.thread.initaldelay.ms</name>
+		<value>0</value>
+	</property>
+	<property>
+		<name>jmemadmin.observer.thread.period.ms</name>
+		<value>5000</value>
+	</property>
+	<property>
+		<name>jmemadmin.history.client.keep.time.s</name>
+		<value>10</value>
+	</property>
 </configuration>

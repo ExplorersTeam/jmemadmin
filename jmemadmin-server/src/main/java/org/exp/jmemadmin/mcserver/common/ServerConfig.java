@@ -110,4 +110,28 @@ public class ServerConfig {
     public static int getRESTfulServerPort() {
         return getConf().getInt(REST_SERVER_PORT_KEY, DEFAULT_REST_SERVER_PORT_VALUE);
     }
+
+    /*
+     * Observer service configurations.
+     */
+    private static final String THREAD_INITIAL_DELAY = "jmemadmin.observer.thread.initaldelay.ms";
+    private static final long DEFAULT_THREAD_INITIAL_DELAY = 0;
+
+    private static final String THREAD_PERIOD = "jmemadmin.observer.thread.period.ms";
+    private static final long DEFAULT_THREAD_PERIOD = 1000;
+
+    private static final String HISTORY_MC_CLIENT_KEEP_TIME_S = "jmemadmin.history.client.keep.time.s";
+    private static final long DEFAULT_HISTORY_MC_CLIENT_KEEP_TIME_S = 10;
+
+    public static long getObserverThreadInitaldelay() {
+        return getConf().getLong(THREAD_INITIAL_DELAY, DEFAULT_THREAD_INITIAL_DELAY);
+    }
+
+    public static long getObserverThreadPeriod() {
+        return getConf().getLong(THREAD_PERIOD, DEFAULT_THREAD_PERIOD);
+    }
+
+    public static long getHistoryClientKeepTime() {
+        return getConf().getLong(HISTORY_MC_CLIENT_KEEP_TIME_S, DEFAULT_HISTORY_MC_CLIENT_KEEP_TIME_S);
+    }
 }
