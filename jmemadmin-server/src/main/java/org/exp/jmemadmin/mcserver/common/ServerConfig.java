@@ -49,7 +49,7 @@ public class ServerConfig {
     private static final boolean DEFAULT_SOCKIOPOOL_ALIVE_CHECK_VALUE = true;
 
     private static final String SOCKIOPOOL_MAX_IDLE_MS_KEY = "jmemadmin.sockiopool.max.idle.ms";
-    private static final int DEFAULT_SOCKIOPOOL_MAX_IDLE_MS_VALUE = 1000 * 30 * 30;
+    private static final int DEFAULT_SOCKIOPOOL_MAX_IDLE_MS_VALUE = 900000;
 
     private static final String SOCKIOPOOL_CONNECT_TIMEOUT_MS_KEY = "jmemadmin.sockiopool.connect.timeout.ms";
     private static final int DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_MS_VALUE = 0;
