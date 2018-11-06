@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.util.EntityUtils;
 import org.exp.jmemadmin.common.CommonConfigs;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.DateUtils;
@@ -118,11 +117,13 @@ public class MCManager {
         startInstancePath.append(Constants.REST_AGENT_ROOT_PATH).append(Constants.REST_AGENT_START_SUBPATH);
         Response response = null;
         try {
-            // TODO:analysis code of response
-            // String str = EntityUtils.toString(httpResponse.getEntity(), Constants.DEFAULT_ENCODING);
-            // JSON.parseObject(str, Response.class).getCode();
             response = executeRequest(instance, startInstancePath.toString());
             LOG.info("Response of normal startMemInstance is [" + response + "].");
+        } catch (Exception e) {
+            LOG.info("Response of Exception startMemInstance is [" + response + "].");
+            LOG.error(e.getMessage(), e);
+        }
+        if (response.getCode() == Response.ResultStatus.SUCCESS.value()) {
             String server = instance.getHost() + Constants.COLON_DELIMITER + String.valueOf(instance.getPort());
             serversList.add(server);
             String poolName = tenant + Constants.BAR_DELIMITER + DateUtils.getNowTimeHM();
@@ -138,9 +139,6 @@ public class MCManager {
                 activePoolName = poolName;
             }
             LOG.info("historyPoolNames is [" + historyPoolNames.toString() + "].");
-        } catch (ParseException | URISyntaxException | IOException e) {
-            LOG.info("Response of Exception startMemInstance is [" + response + "].");
-            LOG.error(e.getMessage(), e);
         }
         return response;
     }
