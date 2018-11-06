@@ -95,7 +95,7 @@ public class MCAgentService implements AgentService {
             response.setContent(e.getMessage());
             return response;
         }
-
+        response.setContent("start instance success.");
         response.setCode(ResultStatus.SUCCESS.value());
         return response;
     }
@@ -130,7 +130,6 @@ public class MCAgentService implements AgentService {
         try {
             byte[] data = ZKUtils.get(znodePath);
             ZKNodeInfo zkNodeInfo = JSONObject.parseObject(data, ZKNodeInfo.class);
-
             int pid = zkNodeInfo.getInstancePid();
             LOG.info("Got instance process ID, value is [" + pid + "], now kill it.");
             ZKUtils.markDeletedNode(znodePath);// 打标删除节点
