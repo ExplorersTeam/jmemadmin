@@ -13,17 +13,14 @@ public class ZKNodeInfo {
     private boolean isMaster;
 
     public ZKNodeInfo() {
-        super();
     }
 
     public ZKNodeInfo(String instanceCmd, int instancePid) {
-        super();
         this.instanceCmd = instanceCmd;
         this.instancePid = instancePid;
     }
 
     public ZKNodeInfo(String instanceCmd, int instancePid, boolean isMaster) {
-        super();
         this.instanceCmd = instanceCmd;
         this.instancePid = instancePid;
         this.isMaster = isMaster;
