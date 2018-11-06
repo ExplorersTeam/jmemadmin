@@ -17,7 +17,7 @@
 		<value>250</value>
 	</property>
 	<property>
-		<name>jmemadmin.sockiopool.maint.sleep</name>
+		<name>jmemadmin.sockiopool.maint.sleep.ms</name>
 		<value>30</value>
 	</property>
 	<property>
@@ -25,7 +25,7 @@
 		<value>false</value>
 	</property>
 	<property>
-		<name>jmemadmin.sockiopool.socket.timeout</name>
+		<name>jmemadmin.sockiopool.socket.timeout.ms</name>
 		<value>3000</value>
 	</property>
 	<property>
@@ -33,11 +33,11 @@
 		<value>true</value>
 	</property>
 	<property>
-		<name>jmemadmin.sockiopool.max.idle</name>
+		<name>jmemadmin.sockiopool.max.idle.ms</name>
 		<value>1000*30*30</value>
 	</property>
 	<property>
-		<name>jmemadmin.sockiopool.connect.timeout</name>
+		<name>jmemadmin.sockiopool.connect.timeout.ms</name>
 		<value>0</value>
 	</property>	
 	<property>

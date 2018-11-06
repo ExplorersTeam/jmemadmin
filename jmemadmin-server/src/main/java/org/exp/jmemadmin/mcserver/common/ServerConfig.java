@@ -36,23 +36,23 @@ public class ServerConfig {
     private static final String SOCKIOPOOL_MAX_CONNECTIONS_KEY = "jmemadmin.sockiopool.max.connections";
     private static final int DEFAULT_SOCKIOPOOL_MAX_CONNECTIONS_VALUE = 250;
 
-    private static final String SOCKIOPOOL_MAINT_SLEEP_KEY = "jmemadmin.sockiopool.maint.sleep";
-    private static final int DEFAULT_SOCKIOPOOL_MAINT_SLEEP_VALUE = 30;
+    private static final String SOCKIOPOOL_MAINT_SLEEP_MS_KEY = "jmemadmin.sockiopool.maint.sleep.ms";
+    private static final int DEFAULT_SOCKIOPOOL_MAINT_SLEEP_MS_VALUE = 30;
 
     private static final String SOCKIOPOOL_NAGLE_KEY = "jmemadmin.sockiopool.nagle";
     private static final boolean DEFAULT_SOCKIOPOOL_NAGLE_VALUE = false;
 
-    private static final String SOCKIOPOOL_SOCKET_TIMEOUT_KEY = "jmemadmin.sockiopool.socket.timeout";
-    private static final int DEFAULT_SOCKIOPOOL_SOCKET_TIMEOUT_VALUE = 3000;
+    private static final String SOCKIOPOOL_SOCKET_TIMEOUT_MS_KEY = "jmemadmin.sockiopool.socket.timeout.ms";
+    private static final int DEFAULT_SOCKIOPOOL_SOCKET_TIMEOUT_MS_VALUE = 3000;
 
     private static final String SOCKIOPOOL_ALIVE_CHECK_KEY = "jmemadmin.sockiopool.alive.check";
     private static final boolean DEFAULT_SOCKIOPOOL_ALIVE_CHECK_VALUE = true;
 
-    private static final String SOCKIOPOOL_MAX_IDLE_KEY = "jmemadmin.sockiopool.max.idle";
-    private static final int DEFAULT_SOCKIOPOOL_MAX_IDLE_VALUE = 1000 * 30 * 30;
+    private static final String SOCKIOPOOL_MAX_IDLE_MS_KEY = "jmemadmin.sockiopool.max.idle.ms";
+    private static final int DEFAULT_SOCKIOPOOL_MAX_IDLE_MS_VALUE = 1000 * 30 * 30;
 
-    private static final String SOCKIOPOOL_CONNECT_TIMEOUT_KEY = "jmemadmin.sockiopool.connect.timeout";
-    private static final int DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_VALUE = 0;
+    private static final String SOCKIOPOOL_CONNECT_TIMEOUT_MS_KEY = "jmemadmin.sockiopool.connect.timeout.ms";
+    private static final int DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_MS_VALUE = 0;
 
     private static final String SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_KEY = "jmemadmin.sockiopool.garbage.collection.interval.ms";
     private static final int DEFAULT_SOCKIOPOOL_GARBAGE_COLLECTION_INTERVAL_MS_VALUE = 1000000;
@@ -80,7 +80,7 @@ public class ServerConfig {
     }
 
     public static int getPoolMaintSleep() {
-        return getConf().getInt(SOCKIOPOOL_MAINT_SLEEP_KEY, DEFAULT_SOCKIOPOOL_MAINT_SLEEP_VALUE);
+        return getConf().getInt(SOCKIOPOOL_MAINT_SLEEP_MS_KEY, DEFAULT_SOCKIOPOOL_MAINT_SLEEP_MS_VALUE);
     }
 
     public static boolean getPoolNagle() {
@@ -88,7 +88,7 @@ public class ServerConfig {
     }
 
     public static int getPoolSocketTimeout() {
-        return getConf().getInt(SOCKIOPOOL_SOCKET_TIMEOUT_KEY, DEFAULT_SOCKIOPOOL_SOCKET_TIMEOUT_VALUE);
+        return getConf().getInt(SOCKIOPOOL_SOCKET_TIMEOUT_MS_KEY, DEFAULT_SOCKIOPOOL_SOCKET_TIMEOUT_MS_VALUE);
     }
 
     public static boolean getPoolAliveCheck() {
@@ -96,11 +96,11 @@ public class ServerConfig {
     }
 
     public static int getPoolMaxIdle() {
-        return getConf().getInt(SOCKIOPOOL_MAX_IDLE_KEY, DEFAULT_SOCKIOPOOL_MAX_IDLE_VALUE);
+        return getConf().getInt(SOCKIOPOOL_MAX_IDLE_MS_KEY, DEFAULT_SOCKIOPOOL_MAX_IDLE_MS_VALUE);
     }
 
     public static int getPoolConnectTimeout() {
-        return getConf().getInt(SOCKIOPOOL_CONNECT_TIMEOUT_KEY, DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_VALUE);
+        return getConf().getInt(SOCKIOPOOL_CONNECT_TIMEOUT_MS_KEY, DEFAULT_SOCKIOPOOL_CONNECT_TIMEOUT_MS_VALUE);
     }
 
     public static int getPoolGCIntervalMs() {
