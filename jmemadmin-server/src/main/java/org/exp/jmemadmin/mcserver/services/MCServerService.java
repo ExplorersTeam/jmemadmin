@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
-import org.exp.jmemadmin.mcserver.common.MCManager;
+import org.exp.jmemadmin.mcserver.manager.MCManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

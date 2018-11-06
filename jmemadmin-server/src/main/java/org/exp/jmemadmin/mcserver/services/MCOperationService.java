@@ -17,7 +17,7 @@ import org.exp.jmemadmin.entity.KeysBean;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
 import org.exp.jmemadmin.entity.Response.ResultStatus;
-import org.exp.jmemadmin.mcserver.common.MCManager;
+import org.exp.jmemadmin.mcserver.manager.MCManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

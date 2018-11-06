@@ -1,4 +1,4 @@
-package org.exp.jmemadmin.mcserver.common;
+package org.exp.jmemadmin.mcserver.manager;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,6 +16,7 @@ import org.exp.jmemadmin.common.utils.HTTPUtils;
 import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.RequestBody;
 import org.exp.jmemadmin.entity.Response;
+import org.exp.jmemadmin.mcserver.common.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
