@@ -22,6 +22,7 @@ public class Constants {
      */
     public static final String SLASH_DELIMITER = "/";
     public static final String COLON_DELIMITER = ":";
+    public static final String BAR_DELIMITER = "-";
     public static final String COMMAND_DELIMITER = " ";
 
     /**
