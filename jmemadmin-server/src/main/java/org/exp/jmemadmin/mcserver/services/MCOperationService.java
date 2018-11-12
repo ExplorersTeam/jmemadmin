@@ -14,9 +14,9 @@ import javax.ws.rs.core.MediaType;
 import org.exp.jmemadmin.common.Constants;
 import org.exp.jmemadmin.common.utils.MCOperationUtils;
 import org.exp.jmemadmin.entity.KeysBean;
-import org.exp.jmemadmin.entity.MemInstance;
 import org.exp.jmemadmin.entity.Response;
 import org.exp.jmemadmin.entity.Response.ResultStatus;
+import org.exp.jmemadmin.entity.TenantRequest;
 import org.exp.jmemadmin.mcserver.manager.MCManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +30,12 @@ import com.whalin.MemCached.MemCachedClient;
 public class MCOperationService {
     private static final Logger LOG = LoggerFactory.getLogger(MCOperationService.class);
 
+    // TODO:TenantRequest param waits to expand.
     @POST
     @Path(Constants.REST_SERVER_GET_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getMCRecordByKey(MemInstance instance, @QueryParam("key") String key) {
+    public Response getMCRecordByKey(TenantRequest tenantRequest, @QueryParam("key") String key) {
         MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         Response response = new Response();
@@ -53,7 +54,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_SET_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response setMCRecord(MemInstance instance, @QueryParam("key") String key, @QueryParam("value") String value) {
+    public Response setMCRecord(TenantRequest tenantRequest, @QueryParam("key") String key, @QueryParam("value") String value) {
         MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         boolean result = MCOperationUtils.set(key, value);
@@ -72,7 +73,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_DELETE_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteMCRecord(MemInstance instance, @QueryParam("key") String key) {
+    public Response deleteMCRecord(TenantRequest tenantRequest, @QueryParam("key") String key) {
         MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         boolean result = MCOperationUtils.delete(key);
@@ -91,7 +92,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_LIST_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response listMCRecordKeys(MemInstance instance) {
+    public Response listMCRecordKeys(TenantRequest tenantRequest) {
         MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         Response response = new Response();
@@ -112,7 +113,7 @@ public class MCOperationService {
     @Path(Constants.REST_SERVER_STAT_SUBPATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response statsMCServersStatus(MemInstance instance) {
+    public Response statsMCServersStatus(TenantRequest tenantRequest) {
         MemCachedClient client = MCManager.getClient();
         MCOperationUtils.setMemCachedClient(client);
         Response response = new Response();
